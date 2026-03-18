@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* ============================================
+   INSTITUT LA CLÉ — DESIGN SYSTEM TOKENS
+   Dark Premium Institutional
+   ============================================ */
+
+@theme inline {
+  /* ---- Backgrounds ---- */
+  --color-noir: #0B0B0B;
+  --color-graphite: #131313;
+  --color-ardoise: #1A1A1A;
+  --color-charbon: #222222;
+
+  /* ---- Text ---- */
+  --color-ivoire: #F5F0EB;
+  --color-cendre: #A09A93;
+  --color-pierre: #6B665F;
+
+  /* ---- Accent ---- */
+  --color-bronze: #B08D57;
+  --color-bronze-clair: #C9A96E;
+  --color-bronze-sombre: #8A6D3B;
+
+  /* ---- Profondeur bleu nuit ---- */
+  --color-nuit: #0e162a;
+  --color-nuit-profond: #0b1224;
+  --color-prune-sombre: #1a1022;
+
+  /* ---- Borders ---- */
+  --color-filet: #2A2A2A;
+  --color-filet-discret: #1E1E1E;
+  --color-filet-accent: #3D3530;
+
+  /* ---- Typography ---- */
+  --font-serif: var(--font-cormorant), "Georgia", serif;
+  --font-body: var(--font-dm-sans), "Helvetica Neue", sans-serif;
+
+  /* ---- Custom Easing ---- */
+  --ease-institutional: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ---- Base ---- */
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-noir);
+  color: var(--color-ivoire);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---- Headings ---- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--color-ivoire);
+}
+
+h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h4 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.125rem; }
+
+p {
+  line-height: 1.75;
+  color: var(--color-cendre);
+}
+
+/* ---- Selection ---- */
+
+::selection {
+  background-color: var(--color-bronze);
+  color: var(--color-noir);
+}
+
+/* ---- Scrollbar ---- */
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-noir);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-filet);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-pierre);
+}
+
+/* ---- Focus ---- */
+
+*:focus-visible {
+  outline: 2px solid var(--color-bronze);
+  outline-offset: 2px;
+}
+
+/* ---- Reduced Motion ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
