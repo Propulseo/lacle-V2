@@ -24,7 +24,7 @@ export function Expandable({
         className="flex w-full items-center justify-between py-6 text-left transition-colors duration-300 hover:text-bronze-clair"
         aria-expanded={isOpen}
       >
-        <span className="pr-8 font-serif text-xl text-ivoire md:text-2xl">
+        <span className="pr-8 font-display text-xl text-ivoire md:text-2xl">
           {title}
         </span>
         <span

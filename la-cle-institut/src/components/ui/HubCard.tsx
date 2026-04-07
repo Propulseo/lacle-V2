@@ -10,9 +10,9 @@ export function HubCard({ title, description, href }: HubCardProps) {
   return (
     <Link
       href={href}
-      className="group block border border-filet bg-ardoise/40 p-8 transition-all duration-500 ease-[var(--ease-institutional)] hover:-translate-y-1 hover:border-filet-accent md:p-10"
+      className="card-elevated group block border border-filet bg-ardoise/40 p-8 transition-all duration-500 ease-[var(--ease-institutional)] hover:-translate-y-1 hover:border-filet-accent md:p-10"
     >
-      <h3 className="mb-4 font-serif text-2xl text-ivoire transition-colors duration-500 group-hover:text-bronze-clair md:text-3xl">
+      <h3 className="mb-4 font-display text-2xl text-ivoire transition-colors duration-500 group-hover:text-bronze-clair md:text-3xl">
         {title}
       </h3>
       <p className="mb-6 text-sm leading-relaxed text-cendre">

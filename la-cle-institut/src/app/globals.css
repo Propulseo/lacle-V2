@@ -5,7 +5,7 @@
    Dark Premium Institutional
    ============================================ */
 
-@theme inline {
+@theme {
   /* ---- Backgrounds ---- */
   --color-noir: #0B0B0B;
   --color-graphite: #131313;
@@ -33,12 +33,48 @@
   --color-filet-accent: #3D3530;
 
   /* ---- Typography ---- */
-  --font-serif: var(--font-cormorant), "Georgia", serif;
-  --font-body: var(--font-dm-sans), "Helvetica Neue", sans-serif;
+  --font-display: var(--font-cormorant-garamond), "Georgia", serif;
+  --font-serif: var(--font-cormorant-garamond), "Georgia", serif;
+  --font-body: var(--font-libre-franklin), system-ui, sans-serif;
 
   /* ---- Custom Easing ---- */
   --ease-institutional: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ---- Pill navigation shadows ---- */
+
+:root {
+  --pill-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+  --pill-shadow-active: 0 8px 40px rgba(0, 0, 0, 0.4);
+
+  /* Hero — dark mode defaults */
+  --hero-bg: #07080E;
+  --hero-glow-1: rgba(45, 27, 61, 0.25);
+  --hero-glow-2: rgba(176, 144, 88, 0.06);
+  --hero-glow-3: rgba(14, 18, 37, 0.8);
+  --hero-grid-line: rgba(240, 235, 227, 0.08);
+  --hero-grid-opacity: 0.03;
+  --hero-bottom-gradient: #0C1020;
+  --hero-title: #F0EBE3;
+  --hero-surtitre: rgba(176, 144, 88, 0.5);
+  --hero-subtitle: rgba(240, 235, 227, 0.35);
+  --hero-line-start: rgba(176, 144, 88, 0.5);
+  --hero-line-mid: rgba(176, 144, 88, 0.25);
+  --hero-orbital-glow-inner: rgba(176, 141, 87, 0.15);
+  --hero-orbital-glow-outer: rgba(26, 16, 34, 0.18);
+  --hero-depth-top: rgba(10, 12, 24, 0.4);
+  --hero-focal: rgba(45, 27, 61, 0.18);
+  --hero-focal-outer: rgba(14, 18, 37, 0.12);
+  --hero-cta-color: #F0EBE3;
+  --hero-cta-bg: rgba(255, 255, 255, 0.025);
+  --hero-cta-border: rgba(255, 255, 255, 0.06);
+  --hero-cta-hover-bg: rgba(255, 255, 255, 0.055);
+  --hero-cta-hover-border: rgba(255, 255, 255, 0.10);
+  --hero-cta-hover-shadow: 0 0 40px rgba(45, 27, 61, 0.25);
+  --hero-cta-sweep: rgba(255, 255, 255, 0.04);
+  --hero-cta2-color: rgba(240, 235, 227, 0.35);
+  --hero-cta2-hover: rgba(240, 235, 227, 0.60);
 }
 
 /* ---- Base ---- */
@@ -54,23 +90,105 @@ body {
 /* ---- Headings ---- */
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
+  font-family: var(--font-display);
   color: var(--color-ivoire);
 }
 
-h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
-h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
-h4 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
-h5 { font-size: 1.25rem; }
-h6 { font-size: 1.125rem; }
+h1 {
+  font-weight: 600;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+h5 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+h6 {
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
 
 p {
   line-height: 1.75;
   color: var(--color-cendre);
+}
+
+blockquote {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  line-height: 1.5;
+  color: var(--color-cendre);
+}
+
+/* ---- Semantic typography classes ---- */
+
+@layer components {
+  /* Grand titre d'impact visuel — splash, hero CTA finals */
+  .text-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  /* Label institutionnel — le pattern le plus répété du projet */
+  .text-label {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    line-height: 1.2;
+  }
+
+  /* Label compact — credentials, micro-metadata */
+  .text-label-sm {
+    font-size: 0.5625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    line-height: 1.2;
+  }
+
+  /* Citation premium — accroches, témoignages */
+  .text-quote {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
 }
 
 /* ---- Selection ---- */
@@ -114,4 +232,183 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ============================================
+   LIGHT MODE — "Papier, Lin & Or"
+   ============================================ */
+
+[data-theme="light"] {
+  /* Fonds — gamme lin & sable chaud, zéro gris */
+  --color-noir: #F4EEE4;
+  --color-graphite: #E8E0D2;
+  --color-ardoise: #FFFDF8;
+  --color-charbon: #DDD5C6;
+
+  /* Textes */
+  --color-ivoire: #1A1714;
+  --color-cendre: #3D362C;
+  --color-pierre: #7A7068;
+
+  /* Accents bronze/or */
+  --color-bronze: #8C6D35;
+  --color-bronze-clair: #7A5F2D;
+  --color-bronze-sombre: #BFA05C;
+
+  /* Profondeur — tons parchemin doré */
+  --color-nuit: #D5CAAC;
+  --color-nuit-profond: #CABFA8;
+  --color-prune-sombre: #D0C5B2;
+
+  /* Bordures — ton lin/bronze, jamais gris */
+  --color-filet: #BFB098;
+  --color-filet-discret: #CBBFAC;
+  --color-filet-accent: #A8956E;
+
+  --pill-shadow: 0 2px 24px rgba(120, 100, 80, 0.12), 0 1px 6px rgba(120, 100, 80, 0.08);
+  --pill-shadow-active: 0 4px 32px rgba(120, 100, 80, 0.18), 0 2px 8px rgba(120, 100, 80, 0.10);
+
+  /* Hero — "Parchemin & Or" */
+  --hero-bg: #F4EEE4;
+  --hero-glow-1: rgba(176, 144, 88, 0.22);
+  --hero-glow-2: rgba(154, 123, 68, 0.14);
+  --hero-glow-3: rgba(190, 170, 140, 0.30);
+  --hero-grid-line: rgba(154, 123, 68, 0.10);
+  --hero-grid-opacity: 0.06;
+  --hero-bottom-gradient: #E5DCCC;
+  --hero-depth-top: rgba(220, 210, 192, 0.6);
+  --hero-focal: rgba(176, 144, 88, 0.14);
+  --hero-focal-outer: rgba(200, 180, 145, 0.10);
+  --hero-title: #1A1612;
+  --hero-surtitre: rgba(154, 123, 68, 0.90);
+  --hero-subtitle: rgba(42, 38, 32, 0.62);
+  --hero-line-start: rgba(154, 123, 68, 0.70);
+  --hero-line-mid: rgba(154, 123, 68, 0.35);
+  --hero-orbital-glow-inner: rgba(176, 141, 87, 0.28);
+  --hero-orbital-glow-outer: rgba(180, 160, 120, 0.22);
+  --hero-cta-color: #1A1612;
+  --hero-cta-bg: rgba(154, 123, 68, 0.10);
+  --hero-cta-border: rgba(154, 123, 68, 0.25);
+  --hero-cta-hover-bg: rgba(154, 123, 68, 0.16);
+  --hero-cta-hover-border: rgba(154, 123, 68, 0.40);
+  --hero-cta-hover-shadow: 0 0 40px rgba(176, 144, 88, 0.22);
+  --hero-cta-sweep: rgba(154, 123, 68, 0.08);
+  --hero-cta2-color: rgba(42, 38, 32, 0.55);
+  --hero-cta2-hover: rgba(42, 38, 32, 0.85);
+}
+
+/* Ombres chaudes + fond blanc pour cards en light mode */
+.card-elevated {
+  box-shadow: none;
+}
+[data-theme="light"] .card-elevated {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(140, 109, 53, 0.15) !important;
+  box-shadow:
+    0 1px 2px rgba(100, 80, 50, 0.06),
+    0 4px 12px rgba(100, 80, 50, 0.08),
+    0 12px 36px rgba(100, 80, 50, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: box-shadow 0.5s, background-color 0.5s;
+}
+[data-theme="light"] .card-elevated:hover {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(140, 109, 53, 0.28) !important;
+  box-shadow:
+    0 2px 4px rgba(100, 80, 50, 0.08),
+    0 8px 24px rgba(100, 80, 50, 0.10),
+    0 20px 48px rgba(100, 80, 50, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Light mode : surfaces semi-transparentes deviennent chaudes */
+[data-theme="light"] [aria-disabled="true"] {
+  background-color: rgba(232, 226, 216, 0.50) !important;
+  border-color: rgba(154, 123, 68, 0.08) !important;
+  opacity: 0.7;
+}
+
+/* Light mode : scrollbar parchemin */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #EDE7DB;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #C4B59E;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #A89878;
+}
+
+/* Light mode : selection dorée */
+[data-theme="light"] ::selection {
+  background-color: rgba(140, 109, 53, 0.25);
+  color: #1A1612;
+}
+
+/* Light mode : focus ring bronze */
+[data-theme="light"] *:focus-visible {
+  outline-color: #8C6D35;
+}
+
+/* ---- Hero animation keyframes ---- */
+
+@keyframes orbSpin { to { transform: rotate(360deg); } }
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes heroPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orb-a { animation: none !important; }
+}
+
+.hero-atmosphere-glow-1 {
+  animation: heroPulse 4s ease-in-out infinite;
+}
+
+/* ---- Hero CTA styles ---- */
+
+.hero-cta-primary {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hero-cta-color);
+  background: var(--hero-cta-bg);
+  border: 1px solid var(--hero-cta-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 300ms, border-color 300ms, box-shadow 300ms;
+}
+.hero-cta-primary:hover {
+  background: var(--hero-cta-hover-bg);
+  border-color: var(--hero-cta-hover-border);
+  box-shadow: var(--hero-cta-hover-shadow);
+}
+.hero-cta-sweep {
+  position: absolute; top: 0; left: 0;
+  height: 100%; width: 0;
+  background: var(--hero-cta-sweep);
+  transition: width 500ms;
+}
+.hero-cta-primary:hover .hero-cta-sweep { width: 100%; }
+.hero-cta-secondary {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hero-cta2-color);
+  transition: color 300ms;
+}
+.hero-cta-secondary:hover { color: var(--hero-cta2-hover); }
+.hero-cta-secondary:hover .hero-arrow { transform: translateX(6px); }
+.hero-arrow { transition: transform 300ms; }
+
+/* Splash / hero forcé sombre quel que soit le thème */
+.splash-force-dark {
+  background-color: #0B0B0B !important;
+  color: #F5F0EB !important;
 }

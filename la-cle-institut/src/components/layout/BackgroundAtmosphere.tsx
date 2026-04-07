@@ -2,6 +2,7 @@
 
 import { motion, MotionConfig } from "framer-motion";
 import { useState, useCallback } from "react";
+import { useTheme } from "@/lib/theme";
 
 function rand(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -17,11 +18,11 @@ interface BlobConfig {
   startY: number;
 }
 
-const BLOBS: BlobConfig[] = [
+const DARK_BLOBS: BlobConfig[] = [
   {
     size: "70vw",
-    color: "rgb(20, 50, 120)",
-    opacity: [0.25, 0.5],
+    color: "rgb(80, 60, 30)",
+    opacity: [0.08, 0.18],
     duration: [20, 28],
     blur: 100,
     startX: 65,
@@ -29,8 +30,8 @@ const BLOBS: BlobConfig[] = [
   },
   {
     size: "55vw",
-    color: "rgb(15, 40, 100)",
-    opacity: [0.2, 0.4],
+    color: "rgb(70, 50, 25)",
+    opacity: [0.06, 0.14],
     duration: [16, 24],
     blur: 90,
     startX: -5,
@@ -38,8 +39,8 @@ const BLOBS: BlobConfig[] = [
   },
   {
     size: "45vw",
-    color: "rgb(22, 50, 110)",
-    opacity: [0.18, 0.35],
+    color: "rgb(90, 65, 35)",
+    opacity: [0.05, 0.12],
     duration: [12, 20],
     blur: 80,
     startX: 40,
@@ -47,8 +48,8 @@ const BLOBS: BlobConfig[] = [
   },
   {
     size: "55vw",
-    color: "rgb(35, 18, 60)",
-    opacity: [0.1, 0.22],
+    color: "rgb(50, 35, 20)",
+    opacity: [0.04, 0.10],
     duration: [22, 30],
     blur: 100,
     startX: 25,
@@ -56,7 +57,46 @@ const BLOBS: BlobConfig[] = [
   },
 ];
 
-function AuroraBlob({ config }: { config: BlobConfig }) {
+const LIGHT_BLOBS: BlobConfig[] = [
+  {
+    size: "70vw",
+    color: "rgb(196, 170, 120)",
+    opacity: [0.12, 0.28],
+    duration: [20, 28],
+    blur: 100,
+    startX: 65,
+    startY: 5,
+  },
+  {
+    size: "55vw",
+    color: "rgb(180, 155, 110)",
+    opacity: [0.10, 0.22],
+    duration: [16, 24],
+    blur: 95,
+    startX: -5,
+    startY: 60,
+  },
+  {
+    size: "45vw",
+    color: "rgb(200, 178, 135)",
+    opacity: [0.08, 0.18],
+    duration: [12, 20],
+    blur: 85,
+    startX: 40,
+    startY: 30,
+  },
+  {
+    size: "55vw",
+    color: "rgb(175, 150, 120)",
+    opacity: [0.08, 0.16],
+    duration: [22, 30],
+    blur: 100,
+    startX: 25,
+    startY: 75,
+  },
+];
+
+function AuroraBlob({ config, blendMode }: { config: BlobConfig; blendMode: "screen" | "multiply" }) {
   const newTarget = useCallback(
     () => ({
       x: rand(-20, 80),
@@ -96,21 +136,25 @@ function AuroraBlob({ config }: { config: BlobConfig }) {
         borderRadius: "50%",
         background: `radial-gradient(circle, ${config.color} 0%, transparent 70%)`,
         filter: `blur(${config.blur}px)`,
-        mixBlendMode: "screen",
+        mixBlendMode: blendMode,
       }}
     />
   );
 }
 
 export function BackgroundAtmosphere() {
+  const { theme } = useTheme();
+  const blobs = theme === "light" ? LIGHT_BLOBS : DARK_BLOBS;
+  const blendMode = theme === "light" ? "multiply" : "screen";
+
   return (
-    <MotionConfig reducedMotion="never">
+    <MotionConfig reducedMotion="user">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
       >
-        {BLOBS.map((config, i) => (
-          <AuroraBlob key={i} config={config} />
+        {blobs.map((config, i) => (
+          <AuroraBlob key={`${theme}-${i}`} config={config} blendMode={blendMode} />
         ))}
       </div>
     </MotionConfig>

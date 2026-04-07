@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
-const APP_URL = "http://localhost:3001";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "/acces-espace";
 
 function GraduationIcon({ className }: { className?: string }) {
   return (
@@ -54,7 +54,7 @@ function CredentialRow({ label, value }: { label: string; value: string }) {
       <span className="text-[11px] text-pierre">{label}</span>
       <button
         onClick={handleCopy}
-        className="group/copy flex items-center gap-1.5 rounded bg-noir/40 px-2.5 py-1 font-body text-[12px] tracking-wide text-cendre transition-colors duration-200 hover:bg-noir/60 hover:text-ivoire"
+        className="group/copy flex items-center gap-1.5 rounded bg-charbon/40 px-2.5 py-1 font-body text-[12px] tracking-wide text-cendre transition-colors duration-200 hover:bg-charbon/60 hover:text-ivoire"
         title="Copier"
       >
         <span className="font-mono">{value}</span>
@@ -74,13 +74,13 @@ export function AccesEspaceContent() {
       <div className="grid gap-6 sm:grid-cols-2">
         {/* ---- ESPACE APPRENANT ---- */}
         <ScrollReveal delay={0.1}>
-          <div className="group flex h-full flex-col border border-filet bg-graphite/30 transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze/40 hover:bg-graphite/50">
+          <div className="card-elevated group flex h-full flex-col border border-filet bg-graphite/30 transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze/40 hover:bg-graphite/50">
             {/* Top */}
             <div className="flex flex-col items-center px-8 pt-10 pb-6 text-center">
               <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-filet transition-colors duration-500 group-hover:border-bronze/30 group-hover:bg-bronze/5">
                 <GraduationIcon className="h-7 w-7 text-cendre transition-colors duration-300 group-hover:text-bronze-clair" />
               </div>
-              <p className="font-serif text-xl text-ivoire">Espace Apprenant</p>
+              <p className="font-display text-xl text-ivoire">Espace Apprenant</p>
               <p className="mt-2 text-sm text-cendre">
                 Parcours, vidéos, examens et documents
               </p>
@@ -88,7 +88,7 @@ export function AccesEspaceContent() {
 
             {/* Credentials */}
             <div className="mx-6 space-y-2 border-t border-filet pt-5 pb-5">
-              <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.2em] text-pierre">
+              <p className="mb-3 text-label-sm text-pierre">
                 Identifiants démo
               </p>
               <CredentialRow label="Email" value="marie.dupont@email.com" />
@@ -102,7 +102,7 @@ export function AccesEspaceContent() {
             <div className="mt-auto px-6 pb-8">
               <a
                 href={`${APP_URL}/login`}
-                className="flex w-full items-center justify-center gap-2 bg-bronze px-6 py-3.5 text-[11px] font-medium uppercase tracking-[0.14em] text-noir transition-all duration-500 ease-[var(--ease-institutional)] hover:bg-bronze-clair"
+                className="flex w-full items-center justify-center gap-2 bg-bronze px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-noir transition-all duration-500 ease-[var(--ease-institutional)] hover:bg-bronze-clair"
               >
                 Se connecter
                 <ArrowIcon className="h-3.5 w-3.5" />
@@ -113,13 +113,13 @@ export function AccesEspaceContent() {
 
         {/* ---- ESPACE ADMINISTRATION ---- */}
         <ScrollReveal delay={0.2}>
-          <div className="group flex h-full flex-col border border-filet bg-graphite/30 transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze/40 hover:bg-graphite/50">
+          <div className="card-elevated group flex h-full flex-col border border-filet bg-graphite/30 transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze/40 hover:bg-graphite/50">
             {/* Top */}
             <div className="flex flex-col items-center px-8 pt-10 pb-6 text-center">
               <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-filet transition-colors duration-500 group-hover:border-bronze/30 group-hover:bg-bronze/5">
                 <ShieldIcon className="h-7 w-7 text-cendre transition-colors duration-300 group-hover:text-bronze-clair" />
               </div>
-              <p className="font-serif text-xl text-ivoire">Administration</p>
+              <p className="font-display text-xl text-ivoire">Administration</p>
               <p className="mt-2 text-sm text-cendre">
                 Gestion apprenants, contenus et sessions
               </p>
@@ -127,7 +127,7 @@ export function AccesEspaceContent() {
 
             {/* Credentials */}
             <div className="mx-6 space-y-2 border-t border-filet pt-5 pb-5">
-              <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.2em] text-pierre">
+              <p className="mb-3 text-label-sm text-pierre">
                 Identifiants démo
               </p>
               <CredentialRow label="Email" value="admin@lacleformation.fr" />

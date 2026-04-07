@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&amp;family=DM+Sans:wght@400&amp;display=swap');
+  </style>
+  <!-- Hub Card -->
+  <rect x="0.5" y="0.5" width="359" height="239" stroke="#2A2A2A" fill="rgba(26,26,26,0.4)"/>
+  <text x="40" y="60" font-family="'Cormorant Garamond', serif" font-size="28" fill="#F5F0EB">Notre vocation</text>
+  <text x="40" y="95" font-family="'DM Sans', sans-serif" font-size="13" fill="#A09A93">Comprendre le pourquoi profond</text>
+  <text x="40" y="113" font-family="'DM Sans', sans-serif" font-size="13" fill="#A09A93">de l'institut et sa mission.</text>
+  <text x="40" y="195" font-family="'DM Sans', sans-serif" font-size="12" letter-spacing="0.15em" fill="#6B665F">DÉCOUVRIR →</text>
+</svg>

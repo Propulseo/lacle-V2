@@ -21,10 +21,10 @@ export default function FormationsPage() {
         <section className="flex min-h-[70vh] flex-col justify-center pb-20 pt-32 md:pb-28 md:pt-40">
           <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10 lg:px-16">
             <ScrollReveal>
-              <p className="mb-6 text-[10px] font-bold uppercase tracking-[0.3em] text-bronze">
+              <p className="mb-6 text-label tracking-[0.3em] text-bronze">
                 Catalogue
               </p>
-              <h1 className="max-w-3xl font-serif text-4xl font-light leading-[1.1] text-ivoire md:text-5xl lg:text-6xl xl:text-7xl">
+              <h1 className="max-w-3xl font-display text-4xl text-ivoire md:text-5xl lg:text-6xl xl:text-7xl">
                 Formations
               </h1>
               <p className="mt-8 max-w-xl text-lg leading-relaxed text-cendre md:text-xl">
@@ -34,16 +34,16 @@ export default function FormationsPage() {
             {/* Key facts */}
             <ScrollReveal delay={0.2}>
               <div className="mt-16 grid max-w-2xl gap-px border border-filet md:grid-cols-3">
-                <div className="bg-graphite/60 p-6 md:p-8">
-                  <span className="mb-2 block font-serif text-3xl text-ivoire md:text-4xl">01</span>
+                <div className="card-elevated bg-graphite/60 p-6 md:p-8">
+                  <span className="mb-2 block font-display text-3xl text-ivoire md:text-4xl">01</span>
                   <p className="text-xs uppercase tracking-widest text-cendre">Formation active</p>
                 </div>
-                <div className="bg-graphite/60 p-6 md:p-8">
-                  <span className="mb-2 block font-serif text-3xl text-pierre/40 md:text-4xl">02</span>
+                <div className="card-elevated bg-graphite/60 p-6 md:p-8">
+                  <span className="mb-2 block font-display text-3xl text-pierre/40 md:text-4xl">02</span>
                   <p className="text-xs uppercase tracking-widest text-pierre/60">À venir</p>
                 </div>
-                <div className="bg-graphite/60 p-6 md:p-8">
-                  <span className="mb-2 block font-serif text-3xl text-bronze/30 md:text-4xl">&infin;</span>
+                <div className="card-elevated bg-graphite/60 p-6 md:p-8">
+                  <span className="mb-2 block font-display text-3xl text-bronze/30 md:text-4xl">&infin;</span>
                   <p className="text-xs uppercase tracking-widest text-pierre/60">En évolution</p>
                 </div>
               </div>
@@ -56,7 +56,7 @@ export default function FormationsPage() {
           <ScrollReveal>
             <div className="grid items-center gap-12 lg:grid-cols-2">
               <div>
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-bronze">
+                <p className="mb-2 text-label text-bronze">
                   Philosophie
                 </p>
                 <h2 className="mb-6">Progression pédagogique</h2>
@@ -70,7 +70,7 @@ export default function FormationsPage() {
               <div className="flex flex-col gap-4">
                 {["Fondations", "Approfondissement", "Maîtrise"].map((level, i) => (
                   <div key={level} className="flex items-center gap-6 border-b border-filet pb-4 last:border-0">
-                    <span className={`font-serif text-2xl ${i === 0 ? "text-bronze" : "text-pierre/30"}`}>
+                    <span className={`font-display text-2xl ${i === 0 ? "text-bronze" : "text-pierre/30"}`}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className={`text-sm uppercase tracking-widest ${i === 0 ? "text-ivoire" : "text-pierre/40"}`}>
@@ -91,7 +91,7 @@ export default function FormationsPage() {
         {/* ---- Formations disponibles ---- */}
         <SectionBlock>
           <ScrollReveal>
-            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-bronze">
+            <p className="mb-2 text-label text-bronze">
               Parcours
             </p>
             <h2 className="mb-12">Formations disponibles</h2>

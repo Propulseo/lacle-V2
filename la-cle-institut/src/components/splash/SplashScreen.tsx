@@ -22,14 +22,14 @@ export function SplashScreen({ isVisible, onComplete }: SplashScreenProps) {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-noir"
+          className="splash-force-dark fixed inset-0 z-50 flex flex-col items-center justify-center"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: EASE_SMOOTH }}
           aria-hidden="true"
         >
-          <KeySymbol className="w-12 h-auto text-ivoire mb-8" animate />
+          <KeySymbol className="w-12 h-auto text-[#F5F0EB] mb-8" animate />
           <motion.p
-            className="font-serif text-lg md:text-xl text-cendre tracking-[0.15em]"
+            className="font-display text-lg md:text-xl text-[#A09A93] tracking-[0.15em]"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0, duration: 0.6, ease: EASE_INSTITUTIONAL }}

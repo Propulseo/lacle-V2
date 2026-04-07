@@ -27,7 +27,7 @@ export function FormationCard({
       <div className={`flex-1 ${available ? "pl-8" : "pl-0"}`}>
         {label && (
           <span
-            className={`mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.2em] ${
+            className={`mb-6 inline-block text-label ${
               available ? "text-bronze" : "text-pierre/60"
             }`}
           >
@@ -36,7 +36,7 @@ export function FormationCard({
         )}
 
         <h3
-          className={`mb-4 font-serif text-2xl leading-snug transition-colors duration-500 md:text-3xl lg:text-4xl ${
+          className={`mb-4 font-display text-2xl leading-snug transition-colors duration-500 md:text-3xl lg:text-4xl ${
             available
               ? "text-ivoire group-hover:text-bronze-clair"
               : "text-pierre/60"
@@ -80,7 +80,7 @@ export function FormationCard({
             <span className="inline-block h-px w-8 bg-current transition-all duration-500 group-hover:w-12" />
           </span>
         ) : (
-          <span className="text-[10px] uppercase tracking-[0.2em] text-pierre/30">
+          <span className="text-label text-pierre/30">
             Prochainement
           </span>
         )}
@@ -92,7 +92,7 @@ export function FormationCard({
     return (
       <Link
         href={href}
-        className="group block border border-filet bg-graphite/60 p-8 transition-all duration-700 ease-[var(--ease-institutional)] hover:border-filet-accent hover:bg-ardoise/60 md:p-10 lg:p-12"
+        className="card-elevated group block border border-filet bg-graphite/60 p-8 transition-all duration-700 ease-[var(--ease-institutional)] hover:border-filet-accent hover:bg-ardoise/60 md:p-10 lg:p-12"
       >
         {content}
       </Link>

@@ -45,12 +45,12 @@ export function PNLModules() {
     <div>
       <div className="mb-16 flex items-end justify-between">
         <div>
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-bronze">
+          <p className="mb-2 text-label text-bronze">
             Phase distancielle
           </p>
           <h2>7 modules structur&eacute;s</h2>
         </div>
-        <span className="hidden font-serif text-6xl font-light text-ivoire/[0.04] md:block lg:text-7xl">
+        <span className="hidden font-display text-6xl font-light text-ivoire/[0.04] md:block lg:text-7xl">
           07
         </span>
       </div>
@@ -70,7 +70,7 @@ export function PNLModules() {
                 {/* Node */}
                 <div className="relative z-10 flex flex-col items-center">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-filet bg-noir transition-all duration-500 group-hover:border-bronze/40 group-hover:bg-ardoise md:h-13 md:w-13">
-                    <span className="font-serif text-sm text-pierre transition-colors duration-500 group-hover:text-bronze md:text-base">
+                    <span className="font-display text-sm text-pierre transition-colors duration-500 group-hover:text-bronze md:text-base">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                   </div>
@@ -78,7 +78,7 @@ export function PNLModules() {
 
                 {/* Content */}
                 <div className="min-w-0 flex-1 pt-1 md:pt-2">
-                  <h4 className="font-serif text-xl text-ivoire transition-colors duration-500 group-hover:text-bronze-clair md:text-2xl">
+                  <h4 className="font-display text-xl text-ivoire transition-colors duration-500 group-hover:text-bronze-clair md:text-2xl">
                     {mod.title}
                   </h4>
                   <p className="mt-2 max-w-xl text-sm leading-relaxed text-cendre/60 transition-colors duration-500 group-hover:text-cendre">

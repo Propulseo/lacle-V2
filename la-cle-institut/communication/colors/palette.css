@@ -1,0 +1,37 @@
+/* ============================================
+   INSTITUT LA CLÉ — PALETTE COULEURS COMPLÈTE
+   ============================================ */
+
+:root {
+  /* ---- Backgrounds ---- */
+  --noir:           #0B0B0B;
+  --graphite:       #131313;
+  --ardoise:        #1A1A1A;
+  --charbon:        #222222;
+
+  /* ---- Text ---- */
+  --ivoire:         #F5F0EB;
+  --cendre:         #A09A93;
+  --pierre:         #6B665F;
+
+  /* ---- Accent (Bronze) ---- */
+  --bronze:         #B08D57;
+  --bronze-clair:   #C9A96E;
+  --bronze-sombre:  #8A6D3B;
+
+  /* ---- Profondeur (Aurora/Nuit) ---- */
+  --nuit:           #0E162A;
+  --nuit-profond:   #0B1224;
+  --prune-sombre:   #1A1022;
+
+  /* ---- Aurora Blobs (CSS RGB for gradients) ---- */
+  --aurora-1:       rgb(20, 50, 120);    /* opacity: 0.25–0.5  */
+  --aurora-2:       rgb(15, 40, 100);    /* opacity: 0.2–0.4   */
+  --aurora-3:       rgb(22, 50, 110);    /* opacity: 0.18–0.35 */
+  --aurora-4:       rgb(35, 18, 60);     /* opacity: 0.1–0.22  */
+
+  /* ---- Borders ---- */
+  --filet:          #2A2A2A;
+  --filet-discret:  #1E1E1E;
+  --filet-accent:   #3D3530;
+}

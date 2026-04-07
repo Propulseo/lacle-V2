@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 34" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&amp;display=swap');
+  </style>
+  <!-- Connexion pill button (header) -->
+  <rect x="0.5" y="0.5" width="129" height="33" rx="17" stroke="#1E1E1E"/>
+  <!-- User icon -->
+  <g stroke="#A09A93" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(14, 7)">
+    <path d="M14 15v-1.5a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3V15"/>
+    <circle cx="9" cy="5" r="3"/>
+  </g>
+  <text x="72" y="21" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="10" letter-spacing="0.12em" fill="#A09A93">CONNEXION</text>
+</svg>

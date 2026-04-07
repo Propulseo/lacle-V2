@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&amp;family=DM+Sans:wght@400;700&amp;display=swap');
+  </style>
+  <!-- Formation Card — Active -->
+  <rect x="0.5" y="0.5" width="599" height="319" stroke="#2A2A2A" fill="rgba(19,19,19,0.6)"/>
+  <!-- Bronze accent line left -->
+  <defs>
+    <linearGradient id="bronzeLine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B08D57"/>
+      <stop offset="50%" stop-color="rgba(176,141,87,0.4)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1" height="320" fill="url(#bronzeLine)"/>
+  <!-- Label -->
+  <text x="48" y="52" font-family="'DM Sans', sans-serif" font-size="10" font-weight="700" letter-spacing="0.2em" fill="#B08D57">DISPONIBLE</text>
+  <!-- Title -->
+  <text x="48" y="110" font-family="'Cormorant Garamond', serif" font-size="36" fill="#F5F0EB">PNL — Praticien</text>
+  <!-- Description -->
+  <text x="48" y="145" font-family="'DM Sans', sans-serif" font-size="13" fill="#A09A93">Formation complète de praticien en</text>
+  <text x="48" y="163" font-family="'DM Sans', sans-serif" font-size="13" fill="#A09A93">Programmation Neuro-Linguistique.</text>
+  <!-- Tags -->
+  <rect x="48" y="190" width="170" height="24" stroke="#2A2A2A" fill="none"/>
+  <text x="55" y="206" font-family="'DM Sans', sans-serif" font-size="10" letter-spacing="0.15em" fill="#A09A93">DISTANCIEL + PRÉSENTIEL</text>
+  <rect x="226" y="190" width="80" height="24" stroke="#2A2A2A" fill="none"/>
+  <text x="233" y="206" font-family="'DM Sans', sans-serif" font-size="10" letter-spacing="0.15em" fill="#A09A93">7 MODULES</text>
+  <rect x="314" y="190" width="90" height="24" stroke="#2A2A2A" fill="none"/>
+  <text x="321" y="206" font-family="'DM Sans', sans-serif" font-size="10" letter-spacing="0.15em" fill="#A09A93">CERTIFIANTE</text>
+  <!-- CTA -->
+  <text x="48" y="280" font-family="'DM Sans', sans-serif" font-size="12" letter-spacing="0.15em" fill="#6B665F">EN SAVOIR PLUS</text>
+  <line x1="160" y1="276" x2="192" y2="276" stroke="#6B665F" stroke-width="1"/>
+</svg>

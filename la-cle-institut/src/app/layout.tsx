@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Cormorant_Garamond, Libre_Franklin } from "next/font/google";
 import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
+import { ThemeProvider } from "@/lib/theme";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+  variable: "--font-cormorant-garamond",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const libreFranklin = Libre_Franklin({
+  variable: "--font-libre-franklin",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
@@ -30,18 +31,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${cormorant.variable} ${libreFranklin.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("la-cle-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body
-        className={`${cormorant.variable} ${dmSans.variable} font-body bg-noir text-ivoire antialiased`}
+        className="font-body bg-noir text-ivoire antialiased"
       >
-        <BackgroundAtmosphere />
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-bronze focus:text-noir focus:px-4 focus:py-2 focus:text-sm"
-        >
-          Aller au contenu principal
-        </a>
-        {children}
+        <ThemeProvider>
+          <BackgroundAtmosphere />
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-bronze focus:text-noir focus:px-4 focus:py-2 focus:text-sm"
+          >
+            Aller au contenu principal
+          </a>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <!-- Static representation of the aurora background -->
+  <rect width="1920" height="1080" fill="#0B0B0B"/>
+  <defs>
+    <radialGradient id="blob1" cx="75%" cy="15%" r="40%">
+      <stop offset="0%" stop-color="rgb(20,50,120)" stop-opacity="0.35"/>
+      <stop offset="70%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blob2" cx="10%" cy="65%" r="35%">
+      <stop offset="0%" stop-color="rgb(15,40,100)" stop-opacity="0.3"/>
+      <stop offset="70%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blob3" cx="50%" cy="40%" r="30%">
+      <stop offset="0%" stop-color="rgb(22,50,110)" stop-opacity="0.25"/>
+      <stop offset="70%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blob4" cx="35%" cy="80%" r="35%">
+      <stop offset="0%" stop-color="rgb(35,18,60)" stop-opacity="0.16"/>
+      <stop offset="70%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#blob1)"/>
+  <rect width="1920" height="1080" fill="url(#blob2)"/>
+  <rect width="1920" height="1080" fill="url(#blob3)"/>
+  <rect width="1920" height="1080" fill="url(#blob4)"/>
+</svg>

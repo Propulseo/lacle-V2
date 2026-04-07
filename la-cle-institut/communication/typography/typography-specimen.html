@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Clé — Typography Specimen</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0B0B0B;
+    color: #F5F0EB;
+    padding: 60px 40px;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .section { margin-bottom: 80px; }
+  .section-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #B08D57;
+    margin-bottom: 24px;
+  }
+
+  .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .sans { font-family: 'DM Sans', 'Helvetica Neue', sans-serif; }
+
+  .specimen-row {
+    border-bottom: 1px solid #2A2A2A;
+    padding: 20px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .meta {
+    font-size: 10px;
+    color: #6B665F;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    min-width: 160px;
+    flex-shrink: 0;
+  }
+
+  h1.demo { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; }
+  h2.demo { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; }
+  h3.demo { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; }
+  h4.demo { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; }
+  h5.demo { font-size: 1.25rem; font-weight: 400; }
+  h6.demo { font-size: 1.125rem; font-weight: 400; }
+  p.demo { font-size: 1rem; line-height: 1.75; color: #A09A93; }
+  .label-demo { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #B08D57; }
+  .nav-demo { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #6B665F; }
+  .button-demo { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <p class="section-title">Titres — Cormorant Garamond</p>
+  <div class="specimen-row">
+    <span class="meta">H1 — clamp 2.5–4.5rem</span>
+    <h1 class="demo serif">La Clé</h1>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">H2 — clamp 2–3.5rem</span>
+    <h2 class="demo serif">Notre vocation</h2>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">H3 — clamp 1.5–2.25rem</span>
+    <h3 class="demo serif">Le parcours</h3>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">H4 — clamp 1.25–1.75rem</span>
+    <h4 class="demo serif">Les fondations de la PNL</h4>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">H5 — 1.25rem</span>
+    <h5 class="demo serif">Module structuré</h5>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">H6 — 1.125rem</span>
+    <h6 class="demo serif">Sous-section</h6>
+  </div>
+</div>
+
+<div class="section">
+  <p class="section-title">Corps — DM Sans</p>
+  <div class="specimen-row">
+    <span class="meta">Body text</span>
+    <p class="demo sans">Comprendre les mécanismes fondamentaux de la Programmation Neuro-Linguistique avec rigueur et profondeur.</p>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">Label / Tag</span>
+    <span class="label-demo sans">Formation certifiante</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">Navigation</span>
+    <span class="nav-demo sans">Mentions légales</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">Button</span>
+    <span class="button-demo sans">NOUS DÉCOUVRIR</span>
+  </div>
+</div>
+
+<div class="section">
+  <p class="section-title">Poids disponibles</p>
+  <div class="specimen-row">
+    <span class="meta">Cormorant 300</span>
+    <span class="serif" style="font-weight:300;font-size:2rem;">Light — Grands chiffres décoratifs</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">Cormorant 400</span>
+    <span class="serif" style="font-weight:400;font-size:2rem;">Regular — Titres principaux</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">Cormorant 500</span>
+    <span class="serif" style="font-weight:500;font-size:2rem;">Medium</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">Cormorant 600</span>
+    <span class="serif" style="font-weight:600;font-size:2rem;">SemiBold</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">Cormorant 700</span>
+    <span class="serif" style="font-weight:700;font-size:2rem;">Bold</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">DM Sans 300</span>
+    <span class="sans" style="font-weight:300;font-size:1.25rem;">Light</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">DM Sans 400</span>
+    <span class="sans" style="font-weight:400;font-size:1.25rem;">Regular — Body text par défaut</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">DM Sans 500</span>
+    <span class="sans" style="font-weight:500;font-size:1.25rem;">Medium — CTA buttons</span>
+  </div>
+  <div class="specimen-row">
+    <span class="meta">DM Sans 700</span>
+    <span class="sans" style="font-weight:700;font-size:1.25rem;">Bold — Labels/Tags</span>
+  </div>
+</div>
+
+</body>
+</html>

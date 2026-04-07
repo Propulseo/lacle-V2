@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Clé — Background Aurora Atmosphere</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0B0B0B; overflow: hidden; width: 100vw; height: 100vh; }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  .blob-1 {
+    width: 70vw; height: 70vw;
+    background: radial-gradient(circle, rgb(20, 50, 120) 0%, transparent 70%);
+    filter: blur(100px);
+    opacity: 0.35;
+    left: 65%; top: 5%;
+    animation: drift1 24s ease-in-out infinite alternate;
+  }
+  .blob-2 {
+    width: 55vw; height: 55vw;
+    background: radial-gradient(circle, rgb(15, 40, 100) 0%, transparent 70%);
+    filter: blur(90px);
+    opacity: 0.3;
+    left: -5%; top: 60%;
+    animation: drift2 20s ease-in-out infinite alternate;
+  }
+  .blob-3 {
+    width: 45vw; height: 45vw;
+    background: radial-gradient(circle, rgb(22, 50, 110) 0%, transparent 70%);
+    filter: blur(80px);
+    opacity: 0.25;
+    left: 40%; top: 30%;
+    animation: drift3 16s ease-in-out infinite alternate;
+  }
+  .blob-4 {
+    width: 55vw; height: 55vw;
+    background: radial-gradient(circle, rgb(35, 18, 60) 0%, transparent 70%);
+    filter: blur(100px);
+    opacity: 0.16;
+    left: 25%; top: 75%;
+    animation: drift4 26s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift1 {
+    0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+    25%  { transform: translate(-15vw, 10vh) scale(1.05) rotate(3deg); }
+    50%  { transform: translate(-25vw, 25vh) scale(0.95) rotate(-4deg); }
+    75%  { transform: translate(-10vw, 35vh) scale(1.08) rotate(5deg); }
+    100% { transform: translate(-30vw, 15vh) scale(1) rotate(-2deg); }
+  }
+  @keyframes drift2 {
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(20vw, -15vh) scale(1.05); }
+    66%  { transform: translate(35vw, -25vh) scale(0.92); }
+    100% { transform: translate(15vw, -10vh) scale(1.1); }
+  }
+  @keyframes drift3 {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(-20vw, 20vh) rotate(6deg); }
+    100% { transform: translate(10vw, -10vh) rotate(-3deg); }
+  }
+  @keyframes drift4 {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(20vw, -20vh) scale(1.1); }
+    100% { transform: translate(-10vw, -30vh) scale(0.9); }
+  }
+</style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</body>
+</html>

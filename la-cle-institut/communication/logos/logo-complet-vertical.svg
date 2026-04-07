@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 220" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&amp;display=swap');
+  </style>
+  <!-- Key Symbol -->
+  <g stroke="#F5F0EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="28" r="14"/>
+    <line x1="60" y1="42" x2="60" y2="110"/>
+    <line x1="60" y1="88" x2="72" y2="88"/>
+    <line x1="60" y1="102" x2="68" y2="102"/>
+  </g>
+  <!-- Text -->
+  <text x="60" y="150" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="32" font-weight="400" letter-spacing="-0.01em" fill="#F5F0EB">La Clé</text>
+  <!-- Tagline -->
+  <text x="60" y="175" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="7" font-weight="400" letter-spacing="0.15em" text-transform="uppercase" fill="#A09A93">Institut de compréhension</text>
+  <text x="60" y="188" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="7" font-weight="400" letter-spacing="0.15em" text-transform="uppercase" fill="#A09A93">des mécanismes humains</text>
+</svg>

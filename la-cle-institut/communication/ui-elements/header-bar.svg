@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 64" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&amp;family=DM+Sans:wght@400&amp;display=swap');
+  </style>
+  <!-- Header bar -->
+  <rect width="1200" height="64" fill="rgba(11,11,11,0.8)"/>
+  <!-- Bottom border -->
+  <line x1="0" y1="64" x2="1200" y2="64" stroke="#1E1E1E" stroke-width="1"/>
+  <!-- Logo text -->
+  <text x="40" y="40" font-family="'Cormorant Garamond', serif" font-size="20" letter-spacing="0.02em" fill="#F5F0EB">La Clé</text>
+  <!-- Connexion pill -->
+  <rect x="1050" y="16" width="110" height="32" rx="16" stroke="#1E1E1E" fill="none"/>
+  <text x="1105" y="36" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="10" letter-spacing="0.12em" fill="#A09A93">CONNEXION</text>
+</svg>

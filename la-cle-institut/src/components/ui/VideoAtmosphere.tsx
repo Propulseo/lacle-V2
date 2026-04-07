@@ -47,7 +47,7 @@ export function VideoAtmosphere({
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden bg-graphite/60 ${className}`}
+      className={`card-elevated relative overflow-hidden bg-graphite/60 ${className}`}
       style={{ aspectRatio }}
     >
       {/* Poster fallback */}

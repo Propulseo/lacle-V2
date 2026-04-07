@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&amp;display=swap');
+    text { font-family: 'DM Sans', sans-serif; }
+    .label { font-size: 11px; letter-spacing: 0.15em; }
+    .hex { font-size: 13px; fill: #A09A93; }
+    .group-title { font-size: 14px; font-weight: 500; letter-spacing: 0.2em; fill: #F5F0EB; }
+  </style>
+
+  <rect width="960" height="600" fill="#0B0B0B"/>
+
+  <!-- GROUP: Backgrounds -->
+  <text x="40" y="40" class="group-title">BACKGROUNDS</text>
+  <rect x="40" y="56" width="100" height="100" fill="#0B0B0B" stroke="#2A2A2A"/>
+  <text x="90" y="180" text-anchor="middle" class="label" fill="#F5F0EB">NOIR</text>
+  <text x="90" y="198" text-anchor="middle" class="hex">#0B0B0B</text>
+
+  <rect x="160" y="56" width="100" height="100" fill="#131313" stroke="#2A2A2A"/>
+  <text x="210" y="180" text-anchor="middle" class="label" fill="#F5F0EB">GRAPHITE</text>
+  <text x="210" y="198" text-anchor="middle" class="hex">#131313</text>
+
+  <rect x="280" y="56" width="100" height="100" fill="#1A1A1A" stroke="#2A2A2A"/>
+  <text x="330" y="180" text-anchor="middle" class="label" fill="#F5F0EB">ARDOISE</text>
+  <text x="330" y="198" text-anchor="middle" class="hex">#1A1A1A</text>
+
+  <rect x="400" y="56" width="100" height="100" fill="#222222" stroke="#2A2A2A"/>
+  <text x="450" y="180" text-anchor="middle" class="label" fill="#F5F0EB">CHARBON</text>
+  <text x="450" y="198" text-anchor="middle" class="hex">#222222</text>
+
+  <!-- GROUP: Text -->
+  <text x="40" y="245" class="group-title">TEXT</text>
+  <rect x="40" y="260" width="100" height="100" fill="#F5F0EB"/>
+  <text x="90" y="384" text-anchor="middle" class="label" fill="#F5F0EB">IVOIRE</text>
+  <text x="90" y="402" text-anchor="middle" class="hex">#F5F0EB</text>
+
+  <rect x="160" y="260" width="100" height="100" fill="#A09A93"/>
+  <text x="210" y="384" text-anchor="middle" class="label" fill="#F5F0EB">CENDRE</text>
+  <text x="210" y="402" text-anchor="middle" class="hex">#A09A93</text>
+
+  <rect x="280" y="260" width="100" height="100" fill="#6B665F"/>
+  <text x="330" y="384" text-anchor="middle" class="label" fill="#F5F0EB">PIERRE</text>
+  <text x="330" y="402" text-anchor="middle" class="hex">#6B665F</text>
+
+  <!-- GROUP: Accent -->
+  <text x="560" y="40" class="group-title">ACCENT</text>
+  <rect x="560" y="56" width="100" height="100" fill="#B08D57"/>
+  <text x="610" y="180" text-anchor="middle" class="label" fill="#F5F0EB">BRONZE</text>
+  <text x="610" y="198" text-anchor="middle" class="hex">#B08D57</text>
+
+  <rect x="680" y="56" width="100" height="100" fill="#C9A96E"/>
+  <text x="730" y="180" text-anchor="middle" class="label" fill="#F5F0EB">BRONZE CLAIR</text>
+  <text x="730" y="198" text-anchor="middle" class="hex">#C9A96E</text>
+
+  <rect x="800" y="56" width="100" height="100" fill="#8A6D3B"/>
+  <text x="850" y="180" text-anchor="middle" class="label" fill="#F5F0EB">BRONZE SOMBRE</text>
+  <text x="850" y="198" text-anchor="middle" class="hex">#8A6D3B</text>
+
+  <!-- GROUP: Depth -->
+  <text x="560" y="245" class="group-title">PROFONDEUR NUIT</text>
+  <rect x="560" y="260" width="100" height="100" fill="#0e162a" stroke="#2A2A2A"/>
+  <text x="610" y="384" text-anchor="middle" class="label" fill="#F5F0EB">NUIT</text>
+  <text x="610" y="402" text-anchor="middle" class="hex">#0E162A</text>
+
+  <rect x="680" y="260" width="100" height="100" fill="#0b1224" stroke="#2A2A2A"/>
+  <text x="730" y="384" text-anchor="middle" class="label" fill="#F5F0EB">NUIT PROFOND</text>
+  <text x="730" y="402" text-anchor="middle" class="hex">#0B1224</text>
+
+  <rect x="800" y="260" width="100" height="100" fill="#1a1022" stroke="#2A2A2A"/>
+  <text x="850" y="384" text-anchor="middle" class="label" fill="#F5F0EB">PRUNE SOMBRE</text>
+  <text x="850" y="402" text-anchor="middle" class="hex">#1A1022</text>
+
+  <!-- GROUP: Borders -->
+  <text x="40" y="450" class="group-title">BORDERS</text>
+  <rect x="40" y="466" width="100" height="100" fill="#2A2A2A"/>
+  <text x="90" y="584" text-anchor="middle" class="label" fill="#F5F0EB">FILET</text>
+  <text x="90" y="598" text-anchor="middle" class="hex">#2A2A2A</text>
+
+  <rect x="160" y="466" width="100" height="100" fill="#1E1E1E" stroke="#2A2A2A"/>
+  <text x="210" y="584" text-anchor="middle" class="label" fill="#F5F0EB">FILET DISCRET</text>
+  <text x="210" y="598" text-anchor="middle" class="hex">#1E1E1E</text>
+
+  <rect x="280" y="466" width="100" height="100" fill="#3D3530"/>
+  <text x="330" y="584" text-anchor="middle" class="label" fill="#F5F0EB">FILET ACCENT</text>
+  <text x="330" y="598" text-anchor="middle" class="hex">#3D3530</text>
+</svg>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Clé — Key Symbol Stroke Draw</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0B0B0B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  svg { width: 120px; height: auto; }
+
+  circle, line {
+    stroke: #F5F0EB;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  circle {
+    stroke-dasharray: 88;
+    stroke-dashoffset: 88;
+    animation: draw 0.8s cubic-bezier(0.65,0,0.35,1) 0s forwards;
+  }
+  .shaft {
+    stroke-dasharray: 68;
+    stroke-dashoffset: 68;
+    animation: draw 0.8s cubic-bezier(0.65,0,0.35,1) 0.3s forwards;
+  }
+  .tooth-upper {
+    stroke-dasharray: 12;
+    stroke-dashoffset: 12;
+    animation: draw 0.4s cubic-bezier(0.65,0,0.35,1) 0.7s forwards;
+  }
+  .tooth-lower {
+    stroke-dasharray: 8;
+    stroke-dashoffset: 8;
+    animation: draw 0.4s cubic-bezier(0.65,0,0.35,1) 0.9s forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  /* Loop: click to replay */
+  svg:hover circle,
+  svg:hover .shaft,
+  svg:hover .tooth-upper,
+  svg:hover .tooth-lower {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+</style>
+</head>
+<body>
+  <svg viewBox="0 0 48 120">
+    <circle cx="24" cy="18" r="14"/>
+    <line class="shaft" x1="24" y1="32" x2="24" y2="100"/>
+    <line class="tooth-upper" x1="24" y1="78" x2="36" y2="78"/>
+    <line class="tooth-lower" x1="24" y1="92" x2="32" y2="92"/>
+  </svg>
+</body>
+</html>

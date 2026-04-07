@@ -5,7 +5,7 @@ interface PageWrapperProps {
 
 export function PageWrapper({ children, className = "" }: PageWrapperProps) {
   return (
-    <main id="main-content" className={`pt-16 ${className}`}>
+    <main id="main-content" className={className}>
       {children}
     </main>
   );

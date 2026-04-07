@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 50" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&amp;display=swap');
+  </style>
+  <!-- CTA Filled Button (bronze bg) -->
+  <rect width="260" height="50" fill="#B08D57"/>
+  <text x="120" y="30" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="11" font-weight="500" letter-spacing="0.14em" fill="#0B0B0B">SE CONNECTER</text>
+  <!-- Arrow -->
+  <g stroke="#0B0B0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(195, 18)">
+    <path d="M0 7h10M6 2l5 5-5 5"/>
+  </g>
+</svg>

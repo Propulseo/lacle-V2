@@ -1,4 +1,5 @@
 import { Header } from "@/components/layout/Header";
+import { FooterMinimal } from "@/components/layout/FooterMinimal";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { KeySymbol } from "@/components/splash/KeySymbol";
@@ -27,10 +28,10 @@ export default function AccessSpacePage() {
 
             <ScrollReveal delay={0.1}>
               <div className="mb-12 text-center">
-                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-bronze">
+                <p className="mb-4 text-label tracking-[0.3em] text-bronze">
                   Portail de connexion
                 </p>
-                <h1 className="font-serif text-3xl font-light leading-[1.1] text-ivoire md:text-4xl lg:text-5xl">
+                <h1 className="font-display text-3xl font-semibold text-ivoire md:text-4xl lg:text-5xl">
                   Accéder à la plateforme
                 </h1>
                 <p className="mt-6 text-lg text-cendre">
@@ -42,12 +43,13 @@ export default function AccessSpacePage() {
             <AccesEspaceContent />
 
             <ScrollReveal delay={0.4}>
-              <p className="mt-12 text-center font-serif text-base italic text-bronze-clair">
+              <p className="mt-12 text-center font-display text-base italic text-bronze-clair">
                 {SITE.baseline}
               </p>
             </ScrollReveal>
           </div>
         </section>
+        <FooterMinimal />
       </PageWrapper>
     </>
   );

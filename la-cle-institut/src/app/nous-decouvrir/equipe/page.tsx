@@ -34,8 +34,10 @@ export default function TeamPage() {
       <Header showBack backHref={ROUTES.discover} backLabel="Nous découvrir" />
       <PageWrapper>
         <HeroSection
+          label="Les personnes"
           title="L'équipe"
           subtitle="Les personnes qui incarnent le cadre."
+          decorativeLine
         />
 
         <SectionBlock background="graphite">
@@ -48,7 +50,7 @@ export default function TeamPage() {
         {/* ---- Diptyque : les garants ---- */}
         <SectionBlock>
           <ScrollReveal>
-            <p className="mb-16 text-center text-[10px] font-bold uppercase tracking-[0.3em] text-bronze">
+            <p className="mb-16 text-center text-label tracking-[0.3em] text-bronze">
               Les garants
             </p>
           </ScrollReveal>
@@ -56,12 +58,12 @@ export default function TeamPage() {
           <div className="grid gap-6 md:grid-cols-2 md:gap-10 lg:gap-14">
             {teamMembers.map((member, i) => (
               <ScrollReveal key={member.name} delay={i * 0.15}>
-                <div className="group border border-filet bg-graphite/20 p-8 transition-colors duration-500 hover:border-filet-accent md:p-10">
+                <div className="card-elevated group border border-filet bg-graphite/20 p-8 transition-colors duration-500 hover:border-filet-accent md:p-10">
                   <div className="mb-8 h-px w-12 bg-bronze" />
                   <h3 className="mb-3 transition-colors duration-500 group-hover:text-bronze-clair">
                     {member.name}
                   </h3>
-                  <p className="mb-6 text-[11px] uppercase tracking-[0.2em] text-bronze">
+                  <p className="mb-6 text-label-sm tracking-[0.2em] text-bronze">
                     {member.role}
                   </p>
                   <p>{member.bio}</p>
@@ -79,7 +81,7 @@ export default function TeamPage() {
         {/* ---- L'origine ---- */}
         <SectionBlock background="graphite">
           <ScrollReveal>
-            <p className="mb-6 text-[10px] font-bold uppercase tracking-[0.3em] text-pierre">
+            <p className="mb-6 text-label tracking-[0.3em] text-pierre">
               Aux origines
             </p>
             <h2 className="mb-8 max-w-2xl">L&apos;origine de La Clé</h2>

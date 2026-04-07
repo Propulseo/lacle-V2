@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Clé — Splash Screen Animation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=DM+Sans:wght@300&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0B0B0B;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .key-symbol {
+    width: 48px;
+    height: auto;
+    margin-bottom: 32px;
+  }
+
+  .key-symbol circle,
+  .key-symbol line {
+    stroke: #F5F0EB;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  /* Stroke draw animation */
+  .key-symbol circle {
+    stroke-dasharray: 88;
+    stroke-dashoffset: 88;
+    animation: draw-circle 0.8s cubic-bezier(0.65,0,0.35,1) 0s forwards;
+  }
+  .key-symbol .shaft {
+    stroke-dasharray: 68;
+    stroke-dashoffset: 68;
+    animation: draw-shaft 0.8s cubic-bezier(0.65,0,0.35,1) 0.3s forwards;
+  }
+  .key-symbol .tooth-1 {
+    stroke-dasharray: 12;
+    stroke-dashoffset: 12;
+    animation: draw-tooth 0.4s cubic-bezier(0.65,0,0.35,1) 0.7s forwards;
+  }
+  .key-symbol .tooth-2 {
+    stroke-dasharray: 8;
+    stroke-dashoffset: 8;
+    animation: draw-tooth2 0.4s cubic-bezier(0.65,0,0.35,1) 0.9s forwards;
+  }
+
+  @keyframes draw-circle { to { stroke-dashoffset: 0; } }
+  @keyframes draw-shaft  { to { stroke-dashoffset: 0; } }
+  @keyframes draw-tooth  { to { stroke-dashoffset: 0; } }
+  @keyframes draw-tooth2 { to { stroke-dashoffset: 0; } }
+
+  .baseline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.25rem;
+    color: #A09A93;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 1.0s forwards;
+  }
+
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Full splash fade out */
+  .splash-container {
+    animation: fadeOut 0.5s cubic-bezier(0.65,0,0.35,1) 1.8s forwards;
+  }
+  @keyframes fadeOut {
+    to { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="splash-container">
+  <svg class="key-symbol" viewBox="0 0 48 120">
+    <circle cx="24" cy="18" r="14"/>
+    <line class="shaft" x1="24" y1="32" x2="24" y2="100"/>
+    <line class="tooth-1" x1="24" y1="78" x2="36" y2="78"/>
+    <line class="tooth-2" x1="24" y1="92" x2="32" y2="92"/>
+  </svg>
+  <p class="baseline">Comprendre avant d'agir</p>
+</div>
+</body>
+</html>

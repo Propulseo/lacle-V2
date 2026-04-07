@@ -11,7 +11,7 @@ export function SectionBlock({
   background = "noir",
   id,
 }: SectionBlockProps) {
-  const bg = background === "graphite" ? "bg-graphite/50" : "";
+  const bg = background === "graphite" ? "bg-graphite/60" : "";
 
   return (
     <section id={id} className={`py-20 md:py-28 lg:py-32 ${bg} ${className}`}>

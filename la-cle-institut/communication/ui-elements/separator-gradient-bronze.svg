@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 80" fill="none">
+  <!-- Vertical gradient separator (bronze) — used between sections -->
+  <defs>
+    <linearGradient id="sep" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(176,141,87,0.3)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+  <rect width="1" height="80" fill="url(#sep)"/>
+</svg>

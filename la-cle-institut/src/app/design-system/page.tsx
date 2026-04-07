@@ -15,8 +15,9 @@ import { ModuleCard } from "@/components/ui/ModuleCard";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { KeySymbol } from "@/components/splash/KeySymbol";
 import { SplashScreen } from "@/components/splash/SplashScreen";
+import { useTheme } from "@/lib/theme";
 
-const COLORS = [
+const COLORS_DARK = [
   { name: "Noir", token: "noir", hex: "#0B0B0B", bg: "bg-noir" },
   { name: "Graphite", token: "graphite", hex: "#131313", bg: "bg-graphite" },
   { name: "Ardoise", token: "ardoise", hex: "#1A1A1A", bg: "bg-ardoise" },
@@ -30,6 +31,20 @@ const COLORS = [
   { name: "Filet accent", token: "filet-accent", hex: "#3D3530", bg: "bg-filet-accent" },
 ];
 
+const COLORS_LIGHT = [
+  { name: "Noir", token: "noir", hex: "#F7F3ED", bg: "bg-noir" },
+  { name: "Graphite", token: "graphite", hex: "#D8CCB8", bg: "bg-graphite" },
+  { name: "Ardoise", token: "ardoise", hex: "#FEFCF8", bg: "bg-ardoise" },
+  { name: "Charbon", token: "charbon", hex: "#CFC3B0", bg: "bg-charbon" },
+  { name: "Ivoire", token: "ivoire", hex: "#1A1714", bg: "bg-ivoire" },
+  { name: "Cendre", token: "cendre", hex: "#52493E", bg: "bg-cendre" },
+  { name: "Pierre", token: "pierre", hex: "#8E857A", bg: "bg-pierre" },
+  { name: "Bronze", token: "bronze", hex: "#9A7B44", bg: "bg-bronze" },
+  { name: "Bronze clair", token: "bronze-clair", hex: "#876A38", bg: "bg-bronze-clair" },
+  { name: "Filet", token: "filet", hex: "#C8BBA8", bg: "bg-filet" },
+  { name: "Filet accent", token: "filet-accent", hex: "#B0A08A", bg: "bg-filet-accent" },
+];
+
 const FAQ_ITEMS = [
   { question: "Qu'est-ce que la PNL telle qu'enseignée par La Clé ?", answer: "La PNL est un cadre de compréhension des mécanismes cognitifs et comportementaux. Chez La Clé, elle est enseignée comme un outil d'observation et de compréhension, jamais comme une technique de manipulation ou de transformation rapide." },
   { question: "Le parcours est-il entièrement à distance ?", answer: "Le parcours combine une phase distancielle structurée et une phase présentielle intensive. La partie distancielle pose les fondations théoriques, le présentiel permet l'intégration pratique." },
@@ -38,6 +53,8 @@ const FAQ_ITEMS = [
 
 export default function DesignSystemPage() {
   const [showSplash, setShowSplash] = useState(false);
+  const { theme } = useTheme();
+  const COLORS = theme === "light" ? COLORS_LIGHT : COLORS_DARK;
 
   return (
     <>
@@ -47,12 +64,15 @@ export default function DesignSystemPage() {
         {/* ---- HERO ---- */}
         <HeroSection
           title="Design System"
-          subtitle="Institut La Clé — Tokens, composants et patterns du système de design institutionnel dark premium."
+          subtitle="Institut La Clé — Tokens, composants et patterns du système de design institutionnel."
         />
 
         {/* ---- PALETTE ---- */}
         <SectionBlock background="graphite">
-          <h2 className="mb-12">Palette de couleurs</h2>
+          <h2 className="mb-8">Palette de couleurs</h2>
+          <p className="mb-12 text-sm text-cendre">
+            Thème actif : <span className="text-bronze">{theme}</span>
+          </p>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
             {COLORS.map((c) => (
               <div key={c.token} className="space-y-2">
@@ -67,26 +87,87 @@ export default function DesignSystemPage() {
         {/* ---- TYPOGRAPHIE ---- */}
         <SectionBlock>
           <h2 className="mb-12">Typographie</h2>
+
+          {/* Headings hierarchy */}
           <div className="space-y-8 border-b border-filet pb-12">
             <div>
-              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H1 — Cormorant Garamond</p>
+              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H1 — Cormorant Garamond · 600 · -0.02em</p>
               <h1>Comprendre les mécanismes</h1>
             </div>
             <div>
-              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H2</p>
+              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H2 · 600 · -0.015em</p>
               <h2>L&apos;institut de compréhension</h2>
             </div>
             <div>
-              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H3</p>
+              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H3 · 600 · -0.01em</p>
               <h3>Une pédagogie structurée</h3>
             </div>
             <div>
-              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H4</p>
+              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H4 · 600 · -0.01em</p>
               <h4>Le cadre méthodologique</h4>
             </div>
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H5 · 600</p>
+              <h5>Sous-section complémentaire</h5>
+            </div>
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H6 · 600</p>
+              <h6>Note de contexte</h6>
+            </div>
           </div>
+
+          {/* Semantic presets */}
+          <div className="mt-12 space-y-10 border-b border-filet pb-12">
+            <p className="text-xs uppercase tracking-widest text-pierre">Presets sémantiques</p>
+
+            <div>
+              <p className="mb-3 text-xs text-pierre"><code className="rounded bg-charbon px-2 py-0.5 font-mono text-bronze-clair">.text-display</code></p>
+              <p className="text-display text-ivoire">Impact visuel</p>
+            </div>
+
+            <div>
+              <p className="mb-3 text-xs text-pierre"><code className="rounded bg-charbon px-2 py-0.5 font-mono text-bronze-clair">.text-label</code></p>
+              <p className="text-label text-bronze">Label institutionnel — 10px</p>
+            </div>
+
+            <div>
+              <p className="mb-3 text-xs text-pierre"><code className="rounded bg-charbon px-2 py-0.5 font-mono text-bronze-clair">.text-label-sm</code></p>
+              <p className="text-label-sm text-pierre">Label compact — 9px</p>
+            </div>
+
+            <div>
+              <p className="mb-3 text-xs text-pierre"><code className="rounded bg-charbon px-2 py-0.5 font-mono text-bronze-clair">.text-quote</code></p>
+              <p className="text-quote text-cendre">La compréhension précède toujours l&apos;action efficace.</p>
+            </div>
+          </div>
+
+          {/* Hierarchy table */}
+          <div className="mt-12 overflow-x-auto border-b border-filet pb-12">
+            <p className="mb-6 text-xs uppercase tracking-widest text-pierre">Hiérarchie typographique</p>
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-filet text-xs uppercase tracking-widest text-pierre">
+                  <th className="pb-3 pr-6">Niveau</th>
+                  <th className="pb-3 pr-6">Poids</th>
+                  <th className="pb-3 pr-6">Taille (clamp)</th>
+                  <th className="pb-3 pr-6">Line-height</th>
+                  <th className="pb-3">Spacing</th>
+                </tr>
+              </thead>
+              <tbody className="text-cendre">
+                <tr className="border-b border-filet-discret"><td className="py-3 pr-6 text-ivoire">h1</td><td className="py-3 pr-6">600</td><td className="py-3 pr-6">2.5rem → 4.5rem</td><td className="py-3 pr-6">1.08</td><td className="py-3">-0.02em</td></tr>
+                <tr className="border-b border-filet-discret"><td className="py-3 pr-6 text-ivoire">h2</td><td className="py-3 pr-6">600</td><td className="py-3 pr-6">2rem → 3.5rem</td><td className="py-3 pr-6">1.12</td><td className="py-3">-0.015em</td></tr>
+                <tr className="border-b border-filet-discret"><td className="py-3 pr-6 text-ivoire">h3</td><td className="py-3 pr-6">600</td><td className="py-3 pr-6">1.5rem → 2.25rem</td><td className="py-3 pr-6">1.2</td><td className="py-3">-0.01em</td></tr>
+                <tr className="border-b border-filet-discret"><td className="py-3 pr-6 text-ivoire">h4</td><td className="py-3 pr-6">600</td><td className="py-3 pr-6">1.25rem → 1.75rem</td><td className="py-3 pr-6">1.25</td><td className="py-3">-0.01em</td></tr>
+                <tr className="border-b border-filet-discret"><td className="py-3 pr-6 text-ivoire">h5</td><td className="py-3 pr-6">600</td><td className="py-3 pr-6">1.25rem</td><td className="py-3 pr-6">1.3</td><td className="py-3">0</td></tr>
+                <tr><td className="py-3 pr-6 text-ivoire">h6</td><td className="py-3 pr-6">600</td><td className="py-3 pr-6">1.125rem</td><td className="py-3 pr-6">1.3</td><td className="py-3">0</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Body text */}
           <div className="mt-12 max-w-2xl space-y-6">
-            <p className="mb-2 text-xs uppercase tracking-widest text-pierre">Corps — DM Sans</p>
+            <p className="mb-2 text-xs uppercase tracking-widest text-pierre">Corps — Libre Franklin</p>
             <p>
               L&apos;institut La Clé propose une approche rigoureuse de la compréhension des mécanismes humains.
               Il ne s&apos;agit pas d&apos;une promesse de transformation, mais d&apos;un cadre structuré pour

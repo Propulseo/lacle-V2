@@ -3,8 +3,25 @@ import { ROUTES } from "@/lib/constants";
 
 export function FooterMinimal() {
   return (
-    <footer className="border-t border-filet py-12 md:py-16">
-      <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-6 px-6 md:flex-row md:px-10 lg:px-16">
+    <footer className="py-10 md:py-12">
+      {/* Gradient separator */}
+      <div
+        className="mx-auto mb-8 h-px w-full max-w-[1450px] bg-gradient-to-r from-transparent via-bronze/20 to-transparent"
+        aria-hidden="true"
+      />
+
+      <div className="mx-auto flex max-w-[1450px] flex-col items-start justify-between gap-6 px-6 md:flex-row md:items-center md:px-10 lg:px-16">
+        {/* Branding */}
+        <div>
+          <p className="font-display text-base font-semibold tracking-wide text-ivoire/60">
+            La Clé
+          </p>
+          <p className="mt-1 font-display text-xs italic text-pierre/50">
+            Comprendre avant d&apos;agir
+          </p>
+        </div>
+
+        {/* Nav links */}
         <nav className="flex items-center gap-8" aria-label="Pied de page">
           <Link
             href={ROUTES.legal}
@@ -25,6 +42,8 @@ export function FooterMinimal() {
             Contact
           </Link>
         </nav>
+
+        {/* Copyright */}
         <p className="text-xs text-pierre/50">
           &copy; {new Date().getFullYear()} La Clé
         </p>

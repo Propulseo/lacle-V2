@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 60" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&amp;display=swap');
+  </style>
+  <!-- Baseline badge — "Comprendre avant d'agir" -->
+  <text x="200" y="40" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="22" font-style="italic" letter-spacing="0.15em" fill="#A09A93">Comprendre avant d'agir</text>
+</svg>

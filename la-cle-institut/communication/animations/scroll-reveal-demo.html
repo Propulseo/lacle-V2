@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Clé — Scroll Reveal Animation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=DM+Sans:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0B0B0B;
+    color: #F5F0EB;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 300vh;
+    padding: 100px 40px;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section {
+    max-width: 800px;
+    margin: 0 auto 120px;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  p {
+    color: #A09A93;
+    line-height: 1.75;
+  }
+  .accent-line {
+    width: 48px;
+    height: 1px;
+    background: #B08D57;
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+  <div class="section">
+    <h2>Scroll down</h2>
+    <p>Demonstration of the La Clé scroll reveal pattern.</p>
+  </div>
+
+  <div class="section reveal">
+    <h2>Notre vocation</h2>
+    <p>Un institut fondé sur une conviction : la compréhension précède l'action.</p>
+    <div class="accent-line"></div>
+  </div>
+
+  <div class="section reveal" style="transition-delay: 0.15s">
+    <h2>Le concept</h2>
+    <p>Un cadre structuré pour comprendre, jamais pour transformer.</p>
+    <div class="accent-line"></div>
+  </div>
+
+  <div class="section reveal" style="transition-delay: 0.3s">
+    <h2>L'équipe</h2>
+    <p>Les personnes qui incarnent le cadre.</p>
+    <div class="accent-line"></div>
+  </div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '-80px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
