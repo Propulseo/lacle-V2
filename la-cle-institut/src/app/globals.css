@@ -350,6 +350,22 @@ blockquote {
   outline-color: #8C6D35;
 }
 
+/* Light mode : footer harmonisé */
+[data-theme="light"] .footer-minimal {
+  border-color: rgba(140, 109, 53, 0.15);
+  background: linear-gradient(
+    to bottom,
+    rgba(222, 214, 198, 0.5) 0%,
+    rgba(210, 200, 180, 0.6) 100%
+  );
+}
+[data-theme="light"] .footer-minimal > div:first-child {
+  background: transparent;
+}
+[data-theme="light"] .footer-minimal > div:nth-child(2) {
+  background: transparent;
+}
+
 /* ---- Hero animation keyframes ---- */
 
 @keyframes orbSpin { to { transform: rotate(360deg); } }
@@ -406,6 +422,29 @@ blockquote {
 .hero-cta-secondary:hover { color: var(--hero-cta2-hover); }
 .hero-cta-secondary:hover .hero-arrow { transform: translateX(6px); }
 .hero-arrow { transition: transform 300ms; }
+
+/* ---- Theme transition — circular reveal ---- */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
 
 /* Splash / hero forcé sombre quel que soit le thème */
 .splash-force-dark {

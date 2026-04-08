@@ -105,51 +105,52 @@ export default function VocationPage() {
           </ScrollReveal>
         </SectionBlock>
 
-        {/* ---- SECTIONS ENRICHIES ---- */}
-        {SECTIONS.map((section, i) => (
-          <SectionBlock
-            key={section.video}
-            background={i % 2 === 0 ? "noir" : "graphite"}
-          >
-            {/* Decorative number */}
-            <ScrollReveal>
-              <span
-                className="block font-display text-[7rem] font-extralight leading-none text-ivoire/[0.03] md:text-[10rem] lg:text-[13rem]"
-                aria-hidden="true"
-              >
-                {section.number}
-              </span>
-            </ScrollReveal>
-
-            <div className="-mt-12 grid items-start gap-12 md:-mt-16 lg:grid-cols-[1fr,1fr] lg:gap-20">
-              <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                <ScrollReveal delay={0.1}>
-                  <p className="mb-4 text-label tracking-[0.25em] text-bronze/70">
-                    {section.number} — Conviction
-                  </p>
-                  <h2 className="mb-8 max-w-md font-display text-3xl leading-[1.15] text-ivoire md:text-4xl lg:text-[2.75rem]">
-                    {section.title}
-                  </h2>
-                  <p className="max-w-lg leading-[1.85] text-cendre">
-                    {section.text}
-                  </p>
-
-                  <blockquote className="mt-10 border-l-2 border-bronze/30 pl-6 md:mt-14">
-                    <p className="font-display text-lg font-light italic leading-relaxed text-ivoire/60 md:text-xl">
-                      &laquo;&nbsp;{section.quote}&nbsp;&raquo;
+        {/* ---- SECTIONS ALTERNÉES ---- */}
+        {SECTIONS.map((section, i) => {
+          const textFirst = i % 2 === 0;
+          return (
+            <SectionBlock
+              key={section.video}
+              background={i % 2 === 0 ? "noir" : "graphite"}
+            >
+              <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+                {/* Texte */}
+                <div className={textFirst ? "lg:order-1" : "lg:order-2"}>
+                  <ScrollReveal>
+                    <span
+                      className="mb-6 block font-display text-[5rem] font-extralight leading-none text-ivoire/[0.04] md:text-[7rem]"
+                      aria-hidden="true"
+                    >
+                      {section.number}
+                    </span>
+                    <p className="mb-4 text-label tracking-[0.25em] text-bronze/70">
+                      {section.number} — Conviction
                     </p>
-                  </blockquote>
-                </ScrollReveal>
-              </div>
+                    <h2 className="mb-8 max-w-md font-display text-3xl leading-[1.15] text-ivoire md:text-4xl lg:text-[2.75rem]">
+                      {section.title}
+                    </h2>
+                    <p className="max-w-lg leading-[1.85] text-cendre">
+                      {section.text}
+                    </p>
 
-              <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                <ScrollReveal delay={0.25}>
-                  <VideoPlaceholder label={`Vidéo — ${section.title}`} />
-                </ScrollReveal>
+                    <blockquote className="mt-10 border-l-2 border-bronze/30 pl-6 md:mt-14">
+                      <p className="font-display text-lg font-light italic leading-relaxed text-ivoire/60 md:text-xl">
+                        &laquo;&nbsp;{section.quote}&nbsp;&raquo;
+                      </p>
+                    </blockquote>
+                  </ScrollReveal>
+                </div>
+
+                {/* Vidéo */}
+                <div className={textFirst ? "lg:order-2" : "lg:order-1"}>
+                  <ScrollReveal delay={0.2}>
+                    <VideoPlaceholder label={`Vidéo — ${section.title}`} />
+                  </ScrollReveal>
+                </div>
               </div>
-            </div>
-          </SectionBlock>
-        ))}
+            </SectionBlock>
+          );
+        })}
 
         {/* ---- CONCLUSION CINÉMATIQUE ---- */}
         <SectionBlock>

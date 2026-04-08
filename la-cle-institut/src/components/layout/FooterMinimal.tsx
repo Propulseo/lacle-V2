@@ -3,10 +3,16 @@ import { ROUTES } from "@/lib/constants";
 
 export function FooterMinimal() {
   return (
-    <footer className="py-10 md:py-12">
-      {/* Gradient separator */}
+    <footer className="footer-minimal relative mt-0 border-t border-filet-discret pt-10 pb-10 md:pt-12 md:pb-12">
+      {/* Fond subtil */}
       <div
-        className="mx-auto mb-8 h-px w-full max-w-[1450px] bg-gradient-to-r from-transparent via-bronze/20 to-transparent"
+        className="absolute inset-0 -z-10 bg-graphite/40"
+        aria-hidden="true"
+      />
+
+      {/* Gradient décoratif en haut */}
+      <div
+        className="absolute inset-x-0 top-0 -z-10 h-24 bg-gradient-to-b from-noir to-transparent"
         aria-hidden="true"
       />
 
@@ -25,19 +31,19 @@ export function FooterMinimal() {
         <nav className="flex items-center gap-8" aria-label="Pied de page">
           <Link
             href={ROUTES.legal}
-            className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-cendre"
+            className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-bronze"
           >
             Mentions légales
           </Link>
           <Link
             href={ROUTES.terms}
-            className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-cendre"
+            className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-bronze"
           >
             CGV
           </Link>
           <Link
             href={ROUTES.contact}
-            className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-cendre"
+            className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-bronze"
           >
             Contact
           </Link>

@@ -47,9 +47,16 @@ function MoonIcon({ className }: { className?: string }) {
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    toggleTheme(x, y);
+  };
+
   return (
     <button
-      onClick={toggleTheme}
+      onClick={handleClick}
       className="flex h-8 w-8 items-center justify-center rounded-full border border-filet-discret text-cendre transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze/50 hover:bg-bronze/5 hover:text-bronze-clair"
       aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
       title={theme === "dark" ? "Mode clair" : "Mode sombre"}
