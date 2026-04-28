@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -79,9 +80,9 @@ export default function LearnerLoginPage() {
 
         <p className="mt-3 text-center text-xs text-cendre">
           Pas encore inscrit ?{" "}
-          <a href="/inscription" className="text-or underline underline-offset-2 hover:text-or/80">
+          <Link href="/inscription" className="text-or underline underline-offset-2 hover:text-or/80">
             Commencer ici
-          </a>
+          </Link>
         </p>
       </div>
     </div>

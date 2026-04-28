@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
 
 interface ErrorProps {
@@ -31,13 +32,13 @@ export default function AdminError({ error, reset }: ErrorProps) {
             <RefreshCw className="h-4 w-4" />
             Reessayer
           </button>
-          <a
+          <Link
             href="/admin"
             className="inline-flex items-center gap-2 rounded-lg border border-filet px-5 py-2.5 text-sm text-cendre transition-colors hover:border-filet-accent hover:text-ivoire"
           >
             <ArrowLeft className="h-4 w-4" />
             Retour au dashboard
-          </a>
+          </Link>
         </div>
 
         {process.env.NODE_ENV === "development" && (

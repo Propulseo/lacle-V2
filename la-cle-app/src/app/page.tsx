@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
 import { Button } from "@/components/ui/Button";
@@ -39,12 +40,12 @@ export default function HomePage() {
 
           <p className="text-xs text-cendre">
             Pas encore inscrit ?{" "}
-            <a
+            <Link
               href="/inscription"
               className="text-or underline underline-offset-2 hover:text-or/80"
             >
               Commencer ici
-            </a>
+            </Link>
           </p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowLeft, RefreshCw, Mail } from "lucide-react";
 
 interface ErrorProps {
@@ -32,13 +33,13 @@ export default function EspaceError({ error, reset }: ErrorProps) {
             <RefreshCw className="h-4 w-4" />
             Reessayer
           </button>
-          <a
+          <Link
             href="/espace"
             className="inline-flex items-center gap-2 rounded-lg border border-filet px-5 py-2.5 text-sm text-cendre transition-colors hover:border-filet-accent hover:text-ivoire"
           >
             <ArrowLeft className="h-4 w-4" />
             Retour a l&apos;espace
-          </a>
+          </Link>
         </div>
 
         <a
