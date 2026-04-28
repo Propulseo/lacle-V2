@@ -1,6 +1,7 @@
 "use client";
 
-import { Plus, MapPin, Clock, Users, Check, X } from "lucide-react";
+import { useState } from "react";
+import { Plus, MapPin, Clock, Users, Check, X, MoreVertical } from "lucide-react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
@@ -8,17 +9,41 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { getSessions, markAttendance } from "@/services/sessions";
+import { DropdownMenu } from "@/components/ui/DropdownMenu";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { SessionFormModal } from "@/components/admin/SessionFormModal";
+import { getSessions, markAttendance, deleteSession } from "@/services/sessions";
 import { formatDate } from "@/lib/utils";
+import type { Session } from "@/types";
 
 export default function SessionsPage() {
   const sessionsState = useAsyncData(() => getSessions(), []);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editSession, setEditSession] = useState<Session | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Session | null>(null);
 
   const isPast = (date: string) => new Date(date) < new Date();
 
   async function handleAttendance(sessionId: string, regId: string, attended: boolean) {
     await markAttendance(sessionId, regId, attended);
     sessionsState.refetch();
+  }
+
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    await deleteSession(deleteTarget.id);
+    setDeleteTarget(null);
+    sessionsState.refetch();
+  }
+
+  function handleEdit(session: Session) {
+    setEditSession(session);
+    setFormOpen(true);
+  }
+
+  function handleCreate() {
+    setEditSession(null);
+    setFormOpen(true);
   }
 
   return (
@@ -34,7 +59,9 @@ export default function SessionsPage() {
             <h1 className="font-serif text-2xl text-ivoire">Sessions presentielles</h1>
             <p className="mt-1 text-sm text-cendre">{sessionsState.data?.length ?? 0} sessions</p>
           </div>
-          <Button variant="primary" icon={<Plus className="h-4 w-4" />}>Nouvelle session</Button>
+          <Button variant="primary" icon={<Plus className="h-4 w-4" />} onClick={handleCreate}>
+            Nouvelle session
+          </Button>
         </div>
 
         <AsyncBoundary state={sessionsState}>
@@ -50,7 +77,20 @@ export default function SessionsPage() {
                           <h3 className="font-serif text-lg text-ivoire">{session.title}</h3>
                           <p className="mt-1 text-sm text-cendre">{session.description}</p>
                         </div>
-                        <Badge variant={past ? "default" : "info"}>{past ? "Passee" : "A venir"}</Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={past ? "default" : "info"}>{past ? "Passee" : "A venir"}</Badge>
+                          <DropdownMenu
+                            trigger={
+                              <span className="rounded p-1 text-pierre hover:text-ivoire hover:bg-ivoire/5 transition-colors inline-flex">
+                                <MoreVertical className="h-4 w-4" />
+                              </span>
+                            }
+                            items={[
+                              { label: "Modifier", onClick: () => handleEdit(session) },
+                              { label: "Supprimer", onClick: () => setDeleteTarget(session), danger: true },
+                            ]}
+                          />
+                        </div>
                       </div>
                       <div className="flex flex-wrap gap-4 text-sm text-cendre">
                         <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{formatDate(session.date)} &bull; {session.startTime} - {session.endTime}</span>
@@ -92,6 +132,22 @@ export default function SessionsPage() {
           )}
         </AsyncBoundary>
       </div>
+
+      <SessionFormModal
+        isOpen={formOpen}
+        onClose={() => setFormOpen(false)}
+        onSuccess={() => { setFormOpen(false); sessionsState.refetch(); }}
+        session={editSession}
+      />
+
+      <ConfirmDialog
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
+        title="Supprimer la session"
+        message={`Voulez-vous vraiment supprimer la session "${deleteTarget?.title}" ? Cette action est irreversible.`}
+        confirmLabel="Supprimer"
+      />
     </AdminShell>
   );
 }
