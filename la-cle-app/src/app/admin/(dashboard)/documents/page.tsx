@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Plus, Reply } from "lucide-react";
+import { FileText, Plus, Reply, Send } from "lucide-react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
@@ -9,14 +9,18 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
+import { Textarea } from "@/components/ui/Textarea";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { getDocuments, getSupportMessages } from "@/services/documents";
+import { getDocuments, getSupportMessages, replySupportMessage } from "@/services/documents";
 import { formatDate } from "@/lib/utils";
 
 export default function DocumentsPage() {
   const [activeTab, setActiveTab] = useState("documents");
   const [search, setSearch] = useState("");
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [replySending, setReplySending] = useState(false);
 
   const pageState = useAsyncData(async () => {
     const [documents, messages] = await Promise.all([
@@ -25,6 +29,19 @@ export default function DocumentsPage() {
     ]);
     return { documents, messages };
   }, []);
+
+  async function handleReply(msgId: string) {
+    if (!replyText.trim()) return;
+    setReplySending(true);
+    try {
+      await replySupportMessage(msgId, replyText.trim());
+      setReplyingTo(null);
+      setReplyText("");
+      pageState.refetch();
+    } finally {
+      setReplySending(false);
+    }
+  }
 
   return (
     <AdminShell
@@ -97,12 +114,41 @@ export default function DocumentsPage() {
                           <p className="text-sm text-cendre">{msg.message}</p>
                           {msg.reply && (
                             <div className="mt-3 rounded-lg bg-surface p-3">
-                              <p className="text-xs text-pierre mb-1 flex items-center gap-1"><Reply className="h-3 w-3" /> Reponse</p>
+                              <p className="text-xs text-pierre mb-1 flex items-center gap-1"><Reply className="h-3 w-3" /> Reponse &bull; {msg.repliedAt && formatDate(msg.repliedAt)}</p>
                               <p className="text-sm text-ivoire">{msg.reply}</p>
                             </div>
                           )}
-                          {!msg.reply && (
-                            <div className="mt-3"><Button size="sm" icon={<Reply className="h-4 w-4" />}>Repondre</Button></div>
+                          {!msg.reply && replyingTo !== msg.id && (
+                            <div className="mt-3">
+                              <Button size="sm" icon={<Reply className="h-4 w-4" />} onClick={() => { setReplyingTo(msg.id); setReplyText(""); }}>
+                                Repondre
+                              </Button>
+                            </div>
+                          )}
+                          {!msg.reply && replyingTo === msg.id && (
+                            <div className="mt-3 space-y-3">
+                              <Textarea
+                                placeholder="Votre reponse..."
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                                className="min-h-[80px]"
+                              />
+                              <div className="flex justify-end gap-2">
+                                <Button variant="ghost" size="sm" onClick={() => setReplyingTo(null)} disabled={replySending}>
+                                  Annuler
+                                </Button>
+                                <Button
+                                  variant="primary"
+                                  size="sm"
+                                  icon={<Send className="h-4 w-4" />}
+                                  isLoading={replySending}
+                                  disabled={!replyText.trim()}
+                                  onClick={() => handleReply(msg.id)}
+                                >
+                                  Envoyer
+                                </Button>
+                              </div>
+                            </div>
                           )}
                         </Card>
                       </ScrollReveal>

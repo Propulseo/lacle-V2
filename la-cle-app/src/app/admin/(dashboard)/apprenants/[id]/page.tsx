@@ -2,17 +2,19 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { Mail, Phone, Calendar, Shield } from "lucide-react";
+import { Mail, Phone, Calendar, Shield, Pencil } from "lucide-react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { Toggle } from "@/components/ui/Toggle";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { LearnerEditModal } from "@/components/admin/LearnerEditModal";
 import { getLearner, toggleActive } from "@/services/learners";
 import { getDocuments } from "@/services/documents";
 import { STATUS_CONFIG } from "@/lib/status";
@@ -22,6 +24,7 @@ import { NotFoundError } from "@/lib/errors";
 export default function ApprenantDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState("progression");
+  const [editOpen, setEditOpen] = useState(false);
 
   const pageState = useAsyncData(async () => {
     const [learner, documents] = await Promise.all([
@@ -86,6 +89,9 @@ export default function ApprenantDetailPage() {
                     <Badge variant={learner.status === "certifie" ? "gold" : learner.status === "inscrit" ? "success" : learner.status === "bloque" ? "error" : "info"}>
                       {statusCfg.label}
                     </Badge>
+                    <Button variant="ghost" size="sm" icon={<Pencil className="h-4 w-4" />} onClick={() => setEditOpen(true)}>
+                      Modifier
+                    </Button>
                     <Toggle enabled={learner.isActive} onChange={handleToggleActive} label="Actif" />
                   </div>
                 </div>
@@ -160,6 +166,13 @@ export default function ApprenantDetailPage() {
                 </div>
               )}
             </div>
+
+            <LearnerEditModal
+              isOpen={editOpen}
+              onClose={() => setEditOpen(false)}
+              onSuccess={() => { setEditOpen(false); pageState.refetch(); }}
+              learner={learner}
+            />
           </AdminShell>
         );
       }}
