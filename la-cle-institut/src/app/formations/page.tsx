@@ -3,7 +3,7 @@ import { FooterMinimal } from "@/components/layout/FooterMinimal";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { SectionBlock } from "@/components/ui/SectionBlock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { FormationCard } from "@/components/ui/FormationCard";
+import { FormationCarousel } from "@/components/formations/FormationCarousel";
 import { Button } from "@/components/ui/Button";
 import { ROUTES } from "@/lib/constants";
 
@@ -97,39 +97,14 @@ export default function FormationsPage() {
             <h2 className="mb-12">Formations disponibles</h2>
           </ScrollReveal>
 
-          {/* Formation principale — pleine largeur */}
+          {/*
+            Carrousel horizontal — source de vérité dans src/lib/formations.ts.
+            Affiche toutes les formations (disponibles, en cours de création,
+            en projet) avec badge de statut et interaction adaptée.
+          */}
           <ScrollReveal delay={0.1}>
-            <FormationCard
-              title="PNL — Praticien"
-              description="Formation complète de praticien en Programmation Neuro-Linguistique. Parcours distanciel structuré en 7 modules suivi d'une phase présentielle intensive menant à la certification."
-              href={ROUTES.pnlPractitioner}
-              available
-              label="Disponible"
-              tags={["Distanciel + Présentiel", "7 modules", "Certifiante"]}
-            />
+            <FormationCarousel />
           </ScrollReveal>
-
-          {/* Formations à venir — grille */}
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
-            <ScrollReveal delay={0.2}>
-              <FormationCard
-                title="PNL — Maître Praticien"
-                description="Approfondissement des mécanismes avancés. Suite logique du parcours praticien."
-                available={false}
-                label="À venir"
-                tags={["Niveau 2"]}
-              />
-            </ScrollReveal>
-            <ScrollReveal delay={0.3}>
-              <FormationCard
-                title="Hypnose Ericksonienne"
-                description="Exploration des mécanismes hypnotiques et des processus inconscients."
-                available={false}
-                label="À venir"
-                tags={["Nouvelle discipline"]}
-              />
-            </ScrollReveal>
-          </div>
         </SectionBlock>
 
         {/* ---- CTA final ---- */}

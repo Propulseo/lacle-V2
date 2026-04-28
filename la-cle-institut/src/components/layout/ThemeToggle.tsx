@@ -1,6 +1,10 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { useInView } from "framer-motion";
 import { useTheme } from "@/lib/theme";
+
+const HINT_STORAGE_KEY = "toggle_hint_shown";
 
 function SunIcon({ className }: { className?: string }) {
   return (
@@ -44,8 +48,28 @@ function MoonIcon({ className }: { className?: string }) {
   );
 }
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  /**
+   * Autorise la micro-animation d'entrée (anneau bronze).
+   * Sur la page d'accueil, on passe `showHero` pour ne déclencher qu'une
+   * fois l'animation principale terminée. Par défaut : `true` (autres pages).
+   */
+  hintEnabled?: boolean;
+}
+
+export function ThemeToggle({ hintEnabled = true }: ThemeToggleProps) {
   const { theme, toggleTheme } = useTheme();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const inView = useInView(buttonRef, { once: true, amount: 0.5 });
+  const [playHint, setPlayHint] = useState(false);
+
+  useEffect(() => {
+    if (!hintEnabled || !inView || playHint) return;
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem(HINT_STORAGE_KEY)) return;
+    sessionStorage.setItem(HINT_STORAGE_KEY, "true");
+    setPlayHint(true);
+  }, [hintEnabled, inView, playHint]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -56,8 +80,11 @@ export function ThemeToggle() {
 
   return (
     <button
+      ref={buttonRef}
       onClick={handleClick}
-      className="flex h-8 w-8 items-center justify-center rounded-full border border-filet-discret text-cendre transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze/50 hover:bg-bronze/5 hover:text-bronze-clair"
+      className={`flex h-8 w-8 items-center justify-center rounded-full border border-filet-discret text-cendre transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze/50 hover:bg-bronze/5 hover:text-bronze-clair ${
+        playHint ? "entrance-hint-toggle" : ""
+      }`}
       aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
       title={theme === "dark" ? "Mode clair" : "Mode sombre"}
     >

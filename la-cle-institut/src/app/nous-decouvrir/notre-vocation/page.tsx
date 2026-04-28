@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/Header";
 import { FooterMinimal } from "@/components/layout/FooterMinimal";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { DiscoverNav } from "@/components/layout/DiscoverNav";
 import { SectionBlock } from "@/components/ui/SectionBlock";
 import { VideoPlaceholder } from "@/components/ui/VideoPlaceholder";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -178,6 +179,8 @@ export default function VocationPage() {
             </div>
           </ScrollReveal>
         </SectionBlock>
+
+        <DiscoverNav current="vocation" />
 
         <FooterMinimal />
       </PageWrapper>

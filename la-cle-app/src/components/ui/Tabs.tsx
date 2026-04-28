@@ -21,6 +21,7 @@ export function Tabs({ tabs, activeTab, onChange, className }: TabsProps) {
       {tabs.map((tab) => (
         <button
           key={tab.id}
+          type="button"
           onClick={() => onChange(tab.id)}
           className={cn(
             "relative px-4 py-2.5 text-sm transition-colors",

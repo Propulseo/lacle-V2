@@ -6,10 +6,13 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
+  Activity,
+  MessageSquare,
   BookOpen,
   Calendar,
   FileText,
   Settings,
+  ClipboardList,
   ChevronLeft,
   Menu,
 } from "lucide-react";
@@ -27,6 +30,8 @@ const navGroups = [
     label: "Gestion",
     items: [
       { label: "Apprenants", href: ROUTES.admin.apprenants, icon: Users },
+      { label: "Engagement", href: ROUTES.admin.engagement, icon: Activity },
+      { label: "Satisfaction", href: ROUTES.admin.satisfaction, icon: MessageSquare },
       { label: "Contenus", href: ROUTES.admin.contenus, icon: BookOpen },
       { label: "Sessions", href: ROUTES.admin.sessions, icon: Calendar },
       { label: "Documents", href: ROUTES.admin.documents, icon: FileText },
@@ -36,6 +41,7 @@ const navGroups = [
     label: "Configuration",
     items: [
       { label: "Paramètres", href: ROUTES.admin.parametres, icon: Settings },
+      { label: "Moyens techniques", href: ROUTES.admin.moyensTechniques, icon: ClipboardList },
     ],
   },
 ];
@@ -53,7 +59,9 @@ export function AdminSidebar() {
     <>
       {/* Mobile toggle */}
       <button
+        type="button"
         onClick={() => setCollapsed(!collapsed)}
+        aria-label="Menu"
         className="fixed left-4 top-4 z-50 rounded-lg bg-encre p-2 text-cendre lg:hidden"
       >
         <Menu className="h-5 w-5" />
@@ -82,7 +90,9 @@ export function AdminSidebar() {
             </Link>
           )}
           <button
+            type="button"
             onClick={() => setCollapsed(!collapsed)}
+            aria-label={collapsed ? "Deplier le menu" : "Replier le menu"}
             className="hidden rounded-lg p-1.5 text-cendre hover:text-ivoire lg:block"
           >
             <ChevronLeft

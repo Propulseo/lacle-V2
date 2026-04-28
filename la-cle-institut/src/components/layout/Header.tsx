@@ -24,9 +24,21 @@ interface HeaderProps {
   showBack?: boolean;
   backHref?: string;
   backLabel?: string;
+  /**
+   * Contrôle le déclenchement de la micro-animation d'entrée du ThemeToggle.
+   * La home l'utilise pour synchroniser le hint avec la fin de l'animation hero
+   * (sinon l'anneau se joue pendant que le Header est encore invisible).
+   * Par défaut `true` : les autres pages déclenchent au montage.
+   */
+  toggleHint?: boolean;
 }
 
-export function Header({ showBack, backHref, backLabel }: HeaderProps) {
+export function Header({
+  showBack,
+  backHref,
+  backLabel,
+  toggleHint = true,
+}: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -140,7 +152,7 @@ export function Header({ showBack, backHref, backLabel }: HeaderProps) {
 
           {/* ── Right zone ── */}
           <div className="hidden shrink-0 items-center gap-4 lg:flex">
-            <ThemeToggle />
+            <ThemeToggle hintEnabled={toggleHint} />
             <Link
               href={ROUTES.accessSpace}
               className="inline-flex items-center gap-2 text-[13px] text-bronze/50 transition-colors duration-300 hover:text-bronze/70"

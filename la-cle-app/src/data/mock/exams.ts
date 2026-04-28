@@ -1,4 +1,4 @@
-import type { ModularExam, ExamAttempt } from "@/types";
+import type { ModularExam, LegacyExamAttempt } from "@/types";
 
 export const mockExams: ModularExam[] = [
   {
@@ -198,7 +198,7 @@ export const mockExams: ModularExam[] = [
   },
 ];
 
-export const mockExamAttempts: ExamAttempt[] = [
+export const mockExamAttempts: LegacyExamAttempt[] = [
   {
     id: "attempt-1",
     examId: "exam-1",
@@ -258,5 +258,76 @@ export const mockExamAttempts: ExamAttempt[] = [
     score: 100,
     passed: true,
     completedAt: "2026-02-20T09:00:00Z",
+  },
+
+  // --- Cas test : learner-5 — 2 tentatives aujourd'hui, peut retenter ---
+  {
+    id: "attempt-5a",
+    examId: "exam-1",
+    learnerId: "learner-5",
+    answers: {},
+    score: 60,
+    passed: false,
+    completedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "attempt-5b",
+    examId: "exam-1",
+    learnerId: "learner-5",
+    answers: {},
+    score: 60,
+    passed: false,
+    completedAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+  },
+
+  // --- Cas test : learner-4 — 5 tentatives en 24h, bloque ---
+  ...Array.from({ length: 5 }, (_, i) => ({
+    id: `attempt-4-block-${i}`,
+    examId: "exam-1",
+    learnerId: "learner-4",
+    answers: {} as Record<string, string>,
+    score: 40,
+    passed: false,
+    completedAt: new Date(Date.now() - (5 - i) * 30 * 60 * 1000).toISOString(),
+  })),
+
+  // --- Cas test : learner-6 — examen final, etape J3 ---
+  {
+    id: "attempt-6-f1",
+    examId: "final-exam",
+    learnerId: "learner-6",
+    answers: {},
+    score: 55,
+    passed: false,
+    completedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "attempt-6-f2",
+    examId: "final-exam",
+    learnerId: "learner-6",
+    answers: {},
+    score: 60,
+    passed: false,
+    completedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000 + 30 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "attempt-6-f3",
+    examId: "final-exam",
+    learnerId: "learner-6",
+    answers: {},
+    score: 65,
+    passed: false,
+    completedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+
+  // --- Cas test : learner-3 — examen final reussi ---
+  {
+    id: "attempt-3-final",
+    examId: "final-exam",
+    learnerId: "learner-3",
+    answers: {},
+    score: 95,
+    passed: true,
+    completedAt: "2026-02-01T11:00:00Z",
   },
 ];

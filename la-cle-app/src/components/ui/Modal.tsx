@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { EASE_INSTITUTIONAL } from "@/lib/animations";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  description?: string;
   children: React.ReactNode;
   size?: "sm" | "md" | "lg";
 }
@@ -19,7 +21,18 @@ const sizeStyles = {
   lg: "max-w-2xl",
 };
 
-export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalProps) {
+export function Modal({
+  isOpen,
+  onClose,
+  title,
+  description,
+  children,
+  size = "md",
+}: ModalProps) {
+  const focusTrapRef = useFocusTrap(isOpen);
+  const titleId = useId();
+  const descId = useId();
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -52,6 +65,11 @@ export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalPr
             onClick={onClose}
           />
           <motion.div
+            ref={focusTrapRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={title ? titleId : undefined}
+            aria-describedby={description ? descId : undefined}
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
@@ -60,14 +78,23 @@ export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalPr
           >
             {title && (
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-serif text-xl text-ivoire">{title}</h3>
+                <h3 id={titleId} className="font-serif text-xl text-ivoire">
+                  {title}
+                </h3>
                 <button
+                  type="button"
                   onClick={onClose}
+                  aria-label="Fermer la modale"
                   className="rounded-lg p-1 text-cendre hover:text-ivoire hover:bg-ivoire/5 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
+            )}
+            {description && (
+              <p id={descId} className="sr-only">
+                {description}
+              </p>
             )}
             {children}
           </motion.div>

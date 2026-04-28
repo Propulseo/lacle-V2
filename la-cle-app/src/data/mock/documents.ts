@@ -1,6 +1,6 @@
-import type { Document, SupportMessage } from "@/types";
+import type { LegacyDocument, SupportMessage } from "@/types";
 
-export const mockDocuments: Document[] = [
+export const mockDocuments: LegacyDocument[] = [
   {
     id: "doc-1",
     learnerId: "learner-1",

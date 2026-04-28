@@ -25,10 +25,17 @@ export default function DiscoverHubPage() {
         <section className="pb-20 md:pb-28 lg:pb-32">
           <div className="mx-auto grid max-w-[1200px] gap-6 px-6 md:grid-cols-3 md:px-10 lg:px-16">
             <ScrollReveal delay={0}>
+              {/*
+                hintFirstVisit : ce premier item reçoit la micro-animation
+                d'entrée (même famille que le toggle thème) afin de guider
+                l'utilisateur vers l'ordre de lecture naturel du hub.
+              */}
               <HubCard
                 title="Notre vocation"
                 description="Comprendre le pourquoi profond de l'institut et sa mission fondamentale."
                 href={ROUTES.vocation}
+                hintFirstVisit
+                hintStorageKey="vocation_hint_shown"
               />
             </ScrollReveal>
             <ScrollReveal delay={0.1}>

@@ -1,6 +1,6 @@
-import type { Module } from "@/types";
+import type { LegacyModule } from "@/types";
 
-export const mockModules: Module[] = [
+export const mockModules: LegacyModule[] = [
   {
     id: "module-1",
     title: "Les fondamentaux de la PNL",

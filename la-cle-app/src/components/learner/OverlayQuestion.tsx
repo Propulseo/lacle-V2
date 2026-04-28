@@ -42,6 +42,7 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
             {question.options.map((opt) => (
               <button
                 key={opt}
+                type="button"
                 onClick={() => !submitted && setSelected(opt)}
                 disabled={submitted}
                 className={cn(
@@ -63,6 +64,7 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
             {["vrai", "faux"].map((opt) => (
               <button
                 key={opt}
+                type="button"
                 onClick={() => !submitted && setSelected(opt)}
                 disabled={submitted}
                 className={cn(

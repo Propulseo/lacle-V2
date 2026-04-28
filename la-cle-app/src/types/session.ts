@@ -17,5 +17,5 @@ export interface SessionRegistration {
   learnerId: string;
   learnerName: string;
   registeredAt: string;
-  attended: boolean | null; // null = not yet marked
+  attended: boolean | null;
 }

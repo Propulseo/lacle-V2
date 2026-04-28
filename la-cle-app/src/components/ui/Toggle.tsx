@@ -13,6 +13,7 @@ export function Toggle({ enabled, onChange, label, className }: ToggleProps) {
   return (
     <label className={cn("flex items-center gap-3 cursor-pointer", className)}>
       <button
+        type="button"
         role="switch"
         aria-checked={enabled}
         onClick={() => onChange(!enabled)}

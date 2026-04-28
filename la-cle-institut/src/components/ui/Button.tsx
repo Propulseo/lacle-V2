@@ -1,6 +1,16 @@
 import Link from "next/link";
 
-type ButtonVariant = "default" | "ghost";
+/**
+ * Variantes disponibles :
+ *  - "default"  → bordure filet + hover bronze (version institutionnelle sobre)
+ *  - "ghost"    → texte souligné discret
+ *  - "elegant"  → variante raffinée (letter-spacing animé, sweep bronze,
+ *                 soulignement qui s'étend depuis le centre au hover)
+ *                 Pour revenir à la version précédente, repasser la prop
+ *                 `variant="default"` ou supprimer la clé correspondante.
+ *                 Les styles vivent dans globals.css → `.btn-elegant`.
+ */
+type ButtonVariant = "default" | "ghost" | "elegant";
 type ButtonSize = "default" | "large";
 
 interface ButtonBaseProps {
@@ -20,14 +30,20 @@ interface ButtonAsLink extends ButtonBaseProps {
 
 type ButtonProps = ButtonAsButton | ButtonAsLink;
 
+/*
+ * Le tracking et la transition sont portés par chaque variante pour que
+ * `.btn-elegant` (globals.css) puisse gérer ses propres timings et son
+ * letter-spacing sans conflit de spécificité avec `base`.
+ */
 const base =
-  "inline-flex items-center justify-center font-body text-center tracking-[0.12em] uppercase transition-all duration-500 ease-[var(--ease-institutional)]";
+  "inline-flex items-center justify-center font-body text-center uppercase";
 
 const variants: Record<ButtonVariant, string> = {
   default:
-    "border border-filet text-ivoire hover:border-bronze hover:text-bronze-clair",
+    "tracking-[0.12em] transition-all duration-500 ease-[var(--ease-institutional)] border border-filet text-ivoire hover:border-bronze hover:text-bronze-clair",
   ghost:
-    "text-cendre underline decoration-filet underline-offset-4 hover:text-ivoire hover:decoration-bronze",
+    "tracking-[0.12em] transition-all duration-500 ease-[var(--ease-institutional)] text-cendre underline decoration-filet underline-offset-4 hover:text-ivoire hover:decoration-bronze",
+  elegant: "btn-elegant",
 };
 
 const sizes: Record<ButtonSize, string> = {

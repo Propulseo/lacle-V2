@@ -1,3 +1,25 @@
+export type ExamType = "module" | "final";
+
+export interface ExamAttempt {
+  id: string;
+  attemptNumber: number;
+  score: number;
+  passed: boolean;
+  attemptedAt: Date;
+  blockedUntil?: Date;
+}
+
+export interface Exam {
+  id: string;
+  type: ExamType;
+  moduleId?: string;
+  attempts: ExamAttempt[];
+  maxAttemptsPerDay: number;
+  isBlocked: boolean;
+  blockedUntil?: Date;
+  isPassed: boolean;
+}
+
 export interface ExamQuestion {
   id: string;
   type: "qcm" | "vrai_faux" | "texte";
@@ -13,17 +35,17 @@ export interface ModularExam {
   moduleId: string;
   title: string;
   questions: ExamQuestion[];
-  passingScore: number; // percent (100 = must get all correct)
+  passingScore: number;
   maxAttempts: number;
   timeLimitMinutes: number | null;
   createdAt: string;
 }
 
-export interface ExamAttempt {
+export interface LegacyExamAttempt {
   id: string;
   examId: string;
   learnerId: string;
-  answers: Record<string, string>; // questionId -> answer
+  answers: Record<string, string>;
   score: number;
   passed: boolean;
   completedAt: string;

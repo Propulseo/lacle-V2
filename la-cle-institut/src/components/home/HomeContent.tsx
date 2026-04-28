@@ -65,7 +65,12 @@ export function HomeContent() {
         transition={{ duration: 0.6, ease: EASE }}
         style={{ pointerEvents: showHero ? "auto" : "none" }}
       >
-        <Header />
+        {/*
+          toggleHint={showHero} — la micro-animation d'entrée du toggle
+          thème ne doit se déclencher qu'une fois le hero visible, sinon
+          l'anneau bronze se joue derrière l'overlay splash et reste invisible.
+        */}
+        <Header toggleHint={showHero} />
       </motion.div>
 
       <section

@@ -30,9 +30,10 @@ export function AdminHeader({ breadcrumbs }: AdminHeaderProps) {
           {user?.firstName} {user?.lastName}
         </span>
         <button
+          type="button"
           onClick={handleLogout}
+          aria-label="Deconnexion"
           className="rounded-lg p-2 text-cendre hover:text-erreur hover:bg-erreur/10 transition-colors"
-          title="Déconnexion"
         >
           <LogOut className="h-4 w-4" />
         </button>

@@ -57,40 +57,43 @@ const DARK_BLOBS: BlobConfig[] = [
   },
 ];
 
+// Light mode : opacités très réduites et blur élevé pour que la tache
+// bronze reste à peine perceptible sans gêner la lecture (retour
+// photosensibilité). Adoucie, jamais supprimée.
 const LIGHT_BLOBS: BlobConfig[] = [
   {
-    size: "80vw",
+    size: "65vw",
     color: "rgb(196, 175, 135)",
-    opacity: [0.06, 0.12],
+    opacity: [0.015, 0.03],
     duration: [24, 34],
-    blur: 140,
+    blur: 200,
     startX: 10,
     startY: 10,
   },
   {
-    size: "70vw",
+    size: "55vw",
     color: "rgb(185, 160, 120)",
-    opacity: [0.05, 0.10],
+    opacity: [0.012, 0.025],
     duration: [20, 30],
-    blur: 130,
+    blur: 190,
     startX: 60,
     startY: 55,
   },
   {
-    size: "60vw",
+    size: "50vw",
     color: "rgb(200, 180, 145)",
-    opacity: [0.04, 0.09],
+    opacity: [0.01, 0.022],
     duration: [18, 26],
-    blur: 120,
+    blur: 180,
     startX: 35,
     startY: 80,
   },
   {
-    size: "65vw",
+    size: "55vw",
     color: "rgb(180, 158, 125)",
-    opacity: [0.05, 0.10],
+    opacity: [0.012, 0.025],
     duration: [26, 36],
-    blur: 135,
+    blur: 195,
     startX: 75,
     startY: 15,
   },

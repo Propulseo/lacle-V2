@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { PNLModules } from "@/components/formations/PNLModules";
 import { ParcoursSteps } from "@/components/formations/ParcoursSteps";
 import { PNLFAQ } from "@/components/formations/PNLFAQ";
+import { FormationDocuments } from "@/components/formations/FormationDocuments";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata = {
@@ -242,8 +243,13 @@ export default function PNLPraticienPage() {
           </ScrollReveal>
         </SectionBlock>
 
-        {/* ---- FAQ ---- */}
+        {/* ---- Documents pédagogiques (Qualiopi indicateur 1) ---- */}
         <SectionBlock>
+          <FormationDocuments />
+        </SectionBlock>
+
+        {/* ---- FAQ ---- */}
+        <SectionBlock background="graphite">
           <PNLFAQ />
         </SectionBlock>
 
@@ -272,7 +278,17 @@ export default function PNLPraticienPage() {
                 L&apos;espace de formation vous attend. Vous y trouverez le
                 parcours complet et tout ce dont vous avez besoin pour démarrer.
               </p>
-              <Button href={ROUTES.accessSpace} size="large">
+              {/*
+                CTA principal de la page de vente — variante "elegant".
+                Pour revenir au bouton d'origine, retirer simplement la prop
+                `variant="elegant"` (ou la remettre à "default").
+                Définition de la variante : globals.css → .btn-elegant
+              */}
+              <Button
+                href={ROUTES.accessSpace}
+                size="large"
+                variant="elegant"
+              >
                 Accéder à l&apos;espace de formation
               </Button>
             </div>

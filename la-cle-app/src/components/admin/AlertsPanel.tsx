@@ -1,9 +1,12 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
 import { ROUTES } from "@/lib/constants";
+import { getEngagementLearners } from "@/services/engagement";
+import { getAbandonCount } from "@/services/engagement";
 
 interface AlertItem {
   id: string;
@@ -12,7 +15,7 @@ interface AlertItem {
   href: string;
 }
 
-const alerts: AlertItem[] = [
+const staticAlerts: AlertItem[] = [
   {
     id: "1",
     label: "1 message support sans réponse",
@@ -40,6 +43,24 @@ const badgeVariants: Record<string, "warning" | "info" | "error"> = {
 };
 
 export function AlertsPanel() {
+  const [abandonCount, setAbandonCount] = useState(0);
+
+  useEffect(() => {
+    getEngagementLearners().then((list) => setAbandonCount(getAbandonCount(list)));
+  }, []);
+
+  const alerts: AlertItem[] = [
+    ...(abandonCount > 0
+      ? [{
+          id: "abandon-alert",
+          label: `${abandonCount} apprenant${abandonCount > 1 ? "s" : ""} inactif${abandonCount > 1 ? "s" : ""} depuis 42 jours — action requise`,
+          type: "error" as const,
+          href: ROUTES.admin.engagement,
+        }]
+      : []),
+    ...staticAlerts,
+  ];
+
   if (alerts.length === 0) return null;
 
   return (
@@ -54,7 +75,7 @@ export function AlertsPanel() {
           >
             <span className="text-sm text-cendre">{alert.label}</span>
             <Badge variant={badgeVariants[alert.type]}>
-              {alert.type === "warning" ? "À traiter" : "Info"}
+              {alert.type === "error" ? "Urgent" : alert.type === "warning" ? "À traiter" : "Info"}
             </Badge>
           </Link>
         ))}

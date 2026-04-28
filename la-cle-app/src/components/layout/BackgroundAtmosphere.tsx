@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, MotionConfig } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useCallback } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 function rand(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -93,17 +94,40 @@ function AuroraBlob({ config }: { config: BlobConfig }) {
   );
 }
 
-export function BackgroundAtmosphere() {
+function StaticBlob({ config }: { config: BlobConfig }) {
   return (
-    <MotionConfig reducedMotion="never">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
-      >
-        {BLOBS.map((config, i) => (
+    <div
+      style={{
+        position: "absolute",
+        left: `${config.startX}%`,
+        top: `${config.startY}%`,
+        width: config.size,
+        height: config.size,
+        borderRadius: "50%",
+        background: `radial-gradient(circle, ${config.color} 0%, transparent 70%)`,
+        filter: `blur(${config.blur}px)`,
+        mixBlendMode: "screen",
+        opacity: config.opacity[0],
+      }}
+    />
+  );
+}
+
+export function BackgroundAtmosphere() {
+  const prefersReduced = useReducedMotion();
+
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+    >
+      {BLOBS.map((config, i) =>
+        prefersReduced ? (
+          <StaticBlob key={i} config={config} />
+        ) : (
           <AuroraBlob key={i} config={config} />
-        ))}
-      </div>
-    </MotionConfig>
+        )
+      )}
+    </div>
   );
 }

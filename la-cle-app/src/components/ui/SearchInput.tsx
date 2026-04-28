@@ -28,7 +28,9 @@ export function SearchInput({
       />
       {value && (
         <button
+          type="button"
           onClick={() => onChange("")}
+          aria-label="Effacer la recherche"
           className="absolute right-3 top-1/2 -translate-y-1/2 text-pierre hover:text-ivoire transition-colors"
         >
           <X className="h-4 w-4" />

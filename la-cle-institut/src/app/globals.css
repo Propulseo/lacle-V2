@@ -22,6 +22,10 @@
   --color-bronze-clair: #C9A96E;
   --color-bronze-sombre: #8A6D3B;
 
+  /* ---- Statut "en cours de création" ---- */
+  --color-ambre: #D99A52;
+  --color-ambre-clair: #E8B26F;
+
   /* ---- Profondeur bleu nuit ---- */
   --color-nuit: #0e162a;
   --color-nuit-profond: #0b1224;
@@ -255,6 +259,10 @@ blockquote {
   --color-bronze-clair: #7A5F2D;
   --color-bronze-sombre: #BFA05C;
 
+  /* Statut "en cours de création" — ton ambre adapté au clair */
+  --color-ambre: #A67334;
+  --color-ambre-clair: #8A5C26;
+
   /* Profondeur — tons parchemin doré */
   --color-nuit: #D5CAAC;
   --color-nuit-profond: #CABFA8;
@@ -450,4 +458,141 @@ blockquote {
 .splash-force-dark {
   background-color: #0B0B0B !important;
   color: #F5F0EB !important;
+}
+
+/* ---- Entrance hints (toggle + hub first card) ---- */
+/* Animations one-shot, déclenchées via classe JS, respectent prefers-reduced-motion. */
+
+@keyframes toggleHint {
+  0%   { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
+  15%  { box-shadow: 0 0 12px 8px rgba(176, 141, 87, 0.45); transform: scale(1.18); }
+  35%  { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
+  55%  { box-shadow: 0 0 10px 6px rgba(176, 141, 87, 0.30); transform: scale(1.12); }
+  75%  { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
+  100% { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
+}
+
+@keyframes hubCardHint {
+  0%   { box-shadow: 0 0 0 0     rgba(176, 141, 87, 0);    transform: translateY(0); }
+  20%  { box-shadow: 0 0 14px 6px rgba(176, 141, 87, 0.35); transform: translateY(-6px); }
+  45%  { box-shadow: 0 0 0 0     rgba(176, 141, 87, 0);    transform: translateY(0); }
+  65%  { box-shadow: 0 0 10px 4px rgba(176, 141, 87, 0.22); transform: translateY(-3px); }
+  85%  { box-shadow: 0 0 0 0     rgba(176, 141, 87, 0);    transform: translateY(0); }
+  100% { box-shadow: 0 0 0 0     rgba(176, 141, 87, 0);    transform: translateY(0); }
+}
+
+.entrance-hint-toggle {
+  animation: toggleHint 2s ease-in-out 1.5s 1;
+}
+
+.entrance-hint-hub {
+  animation: hubCardHint 2s ease-in-out 1.5s 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entrance-hint-toggle,
+  .entrance-hint-hub {
+    animation: none !important;
+  }
+}
+
+/* ---- Carrousel formations : scrollbar masquée ---- */
+/* Piste scrollable horizontale sans afficher la barre, tout en conservant
+   le scroll natif (swipe tactile, navigation clavier, accessibilité). */
+.formation-carousel-track {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.formation-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   BOUTON "ÉLÉGANT" — variante optionnelle
+   ============================================
+
+   Variante plus raffinée du Button principal. Activée via la prop
+   `variant="elegant"` sur le composant <Button />.
+
+   Trois micro-raffinements superposés :
+     1. Lettres qui respirent     — letter-spacing de 0.2em → 0.23em au hover
+     2. Sweep bronze doux         — ::before, gradient horizontal qui traverse
+     3. Soulignement centré       — ::after, filet bronze qui s'étend depuis
+                                    le centre jusqu'à ~80% de la largeur
+
+   Pour revenir à l'ancien bouton sur un CTA donné, il suffit de retirer la
+   prop variant="elegant" (ou la remettre à "default"). Pour désactiver
+   totalement la variante dans le projet, commenter le bloc ci-dessous et
+   supprimer la clé "elegant" du mapping `variants` dans Button.tsx.
+
+   Note couleurs : on utilise color-mix() avec var(--color-bronze) pour que
+   la variante s'adapte automatiquement entre mode sombre et mode clair.
+*/
+
+.btn-elegant {
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.2em;
+  color: var(--color-ivoire);
+  border: 1px solid color-mix(in srgb, var(--color-bronze) 35%, transparent);
+  transition:
+    color 700ms var(--ease-institutional),
+    border-color 700ms var(--ease-institutional),
+    letter-spacing 700ms var(--ease-institutional),
+    transform 700ms var(--ease-institutional);
+}
+
+.btn-elegant::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-bronze) 14%, transparent) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 1100ms var(--ease-smooth);
+  pointer-events: none;
+}
+
+.btn-elegant::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  height: 1px;
+  width: 0;
+  transform: translateX(-50%);
+  background: color-mix(in srgb, var(--color-bronze) 70%, transparent);
+  transition: width 700ms var(--ease-institutional);
+  pointer-events: none;
+}
+
+.btn-elegant:hover {
+  color: var(--color-bronze-clair);
+  border-color: color-mix(in srgb, var(--color-bronze) 80%, transparent);
+  letter-spacing: 0.23em;
+}
+
+.btn-elegant:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-elegant:hover::after {
+  width: calc(100% - 3rem);
+}
+
+.btn-elegant:focus-visible {
+  outline: 2px solid var(--color-bronze);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-elegant,
+  .btn-elegant::before,
+  .btn-elegant::after {
+    transition: none !important;
+  }
 }

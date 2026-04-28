@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { DemoBanner } from "@/components/layout/DemoBanner";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -35,6 +36,7 @@ export default function RootLayout({
         className={`${cormorant.variable} ${dmSans.variable} font-body bg-nuit text-ivoire antialiased`}
       >
         <AuthProvider>
+          <DemoBanner />
           {children}
         </AuthProvider>
       </body>

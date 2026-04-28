@@ -1,6 +1,6 @@
 "use client";
 
-import { Users, BookOpen, Award, AlertCircle } from "lucide-react";
+import { Users, BookOpen, AlertCircle } from "lucide-react";
 import { StatCard } from "@/components/ui/StatCard";
 
 interface StatsOverviewProps {

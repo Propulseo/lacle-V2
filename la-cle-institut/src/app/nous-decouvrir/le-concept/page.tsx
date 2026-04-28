@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/Header";
 import { FooterMinimal } from "@/components/layout/FooterMinimal";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { DiscoverNav } from "@/components/layout/DiscoverNav";
 import { HeroSection } from "@/components/ui/HeroSection";
 import { SectionBlock } from "@/components/ui/SectionBlock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -113,6 +114,8 @@ export default function ConceptPage() {
             </div>
           </ScrollReveal>
         </SectionBlock>
+
+        <DiscoverNav current="concept" />
 
         <FooterMinimal />
       </PageWrapper>

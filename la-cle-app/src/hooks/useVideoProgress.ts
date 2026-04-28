@@ -3,6 +3,16 @@
 import { useState, useCallback, useRef } from "react";
 import type { VideoQuestion } from "@/types";
 
+/**
+ * Gere la progression video et le declenchement des questions overlay.
+ * Detecte quand le temps de lecture atteint le timestamp d'une question,
+ * met la video en pause et affiche la question.
+ *
+ * @param questions - Questions overlay associees a la video
+ * @returns { activeQuestion, answeredQuestions, isPaused, handleTimeUpdate, handleAnswer, dismissQuestion }
+ * @example
+ * const { activeQuestion, handleTimeUpdate } = useVideoProgress(video.questions)
+ */
 export function useVideoProgress(questions: VideoQuestion[]) {
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set());
   const [activeQuestion, setActiveQuestion] = useState<VideoQuestion | null>(null);

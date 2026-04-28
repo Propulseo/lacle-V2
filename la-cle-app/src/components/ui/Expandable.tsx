@@ -16,6 +16,7 @@ export function Expandable({ title, children, defaultOpen = false }: ExpandableP
   return (
     <div className="border-b border-filet">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between py-5 text-left transition-colors duration-300 hover:text-or-doux"
         aria-expanded={isOpen}

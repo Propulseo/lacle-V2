@@ -78,9 +78,9 @@ export function Button({
     );
   }
 
-  const { href: _, ...buttonProps } = props as ButtonAsButton;
+  const { href: _, type = "button", ...buttonProps } = props as ButtonAsButton;
   return (
-    <button className={classes} disabled={isLoading || buttonProps.disabled} {...buttonProps}>
+    <button type={type} className={classes} disabled={isLoading || buttonProps.disabled} {...buttonProps}>
       {content}
     </button>
   );

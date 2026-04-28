@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { LogOut, User, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { DropdownMenu } from "@/components/ui/DropdownMenu";
-import { Badge } from "@/components/ui/Badge";
 import { SITE, ROUTES } from "@/lib/constants";
 
 export function LearnerHeader() {

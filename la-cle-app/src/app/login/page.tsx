@@ -74,7 +74,14 @@ export default function LearnerLoginPage() {
         </form>
 
         <p className="mt-6 text-center text-xs text-pierre">
-          Vos identifiants vous ont été communiqués par l&apos;institut.
+          Vos identifiants vous ont ete communiques par l&apos;institut.
+        </p>
+
+        <p className="mt-3 text-center text-xs text-cendre">
+          Pas encore inscrit ?{" "}
+          <a href="/inscription" className="text-or underline underline-offset-2 hover:text-or/80">
+            Commencer ici
+          </a>
         </p>
       </div>
     </div>

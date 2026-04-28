@@ -18,7 +18,12 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
 
   return (
     <motion.div
-      className="pointer-events-none absolute z-30"
+      // Masqué sous `lg` pendant l'état hero (évite que l'orbital
+      // recouvre le titre / CTAs sur mobile-tablet). Visible pendant
+      // le splash : centré au-dessus d'un overlay sombre, sans conflit.
+      className={`pointer-events-none absolute z-30 ${
+        isSplash ? "" : "hidden lg:block"
+      }`}
       style={{ top: "50%", translateY: "-50%" }}
       initial={
         skip

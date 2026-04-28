@@ -1,24 +1,41 @@
 import { mockModules } from "@/data/mock/modules";
 import { mockExamAttempts } from "@/data/mock/exams";
 import { mockVideos } from "@/data/mock/videos";
-import type { Module, ModuleWithProgress } from "@/types";
+import type { LegacyModule, ModuleWithProgress } from "@/types";
 import { sleep, generateId } from "@/lib/utils";
 
 const modules = [...mockModules];
 
-export async function getModules(): Promise<Module[]> {
+/**
+ * Recupere tous les modules tries par ordre croissant.
+ *
+ * @returns Tableau des modules
+ */
+export async function getModules(): Promise<LegacyModule[]> {
   await sleep(300);
   return [...modules].sort((a, b) => a.order - b.order);
 }
 
-export async function getModule(id: string): Promise<Module | null> {
+/**
+ * Recupere un module par son identifiant.
+ *
+ * @param id - Identifiant du module
+ * @returns Le module ou null si non trouve
+ */
+export async function getModule(id: string): Promise<LegacyModule | null> {
   await sleep(200);
   return modules.find((m) => m.id === id) || null;
 }
 
-export async function createModule(data: Omit<Module, "id" | "createdAt">): Promise<Module> {
+/**
+ * Cree un nouveau module de formation.
+ *
+ * @param data - Donnees du module (sans id ni createdAt)
+ * @returns Le module cree avec son ID genere
+ */
+export async function createModule(data: Omit<LegacyModule, "id" | "createdAt">): Promise<LegacyModule> {
   await sleep(400);
-  const newModule: Module = {
+  const newModule: LegacyModule = {
     ...data,
     id: `module-${generateId()}`,
     createdAt: new Date().toISOString(),
@@ -27,7 +44,15 @@ export async function createModule(data: Omit<Module, "id" | "createdAt">): Prom
   return newModule;
 }
 
-export async function updateModule(id: string, data: Partial<Module>): Promise<Module> {
+/**
+ * Met a jour un module existant.
+ *
+ * @param id - Identifiant du module
+ * @param data - Champs a modifier
+ * @returns Le module mis a jour
+ * @throws Si le module n'existe pas
+ */
+export async function updateModule(id: string, data: Partial<LegacyModule>): Promise<LegacyModule> {
   await sleep(300);
   const idx = modules.findIndex((m) => m.id === id);
   if (idx === -1) throw new Error("Module non trouvé");
@@ -35,6 +60,12 @@ export async function updateModule(id: string, data: Partial<Module>): Promise<M
   return modules[idx];
 }
 
+/**
+ * Supprime un module par son identifiant.
+ *
+ * @param id - Identifiant du module
+ * @throws Si le module n'existe pas
+ */
 export async function deleteModule(id: string): Promise<void> {
   await sleep(300);
   const idx = modules.findIndex((m) => m.id === id);
@@ -42,6 +73,11 @@ export async function deleteModule(id: string): Promise<void> {
   modules.splice(idx, 1);
 }
 
+/**
+ * Reordonne les modules selon un nouveau classement.
+ *
+ * @param orderedIds - Tableau d'IDs dans le nouvel ordre
+ */
 export async function reorderModules(orderedIds: string[]): Promise<void> {
   await sleep(200);
   orderedIds.forEach((id, index) => {
@@ -50,6 +86,13 @@ export async function reorderModules(orderedIds: string[]): Promise<void> {
   });
 }
 
+/**
+ * Recupere les modules enrichis de la progression d'un apprenant.
+ * Calcule le statut (locked/in_progress/completed) et le nombre de videos vues.
+ *
+ * @param learnerId - Identifiant de l'apprenant
+ * @returns Modules avec statut de progression
+ */
 export async function getModulesForLearner(learnerId: string): Promise<ModuleWithProgress[]> {
   await sleep(400);
   const sorted = [...modules].sort((a, b) => a.order - b.order);

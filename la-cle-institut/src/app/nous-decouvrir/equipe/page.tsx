@@ -1,11 +1,11 @@
 import { Header } from "@/components/layout/Header";
 import { FooterMinimal } from "@/components/layout/FooterMinimal";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { DiscoverNav } from "@/components/layout/DiscoverNav";
 import { HeroSection } from "@/components/ui/HeroSection";
 import { SectionBlock } from "@/components/ui/SectionBlock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { VideoPlaceholder } from "@/components/ui/VideoPlaceholder";
-import { Button } from "@/components/ui/Button";
 import { TeamFounderBio } from "@/components/formations/TeamFounderBio";
 import { ROUTES } from "@/lib/constants";
 
@@ -40,13 +40,6 @@ export default function TeamPage() {
           decorativeLine
         />
 
-        <SectionBlock background="graphite">
-          <VideoPlaceholder
-            label="Vidéo — Introduction équipe"
-            aspectRatio="21/9"
-          />
-        </SectionBlock>
-
         {/* ---- Diptyque : les garants ---- */}
         <SectionBlock>
           <ScrollReveal>
@@ -71,6 +64,13 @@ export default function TeamPage() {
               </ScrollReveal>
             ))}
           </div>
+        </SectionBlock>
+
+        <SectionBlock background="graphite">
+          <VideoPlaceholder
+            label="Vidéo — Introduction équipe"
+            aspectRatio="21/9"
+          />
         </SectionBlock>
 
         {/* ---- Séparateur gradient ---- */}
@@ -117,21 +117,12 @@ export default function TeamPage() {
           </ScrollReveal>
         </SectionBlock>
 
-        {/* ---- CTA ---- */}
-        <SectionBlock>
-          <ScrollReveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className="mb-6">Découvrir nos formations</h2>
-              <p className="mb-12">
-                Le cadre humain est posé. Découvrez maintenant les parcours
-                pédagogiques que nous avons construits.
-              </p>
-              <Button href={ROUTES.formations} size="large">
-                Découvrir les formations
-              </Button>
-            </div>
-          </ScrollReveal>
-        </SectionBlock>
+        {/*
+          Navigation "Nous découvrir" + CTA unique vers la formation.
+          Remplace l'ancien bloc CTA de conclusion pour éviter un doublon
+          visuel avec le bouton "Découvrir la formation" porté par DiscoverNav.
+        */}
+        <DiscoverNav current="team" showFormationCTA />
 
         <FooterMinimal />
       </PageWrapper>

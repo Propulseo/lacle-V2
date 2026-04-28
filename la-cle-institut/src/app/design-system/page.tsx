@@ -198,6 +198,21 @@ export default function DesignSystemPage() {
                 <Button variant="ghost" size="large">Voir les formations</Button>
               </div>
             </div>
+            {/*
+              Variante "elegant" — démonstration pour comparaison directe avec
+              le bouton default. Utilisée sur la page de vente PNL Praticien.
+            */}
+            <div>
+              <p className="mb-6 text-xs uppercase tracking-widest text-pierre">
+                Elegant <span className="text-bronze/60">(page de vente)</span>
+              </p>
+              <div className="flex flex-wrap items-center gap-6">
+                <Button variant="elegant">Découvrir</Button>
+                <Button variant="elegant" size="large">
+                  Accéder à l&apos;espace
+                </Button>
+              </div>
+            </div>
           </div>
         </SectionBlock>
 

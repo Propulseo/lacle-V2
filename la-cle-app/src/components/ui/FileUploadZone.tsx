@@ -74,7 +74,7 @@ export function FileUploadZone({
             <div key={i} className="flex items-center gap-2 rounded-lg bg-encre px-3 py-2 text-sm">
               <File className="h-4 w-4 text-cendre" />
               <span className="flex-1 truncate text-ivoire">{file.name}</span>
-              <button onClick={() => removeFile(i)} className="text-pierre hover:text-erreur transition-colors">
+              <button type="button" onClick={() => removeFile(i)} aria-label={`Supprimer le fichier ${file.name}`} className="text-pierre hover:text-erreur transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </div>

@@ -5,6 +5,7 @@ export const SITE = {
 } as const;
 
 export const ROUTES = {
+  inscription: "/inscription",
   login: "/login",
   admin: {
     login: "/admin/login",
@@ -17,14 +18,18 @@ export const ROUTES = {
     module: (id: string) => `/admin/contenus/modules/${id}`,
     video: (moduleId: string, videoId: string) =>
       `/admin/contenus/modules/${moduleId}/videos/${videoId}`,
+    engagement: "/admin/engagement",
+    satisfaction: "/admin/satisfaction",
     examenFinal: "/admin/contenus/examen-final",
     coffre: "/admin/contenus/coffre",
     sessions: "/admin/sessions",
     documents: "/admin/documents",
     parametres: "/admin/parametres",
+    moyensTechniques: "/admin/moyens-techniques",
   },
   espace: {
     dashboard: "/espace",
+    onboarding: "/espace/onboarding",
     parcours: "/espace/parcours",
     module: (id: string) => `/espace/parcours/${id}`,
     video: (moduleId: string, videoId: string) =>

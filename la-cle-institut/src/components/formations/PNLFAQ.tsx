@@ -6,7 +6,7 @@ const FAQ_ITEMS = [
   {
     question: "Qu\u2019est-ce que la PNL telle qu\u2019enseignée par La Clé ?",
     answer:
-      "La PNL est un cadre de compréhension des mécanismes cognitifs et comportementaux. Chez La Clé, elle est enseignée comme un outil d\u2019observation et de compréhension, jamais comme une technique de manipulation ou de transformation rapide.",
+      "La PNL est un cadre de compréhension des mécanismes cognitifs et comportementaux. Chez La Clé, elle est enseignée comme un outil d\u2019observation, de compréhension, voire d\u2019altruisme \u2014 jamais comme une technique de manipulation ou de transformation rapide.",
   },
   {
     question: "Le parcours est-il entièrement à distance ?",
