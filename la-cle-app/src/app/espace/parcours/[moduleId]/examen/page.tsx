@@ -13,6 +13,7 @@ import { ExamResultView } from "@/components/exam/ExamResultView";
 import { getExamByModule, getAttempts, submitAttempt } from "@/services/exams";
 import { getModule } from "@/services/modules";
 import { ROUTES } from "@/lib/constants";
+import { NotFoundError } from "@/lib/errors";
 import type { LegacyExamAttempt } from "@/types";
 
 export default function ExamenModulairePage() {
@@ -40,7 +41,9 @@ export default function ExamenModulairePage() {
       setPastAttempts(attempts);
       setAttemptsLoaded(true);
     }
-    return { module_: module_!, exam: exam! };
+    if (!module_) throw new NotFoundError("Module", moduleId);
+    if (!exam) throw new NotFoundError("Examen", moduleId);
+    return { module_, exam };
   }, [moduleId, user?.id]);
 
   const examStatus = useExamLogic(pastAttempts, "module");

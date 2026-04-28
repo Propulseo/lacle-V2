@@ -22,6 +22,7 @@ import { formatDuration, cn } from "@/lib/utils";
 import { getCapsuleDisplayName } from "@/lib/capsule-utils";
 import { hasCompletedPositioning } from "@/lib/positioning";
 import { ROUTES } from "@/lib/constants";
+import { NotFoundError } from "@/lib/errors";
 
 export default function ModuleDetailLearnerPage() {
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -46,8 +47,10 @@ export default function ModuleDetailLearnerPage() {
       attempts = await getAttempts(exam.id, user.id);
     }
 
+    if (!module_) throw new NotFoundError("Module", moduleId);
+
     return {
-      module_: module_!,
+      module_,
       videos,
       exam,
       attempts,

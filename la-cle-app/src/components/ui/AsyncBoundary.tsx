@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import type { AsyncState } from "@/hooks/useAsyncData";
+import { NotFoundError } from "@/lib/errors";
+import { NotFound } from "./NotFound";
 
 interface AsyncBoundaryProps<T> {
   state: AsyncState<T>;
@@ -57,6 +59,9 @@ export function AsyncBoundary<T>({
   }
 
   if (state.error) {
+    if (state.error instanceof NotFoundError) {
+      return <NotFound message={state.error.message} />;
+    }
     return (
       <>
         {errorFallback

@@ -17,6 +17,7 @@ import { getModule } from "@/services/modules";
 import { formatDuration } from "@/lib/utils";
 import { getCapsuleDisplayName } from "@/lib/capsule-utils";
 import { ROUTES } from "@/lib/constants";
+import { NotFoundError } from "@/lib/errors";
 
 export default function VideoPlayerPage() {
   const { moduleId, videoId } = useParams<{ moduleId: string; videoId: string }>();
@@ -28,7 +29,9 @@ export default function VideoPlayerPage() {
       getModule(moduleId),
       getVideosByModule(moduleId),
     ]);
-    return { video: video!, module_: module_!, allVideos };
+    if (!module_) throw new NotFoundError("Module", moduleId);
+    if (!video) throw new NotFoundError("Video", videoId);
+    return { video, module_, allVideos };
   }, [videoId, moduleId]);
 
   return (

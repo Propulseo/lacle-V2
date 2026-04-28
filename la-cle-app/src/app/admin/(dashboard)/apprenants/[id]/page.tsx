@@ -17,6 +17,7 @@ import { getLearner, toggleActive } from "@/services/learners";
 import { getDocuments } from "@/services/documents";
 import { STATUS_CONFIG } from "@/lib/status";
 import { formatDate } from "@/lib/utils";
+import { NotFoundError } from "@/lib/errors";
 
 export default function ApprenantDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -27,7 +28,8 @@ export default function ApprenantDetailPage() {
       getLearner(id),
       getDocuments(id),
     ]);
-    return { learner: learner!, documents };
+    if (!learner) throw new NotFoundError("Apprenant", id);
+    return { learner, documents };
   }, [id]);
 
   async function handleToggleActive() {

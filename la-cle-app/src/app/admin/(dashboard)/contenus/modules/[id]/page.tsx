@@ -20,6 +20,7 @@ import { getVideosByModule } from "@/services/videos";
 import { getExamByModule } from "@/services/exams";
 import { formatDuration } from "@/lib/utils";
 import { ROUTES } from "@/lib/constants";
+import { NotFoundError } from "@/lib/errors";
 
 export default function ModuleDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -32,7 +33,8 @@ export default function ModuleDetailPage() {
       getVideosByModule(id),
       getExamByModule(id),
     ]);
-    return { module_: module_!, videos, exam };
+    if (!module_) throw new NotFoundError("Module", id);
+    return { module_, videos, exam };
   }, [id]);
 
   return (

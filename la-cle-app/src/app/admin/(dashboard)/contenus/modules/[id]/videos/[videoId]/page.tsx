@@ -15,6 +15,7 @@ import { VideoPlayer } from "@/components/ui/VideoPlayer";
 import { getVideo } from "@/services/videos";
 import { getModule } from "@/services/modules";
 import { formatDuration } from "@/lib/utils";
+import { NotFoundError } from "@/lib/errors";
 
 export default function VideoDetailPage() {
   const { id: moduleId, videoId } = useParams<{ id: string; videoId: string }>();
@@ -24,7 +25,9 @@ export default function VideoDetailPage() {
       getVideo(videoId),
       getModule(moduleId),
     ]);
-    return { video: video!, module_: module_! };
+    if (!module_) throw new NotFoundError("Module", moduleId);
+    if (!video) throw new NotFoundError("Video", videoId);
+    return { video, module_ };
   }, [videoId, moduleId]);
 
   return (
