@@ -38,7 +38,10 @@ PostCSS : `@tailwindcss/postcss`. Path alias : `@/*` -> `src/*`.
 
 ## Deploiement Vercel
 
-`vercel.json` a la racine : `/app/*` -> `la-cle-app`, tout le reste -> `la-cle-institut`.
+2 projets Vercel separes :
+- **`la-cle-institut`** (Root Directory = `la-cle-institut`) — domaine principal.
+- **`la-cle-app`** (Root Directory = `la-cle-app`) — URL Vercel propre, `basePath: "/acces-espace"`.
+- L'institut proxy `/acces-espace/*` vers l'app via `rewrites()` dans `next.config.ts` + variable `NEXT_PUBLIC_APP_URL`.
 
 ## Conventions globales
 
