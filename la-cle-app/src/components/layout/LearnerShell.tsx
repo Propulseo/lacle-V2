@@ -31,14 +31,11 @@ export function LearnerShell({ children }: LearnerShellProps) {
               <span>Un probleme a ete detecte avec votre paiement.</span>
             </div>
             <a
-              href="#"
+              href="mailto:contact@institutlacle.fr?subject=Probleme%20de%20paiement"
               className="flex shrink-0 items-center gap-1 text-sm font-medium text-erreur underline transition-colors hover:text-erreur/80"
-              onClick={(e) => {
-                e.preventDefault();
-                // TODO // Stripe: lien vers customer portal Stripe
-              }}
             >
-              Mettre a jour
+              {/* TODO // Stripe: remplacer par lien vers customer portal Stripe */}
+              Nous contacter
               <ExternalLink className="h-3 w-3" />
             </a>
           </div>
@@ -47,6 +44,10 @@ export function LearnerShell({ children }: LearnerShellProps) {
       <main className="mx-auto max-w-5xl px-4 py-6 pb-20 sm:px-6 md:pb-6">
         {children}
       </main>
+      {/* TODO // Qualiopi Ind.26: referent handicap */}
+      <footer className="border-t border-filet px-4 py-4 text-center text-xs text-pierre hidden md:block">
+        Referent handicap : <a href="mailto:contact@institutlacle.fr" className="text-cendre hover:text-ivoire transition-colors">contact@institutlacle.fr</a>
+      </footer>
       <BugReportButton />
       <LearnerMobileNav />
     </div>

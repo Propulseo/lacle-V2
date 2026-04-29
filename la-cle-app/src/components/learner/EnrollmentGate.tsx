@@ -91,6 +91,7 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
                   size="sm"
                   onClick={() => {
                     // TODO // Supabase Storage: URL du contrat PDF
+                    alert("Le contrat de formation sera disponible au telechargement une fois votre espace configure. Contactez contact@institutlacle.fr pour toute question.");
                   }}
                 >
                   Voir le document
@@ -121,6 +122,7 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
                   size="sm"
                   onClick={() => {
                     // TODO // Supabase Storage: URL des CGV PDF
+                    alert("Les CGV seront disponibles au telechargement une fois votre espace configure. Contactez contact@institutlacle.fr pour toute question.");
                   }}
                 >
                   Voir le document
