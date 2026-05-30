@@ -5,7 +5,7 @@ import { SectionBlock } from "@/components/ui/SectionBlock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export const metadata = {
-  title: "Conditions générales de vente — La Clé",
+  title: "Conditions générales de vente | La Clé",
   description: "Conditions générales de vente de l\u2019institut La Clé.",
 };
 

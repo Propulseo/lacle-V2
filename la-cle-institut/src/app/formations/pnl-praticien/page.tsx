@@ -8,17 +8,18 @@ import { PNLModules } from "@/components/formations/PNLModules";
 import { ParcoursSteps } from "@/components/formations/ParcoursSteps";
 import { PNLFAQ } from "@/components/formations/PNLFAQ";
 import { FormationDocuments } from "@/components/formations/FormationDocuments";
+import { FormationResultats } from "@/components/formations/FormationResultats";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata = {
-  title: "PNL Praticien — La Clé",
+  title: "PNL Praticien | La Clé",
   description:
-    "Formation complète de Praticien PNL. Parcours distanciel structuré et phase présentielle intensive.",
+    "Formation complète de Praticien PNL. Parcours distanciel structuré en sept modules, menant à la certification.",
 };
 
 const METRICS = [
   { value: "7", label: "Modules distanciels" },
-  { value: "2", label: "Phases complémentaires" },
+  { value: "10", label: "Compétences clés" },
   { value: "1", label: "Certification délivrée" },
 ];
 
@@ -47,7 +48,7 @@ export default function PNLPraticienPage() {
 
             <ScrollReveal delay={0.1}>
               <h1 className="mt-6 max-w-4xl font-display text-5xl font-semibold leading-[1.02] text-ivoire md:text-7xl lg:text-8xl xl:text-[6.5rem]">
-                PNL — Praticien
+                Praticien PNL
               </h1>
             </ScrollReveal>
 
@@ -56,20 +57,20 @@ export default function PNLPraticienPage() {
                 <div className="mt-3 hidden h-px w-20 shrink-0 bg-gradient-to-r from-bronze/60 to-transparent md:block" />
                 <p className="max-w-xl text-lg leading-relaxed text-cendre md:text-xl">
                   Comprendre les mécanismes fondamentaux de la Programmation
-                  Neuro-Linguistique avec rigueur et profondeur.
+                  Neuro-Linguistique avec exigence et profondeur.
                 </p>
               </div>
             </ScrollReveal>
 
             {/* Métriques */}
             <ScrollReveal delay={0.3}>
-              <div className="mt-20 grid grid-cols-3 gap-8 border-t border-filet/60 pt-10 md:mt-24 md:max-w-lg md:gap-16">
+              <div className="mt-20 grid grid-cols-1 gap-6 border-t border-filet/60 pt-10 sm:grid-cols-3 sm:gap-8 md:mt-24 md:max-w-lg md:gap-16">
                 {METRICS.map((m) => (
                   <div key={m.label}>
                     <span className="block font-display text-4xl font-light text-ivoire md:text-5xl">
                       {m.value}
                     </span>
-                    <p className="mt-2 text-[0.6rem] uppercase tracking-[0.2em] text-pierre md:text-xs md:tracking-widest">
+                    <p className="mt-2 text-[0.65rem] uppercase tracking-[0.12em] text-pierre md:text-xs md:tracking-widest">
                       {m.label}
                     </p>
                   </div>
@@ -116,7 +117,7 @@ export default function PNLPraticienPage() {
                 </p>
                 <p className="leading-[1.85]">
                   Chez La Clé, elle est enseignée comme une discipline de
-                  compréhension — pas comme un catalogue de techniques à
+                  compréhension, pas comme un catalogue de techniques à
                   appliquer mécaniquement.
                 </p>
                 <blockquote className="mt-6 border-l-2 border-bronze/30 pl-6 pt-2">
@@ -149,7 +150,7 @@ export default function PNLPraticienPage() {
                   le choix inverse : chaque concept est enseigné dans sa
                   profondeur, avec le temps nécessaire à une compréhension
                   véritable. Le rythme est progressif. La structure est
-                  rigoureuse. L&apos;objectif est la maîtrise, pas la collection
+                  exigeante. L&apos;objectif est la maîtrise, pas la collection
                   de certificats.
                 </p>
               </div>
@@ -177,44 +178,22 @@ export default function PNLPraticienPage() {
           <PNLModules />
         </SectionBlock>
 
-        {/* ---- Présentiel + Certification ---- */}
+        {/* ---- Certification (présentiel retiré : non disponible, retour A13) ---- */}
         <SectionBlock>
           <ScrollReveal>
-            <div className="grid gap-px md:grid-cols-2">
-              <div className="card-elevated border border-filet bg-graphite/30 p-8 md:p-12">
-                <span className="mb-8 block font-display text-6xl font-extralight text-bronze/15 md:text-7xl">
-                  02
-                </span>
-                <p className="mb-2 text-label tracking-[0.25em] text-bronze/70">
-                  Phase présentielle
-                </p>
-                <h3 className="mb-5 font-display text-2xl text-ivoire md:text-3xl">
-                  Intégration pratique
-                </h3>
-                <p className="leading-relaxed text-cendre">
-                  La phase présentielle est le moment où les connaissances
-                  théoriques prennent corps. Encadrée par les formateurs de
-                  l&apos;institut, elle permet une mise en pratique supervisée et
-                  un approfondissement par l&apos;expérience directe.
-                </p>
-              </div>
-              <div className="card-elevated border border-filet bg-graphite/30 p-8 md:p-12">
-                <span className="mb-8 block font-display text-6xl font-extralight text-bronze/15 md:text-7xl">
-                  03
-                </span>
-                <p className="mb-2 text-label tracking-[0.25em] text-bronze/70">
-                  Aboutissement
-                </p>
-                <h3 className="mb-5 font-display text-2xl text-ivoire md:text-3xl">
-                  Certification
-                </h3>
-                <p className="leading-relaxed text-cendre">
-                  À l&apos;issue du parcours complet, une certification de
-                  Praticien PNL est délivrée par l&apos;institut La Clé. Elle
-                  atteste d&apos;une maîtrise des fondamentaux acquise avec
-                  rigueur et profondeur.
-                </p>
-              </div>
+            <div className="card-elevated mx-auto max-w-2xl border border-filet bg-graphite/30 p-8 md:p-12">
+              <p className="mb-2 text-label tracking-[0.25em] text-bronze/70">
+                Aboutissement
+              </p>
+              <h3 className="mb-5 font-display text-2xl text-ivoire md:text-3xl">
+                Certification
+              </h3>
+              <p className="leading-relaxed text-cendre">
+                À l&apos;issue du parcours distanciel, une certification de
+                Praticien PNL est délivrée par l&apos;institut La Clé. Elle
+                atteste d&apos;une maîtrise des fondamentaux acquise avec
+                exigence et profondeur.
+              </p>
             </div>
           </ScrollReveal>
         </SectionBlock>
@@ -241,6 +220,11 @@ export default function PNLPraticienPage() {
               </p>
             </div>
           </ScrollReveal>
+        </SectionBlock>
+
+        {/* ---- Indicateurs de résultats (Qualiopi indicateur 2) ---- */}
+        <SectionBlock background="graphite">
+          <FormationResultats />
         </SectionBlock>
 
         {/* ---- Documents pédagogiques (Qualiopi indicateur 1) ---- */}

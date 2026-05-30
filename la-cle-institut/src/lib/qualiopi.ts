@@ -16,3 +16,10 @@ export const PAGE_LAST_UPDATED = "mai 2026";
 
 /** Email unique de contact du référent handicap de l'institut. */
 export const HANDICAP_REFERENT_EMAIL = "contact@institutlacle.fr";
+
+/**
+ * Tarif de la formation Praticien PNL.
+ * Affiché a minima sur la page de vente (Qualiopi Ind.1 : tarif accessible
+ * au public). Décision Marien : on affiche au minimum.
+ */
+export const FORMATION_PRICE = "2 200 € TTC";

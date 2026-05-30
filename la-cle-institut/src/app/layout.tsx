@@ -20,7 +20,7 @@ const libreFranklin = Libre_Franklin({
 });
 
 export const metadata: Metadata = {
-  title: "La Clé — Institut de compréhension des mécanismes humains",
+  title: "La Clé | Institut de compréhension des mécanismes humains",
   description:
     "Institut de formation dédié à la compréhension et à la maîtrise des mécanismes humains.",
 };

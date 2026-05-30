@@ -72,7 +72,7 @@ export function DiscoverNav({
 
         {showFormationCTA && (
           <Button href={ROUTES.formations}>
-            D&eacute;couvrir la formation
+            Aller vers la formation
           </Button>
         )}
       </div>

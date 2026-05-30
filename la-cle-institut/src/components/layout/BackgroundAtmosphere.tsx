@@ -100,10 +100,11 @@ const LIGHT_BLOBS: BlobConfig[] = [
 ];
 
 function AuroraBlob({ config, blendMode }: { config: BlobConfig; blendMode: "screen" | "multiply" }) {
+  // Perf (A15) : on n'anime plus left/top (propriétés de layout, coûteuses en
+  // repaint) mais uniquement scale/rotate/opacity (transform = GPU). Les blobs
+  // respirent sur place ; le calque est promu via will-change.
   const newTarget = useCallback(
     () => ({
-      x: rand(-20, 80),
-      y: rand(-20, 80),
       scale: rand(0.9, 1.1),
       rotate: rand(-8, 8),
       opacity: rand(config.opacity[0], config.opacity[1]),
@@ -116,16 +117,8 @@ function AuroraBlob({ config, blendMode }: { config: BlobConfig; blendMode: "scr
 
   return (
     <motion.div
-      initial={{
-        left: `${config.startX}%`,
-        top: `${config.startY}%`,
-        scale: 1,
-        rotate: 0,
-        opacity: config.opacity[0],
-      }}
+      initial={{ scale: 1, rotate: 0, opacity: config.opacity[0] }}
       animate={{
-        left: `${target.x}%`,
-        top: `${target.y}%`,
         scale: target.scale,
         rotate: target.rotate,
         opacity: target.opacity,
@@ -134,12 +127,15 @@ function AuroraBlob({ config, blendMode }: { config: BlobConfig; blendMode: "scr
       onAnimationComplete={() => setTarget(newTarget())}
       style={{
         position: "absolute",
+        left: `${config.startX}%`,
+        top: `${config.startY}%`,
         width: config.size,
         height: config.size,
         borderRadius: "50%",
         background: `radial-gradient(circle, ${config.color} 0%, transparent 70%)`,
         filter: `blur(${config.blur}px)`,
         mixBlendMode: blendMode,
+        willChange: "transform, opacity",
       }}
     />
   );

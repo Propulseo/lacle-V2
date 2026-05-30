@@ -7,7 +7,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata = {
-  title: "Nous découvrir — La Clé",
+  title: "Nous découvrir | La Clé",
   description: "Comprendre l\u2019institut, sa vocation et les personnes qui l\u2019incarnent.",
 };
 
@@ -16,8 +16,11 @@ export default function DiscoverHubPage() {
     <>
       <Header showBack backHref="/" backLabel="Accueil" />
       <PageWrapper>
+        {/*
+          Pas de label "Institut La Clé" ici : le header porte déjà la marque,
+          le doublon créait un chevauchement visuel en haut de page (retour A1).
+        */}
         <HeroSection
-          label="Institut La Clé"
           title="Nous découvrir"
           subtitle="Comprendre l'institut, sa vocation et les personnes qui l'incarnent."
           decorativeLine

@@ -94,7 +94,7 @@ export function AccesEspaceContent() {
               <CredentialRow label="Email" value="marie.dupont@email.com" />
               <CredentialRow label="Mot de passe" value="demo" />
               <p className="pt-1 text-[10px] leading-relaxed text-pierre/60">
-                5 comptes disponibles — tout email d&apos;apprenant fonctionne avec 3&nbsp;caractères minimum.
+                5 comptes disponibles, tout email d&apos;apprenant fonctionne avec 3&nbsp;caractères minimum.
               </p>
             </div>
 

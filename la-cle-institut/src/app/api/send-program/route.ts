@@ -3,17 +3,17 @@ import { NextResponse } from "next/server";
 /**
  * POST /api/send-program
  *
- * Reçoit { email: string } et déclenche l'envoi du programme de formation
+ * Reçoit { email: string } et déclenchera l'envoi du programme de formation
  * à l'adresse renseignée. Utilisé par <ProgramEmailForm /> sur la page de
  * vente PNL Praticien.
  *
  * État actuel : validation d'entrée + accusé de réception. L'envoi réel
- * n'est pas encore branché.
+ * n'est pas encore branché (voir fiche Q1 du PLAN_ACTION).
  *
  * TODO (Resend) :
- *   1. Installer @resend/node : `npm i resend`
+ *   1. Installer : `npm i resend`
  *   2. Renseigner RESEND_API_KEY dans .env.local et en prod (Vercel).
- *   3. Remplacer le bloc "console.log" ci-dessous par :
+ *   3. Remplacer le bloc d'accusé de réception ci-dessous par :
  *        import { Resend } from "resend";
  *        const resend = new Resend(process.env.RESEND_API_KEY);
  *        await resend.emails.send({
@@ -26,8 +26,8 @@ import { NextResponse } from "next/server";
  *            path: "https://institutlacle.fr/documents/pnl-praticien-programme.pdf",
  *          }],
  *        });
- *   4. Gérer les erreurs Resend (quotas, adresse invalide) et retourner
- *      un code HTTP adapté.
+ *   4. Déposer d'abord le PDF réel dans public/documents/ (sinon l'attachment 404).
+ *   5. Gérer les erreurs Resend (quotas, adresse invalide) et le code HTTP.
  */
 export async function POST(req: Request) {
   let payload: unknown;
@@ -54,8 +54,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Email invalide" }, { status: 400 });
   }
 
-  // TODO (Resend) : remplacer ce log par l'envoi réel (cf. bloc ci-dessus).
-  console.log("[send-program] demande reçue pour :", email);
-
+  // TODO (Resend) : brancher l'envoi réel ici (cf. en-tête).
+  // En attendant : accusé de réception, sans journalisation (zéro console.log en prod).
   return NextResponse.json({ ok: true });
 }

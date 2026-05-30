@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ROUTES } from "@/lib/constants";
+import { ROUTES, SITE } from "@/lib/constants";
 import { HANDICAP_REFERENT_EMAIL } from "@/lib/qualiopi";
 
 export function FooterMinimal() {
@@ -25,7 +25,7 @@ export function FooterMinimal() {
               La Clé
             </p>
             <p className="mt-1 font-display text-xs italic text-pierre/50">
-              Comprendre avant d&apos;agir
+              {SITE.baseline}
             </p>
           </div>
 
@@ -48,6 +48,12 @@ export function FooterMinimal() {
               className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-bronze"
             >
               Contact
+            </Link>
+            <Link
+              href={ROUTES.accessibility}
+              className="text-xs uppercase tracking-[0.1em] text-pierre transition-colors duration-300 hover:text-bronze"
+            >
+              Accessibilité
             </Link>
           </nav>
 

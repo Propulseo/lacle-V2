@@ -278,22 +278,22 @@ blockquote {
 
   /* Hero — "Parchemin & Or" */
   --hero-bg: #F4EEE4;
-  --hero-glow-1: rgba(176, 144, 88, 0.22);
-  --hero-glow-2: rgba(154, 123, 68, 0.14);
-  --hero-glow-3: rgba(190, 170, 140, 0.30);
+  --hero-glow-1: rgba(176, 144, 88, 0.10);
+  --hero-glow-2: rgba(154, 123, 68, 0.07);
+  --hero-glow-3: rgba(190, 170, 140, 0.15);
   --hero-grid-line: rgba(154, 123, 68, 0.10);
   --hero-grid-opacity: 0.06;
   --hero-bottom-gradient: #E5DCCC;
   --hero-depth-top: rgba(220, 210, 192, 0.6);
-  --hero-focal: rgba(176, 144, 88, 0.14);
-  --hero-focal-outer: rgba(200, 180, 145, 0.10);
+  --hero-focal: rgba(176, 144, 88, 0.07);
+  --hero-focal-outer: rgba(200, 180, 145, 0.05);
   --hero-title: #1A1612;
   --hero-surtitre: rgba(154, 123, 68, 0.90);
   --hero-subtitle: rgba(42, 38, 32, 0.62);
   --hero-line-start: rgba(154, 123, 68, 0.70);
   --hero-line-mid: rgba(154, 123, 68, 0.35);
-  --hero-orbital-glow-inner: rgba(176, 141, 87, 0.28);
-  --hero-orbital-glow-outer: rgba(180, 160, 120, 0.22);
+  --hero-orbital-glow-inner: rgba(176, 141, 87, 0.16);
+  --hero-orbital-glow-outer: rgba(180, 160, 120, 0.12);
   --hero-cta-color: #1A1612;
   --hero-cta-bg: rgba(154, 123, 68, 0.10);
   --hero-cta-border: rgba(154, 123, 68, 0.25);
@@ -387,10 +387,15 @@ blockquote {
 }
 @media (prefers-reduced-motion: reduce) {
   .orb-a { animation: none !important; }
+  .hero-atmosphere-glow-1 { animation: none !important; }
 }
 
 .hero-atmosphere-glow-1 {
   animation: heroPulse 4s ease-in-out infinite;
+}
+/* Mode clair : on coupe le pulse du halo bronze (retour photosensibilité A3) */
+[data-theme="light"] .hero-atmosphere-glow-1 {
+  animation: none;
 }
 
 /* ---- Hero CTA styles ---- */
@@ -534,10 +539,13 @@ blockquote {
   overflow: hidden;
   letter-spacing: 0.2em;
   color: var(--color-ivoire);
-  border: 1px solid color-mix(in srgb, var(--color-bronze) 35%, transparent);
+  background: color-mix(in srgb, var(--color-bronze) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-bronze) 45%, transparent);
   transition:
     color 700ms var(--ease-institutional),
+    background 700ms var(--ease-institutional),
     border-color 700ms var(--ease-institutional),
+    box-shadow 700ms var(--ease-institutional),
     letter-spacing 700ms var(--ease-institutional),
     transform 700ms var(--ease-institutional);
 }
@@ -572,7 +580,9 @@ blockquote {
 
 .btn-elegant:hover {
   color: var(--color-bronze-clair);
+  background: color-mix(in srgb, var(--color-bronze) 12%, transparent);
   border-color: color-mix(in srgb, var(--color-bronze) 80%, transparent);
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--color-bronze) 18%, transparent);
   letter-spacing: 0.23em;
 }
 

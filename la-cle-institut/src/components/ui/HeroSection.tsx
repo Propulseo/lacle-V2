@@ -26,7 +26,7 @@ export function HeroSection({
       className={`flex flex-col justify-center ${
         fullHeight
           ? "min-h-screen"
-          : "pb-20 pt-32 md:pb-28 md:pt-40"
+          : "pb-20 pt-36 md:pb-28 md:pt-44"
       } ${className}`}
     >
       <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10 lg:px-16">

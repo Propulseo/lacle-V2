@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata = {
-  title: "Catalogue des formations — La Clé",
+  title: "Catalogue des formations | La Clé",
   description: "Les formations proposées par l\u2019institut La Clé. Une progression structurée au service de la compréhension.",
 };
 
@@ -98,9 +98,9 @@ export default function FormationsPage() {
           </ScrollReveal>
 
           {/*
-            Carrousel horizontal — source de vérité dans src/lib/formations.ts.
-            Affiche toutes les formations (disponibles, en cours de création,
-            en projet) avec badge de statut et interaction adaptée.
+            Une roue par parcours (src/lib/formations.ts, PARCOURS). Chaque
+            étape porte un badge de statut et une interaction adaptée
+            (disponible cliquable, sinon « Bientôt disponible »).
           */}
           <ScrollReveal delay={0.1}>
             <FormationCarousel />
@@ -113,11 +113,11 @@ export default function FormationsPage() {
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="mb-6">Commencer le parcours</h2>
               <p className="mb-12">
-                Découvrez en détail la formation PNL Praticien —
-                son contenu, sa structure et ses exigences.
+                Découvrez en détail la formation Praticien PNL : son contenu,
+                sa structure et ses exigences.
               </p>
               <Button href={ROUTES.pnlPractitioner} size="large">
-                Découvrir PNL — Praticien
+                Découvrir Praticien PNL
               </Button>
             </div>
           </ScrollReveal>

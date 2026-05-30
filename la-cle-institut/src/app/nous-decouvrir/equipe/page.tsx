@@ -10,21 +10,22 @@ import { TeamFounderBio } from "@/components/formations/TeamFounderBio";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata = {
-  title: "L'équipe — La Clé",
+  title: "L'équipe | La Clé",
   description:
     "Les garants pédagogiques de l'institut La Clé et l'origine du projet.",
 };
 
+/* COPY — à valider Marien : « rigueur » adouci en « exigence » (retour A11). */
 const teamMembers = [
   {
     name: "Marien",
     role: "Garant pédagogique",
-    bio: "Marien est le garant de la rigueur pédagogique de l'institut. Sa mission\u00a0: s'assurer que chaque parcours respecte les exigences de profondeur et de structure qui fondent l'identité de La Clé.",
+    bio: "Marien est le garant de l'exigence pédagogique de l'institut. Sa mission : s'assurer que chaque parcours respecte les attentes de profondeur et de structure qui fondent l'identité de La Clé.",
   },
   {
     name: "Titi",
     role: "Co-garant symbolique",
-    bio: "Titi incarne la dimension humaine et symbolique du projet. Sa présence rappelle que derrière la rigueur méthodologique, il y a une vision profondément humaine de l'apprentissage.",
+    bio: "Titi incarne la dimension humaine et symbolique du projet. Sa présence rappelle que derrière l'exigence méthodologique, il y a une vision profondément humaine de l'apprentissage.",
   },
 ];
 
@@ -40,7 +41,7 @@ export default function TeamPage() {
           decorativeLine
         />
 
-        {/* ---- Diptyque : les garants ---- */}
+        {/* ---- Diptyque : les garants (TEXTE) ---- */}
         <SectionBlock>
           <ScrollReveal>
             <p className="mb-16 text-center text-label tracking-[0.3em] text-bronze">
@@ -66,9 +67,10 @@ export default function TeamPage() {
           </div>
         </SectionBlock>
 
+        {/* ---- Vidéo (sous le texte : retour A8) ---- */}
         <SectionBlock background="graphite">
           <VideoPlaceholder
-            label="Vidéo — Introduction équipe"
+            label="Vidéo : Introduction équipe"
             aspectRatio="21/9"
           />
         </SectionBlock>
@@ -90,8 +92,8 @@ export default function TeamPage() {
             </p>
             <p className="mt-4 max-w-2xl">
               Les formations existantes manquent souvent de profondeur
-              structurelle. L&apos;institut a été créé pour combler ce manque
-              &mdash;&nbsp;avec rigueur et sans compromis.
+              structurelle. L&apos;institut a été créé pour combler ce manque,
+              avec exigence et sans compromis.
             </p>
           </ScrollReveal>
         </SectionBlock>
@@ -110,8 +112,8 @@ export default function TeamPage() {
               <p>
                 L&apos;institut La Clé est conçu pour grandir. L&apos;équipe actuelle
                 constitue le noyau fondateur, mais d&apos;autres personnes viendront
-                enrichir ce cadre &mdash;&nbsp;toujours dans le respect des
-                exigences qui fondent notre identité.
+                enrichir ce cadre, toujours dans le respect des exigences qui
+                fondent notre identité.
               </p>
             </div>
           </ScrollReveal>
@@ -120,7 +122,7 @@ export default function TeamPage() {
         {/*
           Navigation "Nous découvrir" + CTA unique vers la formation.
           Remplace l'ancien bloc CTA de conclusion pour éviter un doublon
-          visuel avec le bouton "Découvrir la formation" porté par DiscoverNav.
+          visuel avec le bouton porté par DiscoverNav.
         */}
         <DiscoverNav current="team" showFormationCTA />
 

@@ -9,34 +9,36 @@ import { Button } from "@/components/ui/Button";
 import { ROUTES } from "@/lib/constants";
 
 export const metadata = {
-  title: "Notre vocation — La Clé",
+  title: "Notre vocation | La Clé",
   description:
-    "Comprendre le pourquoi profond de l\u2019institut La Clé et sa mission de compréhension des mécanismes humains.",
+    "Comprendre le pourquoi profond de l’institut La Clé et sa mission de compréhension des mécanismes humains.",
 };
 
+/* COPY — à valider Marien : « rigueur » adouci en « exigence » (retour A11),
+   tirets cadratins retirés (retour A18). */
 const SECTIONS = [
   {
     number: "01",
-    title: "L\u2019excellence n\u2019est pas un slogan",
-    text: "Elle se manifeste dans la rigueur d\u2019une structure pensée pour la profondeur. Chaque élément de notre approche a été construit pour servir un objectif unique : permettre une compréhension réelle des mécanismes qui gouvernent nos comportements, nos décisions et nos interactions.",
+    title: "L’excellence n’est pas un slogan",
+    text: "Elle se manifeste dans l’exigence d’une structure pensée pour la profondeur. Chaque élément de notre approche a été construit pour servir un objectif unique : permettre une compréhension réelle des mécanismes qui gouvernent nos comportements, nos décisions et nos interactions.",
     quote:
-      "La rigueur n\u2019est pas une contrainte — c\u2019est une condition de la profondeur.",
+      "L’exigence n’est pas une contrainte, c’est une condition de la profondeur.",
     video: "excellence",
   },
   {
     number: "02",
-    title: "Aller au c\u0153ur des mécanismes",
-    text: "La surface ne suffit pas. Comprendre véritablement, c\u2019est accéder aux structures profondes qui sous-tendent l\u2019expérience humaine. Notre pédagogie est conçue pour accompagner cette descente vers l\u2019essentiel, avec méthode et sans précipitation.",
+    title: "Aller au cœur des mécanismes",
+    text: "La surface ne suffit pas. Comprendre véritablement, c’est accéder aux structures profondes qui sous-tendent l’expérience humaine. Notre pédagogie est conçue pour accompagner cette descente vers l’essentiel, avec méthode et sans précipitation.",
     quote:
-      "Ce qui se voit n\u2019est jamais que la surface de ce qui se comprend.",
+      "Ce qui se voit n’est jamais que la surface de ce qui se comprend.",
     video: "mecanismes",
   },
   {
     number: "03",
-    title: "L\u2019humain comme horizon",
-    text: "Au-delà des outils et des méthodes, c\u2019est l\u2019humain qui reste au centre. La compréhension des mécanismes n\u2019est pas une fin en soi — elle est un moyen d\u2019accéder à une maîtrise plus consciente de soi et de ses interactions avec le monde.",
+    title: "L’humain comme horizon",
+    text: "Au-delà des outils et des méthodes, c’est l’humain qui reste au centre. La compréhension des mécanismes n’est pas une fin en soi, elle est un moyen d’accéder à une maîtrise plus consciente de soi et de ses interactions avec le monde.",
     quote:
-      "Comprendre l\u2019humain, c\u2019est d\u2019abord accepter sa complexité.",
+      "Comprendre l’humain, c’est d’abord accepter sa complexité.",
     video: "humain",
   },
 ];
@@ -125,7 +127,7 @@ export default function VocationPage() {
                       {section.number}
                     </span>
                     <p className="mb-4 text-label tracking-[0.25em] text-bronze/70">
-                      {section.number} — Conviction
+                      Conviction
                     </p>
                     <h2 className="mb-8 max-w-md font-display text-3xl leading-[1.15] text-ivoire md:text-4xl lg:text-[2.75rem]">
                       {section.title}
@@ -145,7 +147,7 @@ export default function VocationPage() {
                 {/* Vidéo */}
                 <div className={textFirst ? "lg:order-2" : "lg:order-1"}>
                   <ScrollReveal delay={0.2}>
-                    <VideoPlaceholder label={`Vidéo — ${section.title}`} />
+                    <VideoPlaceholder label={`Vidéo : ${section.title}`} />
                   </ScrollReveal>
                 </div>
               </div>

@@ -47,8 +47,8 @@ const COLORS_LIGHT = [
 
 const FAQ_ITEMS = [
   { question: "Qu'est-ce que la PNL telle qu'enseignée par La Clé ?", answer: "La PNL est un cadre de compréhension des mécanismes cognitifs et comportementaux. Chez La Clé, elle est enseignée comme un outil d'observation et de compréhension, jamais comme une technique de manipulation ou de transformation rapide." },
-  { question: "Le parcours est-il entièrement à distance ?", answer: "Le parcours combine une phase distancielle structurée et une phase présentielle intensive. La partie distancielle pose les fondations théoriques, le présentiel permet l'intégration pratique." },
-  { question: "Faut-il des prérequis pour s'inscrire ?", answer: "Aucun prérequis académique n'est nécessaire. La formation s'adresse à toute personne souhaitant comprendre les mécanismes humains avec rigueur et profondeur." },
+  { question: "Le parcours est-il entièrement à distance ?", answer: "Oui. Le parcours se déroule entièrement à distance, en modules structurés et progressifs, jusqu'à la certification." },
+  { question: "Faut-il des prérequis pour s'inscrire ?", answer: "Aucun prérequis académique n'est nécessaire. La formation s'adresse à toute personne souhaitant comprendre les mécanismes humains avec exigence et profondeur." },
 ];
 
 export default function DesignSystemPage() {
@@ -64,7 +64,7 @@ export default function DesignSystemPage() {
         {/* ---- HERO ---- */}
         <HeroSection
           title="Design System"
-          subtitle="Institut La Clé — Tokens, composants et patterns du système de design institutionnel."
+          subtitle="Institut La Clé : tokens, composants et patterns du système de design institutionnel."
         />
 
         {/* ---- PALETTE ---- */}
@@ -169,7 +169,7 @@ export default function DesignSystemPage() {
           <div className="mt-12 max-w-2xl space-y-6">
             <p className="mb-2 text-xs uppercase tracking-widest text-pierre">Corps — Libre Franklin</p>
             <p>
-              L&apos;institut La Clé propose une approche rigoureuse de la compréhension des mécanismes humains.
+              L&apos;institut La Clé propose une approche exigeante de la compréhension des mécanismes humains.
               Il ne s&apos;agit pas d&apos;une promesse de transformation, mais d&apos;un cadre structuré pour
               observer, comprendre et maîtriser les dynamiques cognitives et comportementales.
             </p>
@@ -255,14 +255,14 @@ export default function DesignSystemPage() {
           <h2 className="mb-12">Cartes Formation</h2>
           <div className="grid gap-6 md:grid-cols-2">
             <FormationCard
-              title="PNL — Praticien"
-              description="Formation complète de praticien PNL. Parcours distanciel structuré suivi d'une phase présentielle intensive."
+              title="Praticien PNL"
+              description="Formation complète de praticien PNL. Parcours distanciel structuré menant à la certification."
               href="#"
               available
               label="Disponible"
             />
             <FormationCard
-              title="PNL — Maître Praticien"
+              title="Maître Praticien PNL"
               description="Approfondissement des mécanismes avancés de la PNL. Suite logique du parcours praticien."
               available={false}
               label="À venir"

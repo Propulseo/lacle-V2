@@ -11,12 +11,6 @@ const STEPS = [
   },
   {
     number: "02",
-    title: "Présentiel",
-    subtitle: "Phase intensive",
-    description: "Intégration pratique encadrée. Mise en situation et supervision directe.",
-  },
-  {
-    number: "03",
     title: "Certification",
     subtitle: "Praticien PNL",
     description: "Validation des acquis. Certification délivrée par l\u2019institut La Clé.",
@@ -25,7 +19,7 @@ const STEPS = [
 
 export function ParcoursSteps() {
   return (
-    <div className="grid gap-px md:grid-cols-3">
+    <div className="grid gap-px md:grid-cols-2">
       {STEPS.map((step, i) => (
         <ScrollReveal key={step.number} delay={i * 0.12}>
           <div className="card-elevated group relative border border-filet bg-graphite/60 p-8 transition-all duration-500 hover:bg-ardoise/60 md:p-10">

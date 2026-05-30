@@ -37,10 +37,9 @@ export function ProgramEmailForm() {
   if (status === "sent") {
     return (
       <p className="text-sm leading-relaxed text-cendre">
-        Merci. Le programme vient de vous être envoyé à l&apos;adresse{" "}
-        <span className="text-ivoire">{email}</span>. Pensez à vérifier vos
-        courriers indésirables si vous ne le recevez pas dans les prochaines
-        minutes.
+        Merci. Votre demande est bien enregistrée à l&apos;adresse{" "}
+        <span className="text-ivoire">{email}</span>. Vous recevrez le
+        programme de formation par e-mail très prochainement.
       </p>
     );
   }

@@ -4,9 +4,10 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 import { SectionBlock } from "@/components/ui/SectionBlock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { SITE } from "@/lib/constants";
 
 export const metadata = {
-  title: "Contact — La Clé",
+  title: "Contact | La Clé",
   description:
     "Contactez l\u2019institut La Clé pour toute question relative aux formations ou à votre parcours.",
 };
@@ -27,7 +28,7 @@ const CONTACT_BLOCKS = [
     ),
     title: "Nous écrire",
     text: "Pour toute question relative à l\u2019institut, à nos formations ou à votre parcours.",
-    detail: "contact@la-cle-institut.fr",
+    detail: SITE.email,
   },
   {
     icon: (

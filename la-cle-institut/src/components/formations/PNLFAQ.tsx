@@ -4,29 +4,29 @@ import { FAQAccordion } from "@/components/ui/FAQAccordion";
 
 const FAQ_ITEMS = [
   {
-    question: "Qu\u2019est-ce que la PNL telle qu\u2019enseignée par La Clé ?",
+    question: "Qu’est-ce que la PNL telle qu’enseignée par La Clé ?",
     answer:
-      "La PNL est un cadre de compréhension des mécanismes cognitifs et comportementaux. Chez La Clé, elle est enseignée comme un outil d\u2019observation, de compréhension, voire d\u2019altruisme \u2014 jamais comme une technique de manipulation ou de transformation rapide.",
+      "La PNL est un cadre de compréhension des mécanismes cognitifs et comportementaux. Chez La Clé, elle est enseignée comme un outil d’observation, de compréhension, voire d’altruisme. Jamais comme une technique de manipulation ou de transformation rapide.",
   },
   {
     question: "Le parcours est-il entièrement à distance ?",
     answer:
-      "Non. Le parcours combine une phase distancielle structurée en 7 modules et une phase présentielle intensive. La partie distancielle pose les fondations théoriques, le présentiel permet l\u2019intégration pratique et mène à la certification.",
+      "Oui. Le parcours se déroule entièrement à distance, en 7 modules structurés et progressifs. Chaque module pose les fondations théoriques, valide les acquis et mène à la certification.",
   },
   {
-    question: "Faut-il des prérequis pour s\u2019inscrire ?",
+    question: "Faut-il des prérequis pour s’inscrire ?",
     answer:
-      "Aucun prérequis académique n\u2019est nécessaire. La formation s\u2019adresse à toute personne souhaitant comprendre les mécanismes humains avec rigueur et profondeur.",
+      "Aucun prérequis académique n’est nécessaire. La formation s’adresse à toute personne souhaitant comprendre les mécanismes humains avec exigence et profondeur.",
   },
   {
     question: "Combien de temps dure la formation complète ?",
     answer:
-      "Le rythme est volontairement progressif. La phase distancielle se déroule à votre rythme, chaque module nécessitant un temps d\u2019assimilation. La phase présentielle est planifiée sur des sessions intensives dont les dates sont communiquées via l\u2019espace apprenant.",
+      "Le rythme est volontairement progressif. La formation se déroule à votre rythme, chaque module nécessitant un temps d’assimilation. Comptez environ soixante heures au total, selon votre cadence de visionnage, d’exercices et d’évaluations.",
   },
   {
     question: "La formation est-elle certifiante ?",
     answer:
-      "Oui. À l\u2019issue du parcours complet — distanciel et présentiel — une certification de Praticien PNL est délivrée, attestant de la maîtrise des fondamentaux de la discipline tels qu\u2019enseignés par l\u2019institut La Clé.",
+      "Oui. À l’issue du parcours distanciel, une certification de Praticien PNL est délivrée, attestant de la maîtrise des fondamentaux de la discipline tels qu’enseignés par l’institut La Clé.",
   },
 ];
 

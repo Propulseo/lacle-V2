@@ -10,7 +10,7 @@ import { ROUTES } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Accueil", href: ROUTES.home },
-  { label: "Nous d\écouvrir", href: ROUTES.discover },
+  { label: "Nous découvrir", href: ROUTES.discover },
   { label: "Formations", href: ROUTES.formations },
   { label: "Contact", href: ROUTES.contact },
 ];
@@ -75,7 +75,7 @@ export function Header({
       <header className="fixed top-0 left-0 right-0 z-50 px-6 pt-5 lg:px-12">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* ── Logo ── */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-5 shrink-0">
             {showBack && backHref && (
               <Link
                 href={backHref}
@@ -90,7 +90,7 @@ export function Header({
             <Link
               href="/"
               className="flex items-center gap-2 font-display text-lg font-semibold tracking-wide text-ivoire/80 transition-colors duration-300 hover:text-ivoire"
-              aria-label="La Clé — Retour à l’accueil"
+              aria-label="La Clé, retour à l’accueil"
             >
               <KeySymbol className="h-5 w-auto text-bronze/60" animate={false} />
               La Clé
@@ -99,7 +99,7 @@ export function Header({
 
           {/* ── Nav pill ── */}
           <nav
-            className={`rounded-full backdrop-blur-2xl transition-all duration-500 ${
+            className={`rounded-full backdrop-blur-lg transition-all duration-500 ${
               scrolled
                 ? "bg-noir/90 border border-ivoire/[0.08]"
                 : "bg-noir/70 border border-ivoire/[0.05]"
@@ -240,7 +240,7 @@ export function Header({
                 transition={{ delay: MOBILE_LINKS.length * 0.06 + 0.1, duration: 0.3 }}
               >
                 <ThemeToggle />
-                <span className="text-sm text-ivoire/30">Changer de th\ème</span>
+                <span className="text-sm text-ivoire/30">Changer de thème</span>
               </motion.div>
             </div>
           </motion.div>

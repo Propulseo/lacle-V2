@@ -7,7 +7,7 @@ import { SITE } from "@/lib/constants";
 import { AccesEspaceContent } from "@/components/acces-espace/AccesEspaceContent";
 
 export const metadata = {
-  title: "Connexion — La Clé",
+  title: "Connexion | La Clé",
   description:
     "Accédez à votre espace de formation ou d\u2019administration. Institut La Clé.",
 };
