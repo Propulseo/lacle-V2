@@ -16,7 +16,7 @@
   "dependencies": {
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.511.0",
-    "next": "16.1.6",
+    "next": "16.2.7",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
@@ -32,10 +32,13 @@
     "@vitest/coverage-v8": "^4.1.5",
     "@vitest/ui": "^4.1.5",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "16.2.7",
     "jsdom": "^29.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.5"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
   }
 }
