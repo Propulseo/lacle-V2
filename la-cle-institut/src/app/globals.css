@@ -475,12 +475,14 @@ blockquote {
 /* Animations one-shot, déclenchées via classe JS, respectent prefers-reduced-motion. */
 
 @keyframes toggleHint {
-  0%   { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
-  15%  { box-shadow: 0 0 12px 8px rgba(176, 141, 87, 0.45); transform: scale(1.18); }
-  35%  { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
-  55%  { box-shadow: 0 0 10px 6px rgba(176, 141, 87, 0.30); transform: scale(1.12); }
-  75%  { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
-  100% { box-shadow: 0 0 0 0    rgba(176, 141, 87, 0);   transform: scale(1); }
+  0%   { box-shadow: 0 0 0 0 rgba(201, 169, 110, 0); transform: scale(1); }
+  8%   { box-shadow: 0 0 22px 10px rgba(201, 169, 110, 0.75), 0 0 0 3px rgba(201, 169, 110, 0.35); transform: scale(1.35); color: var(--color-bronze-clair); border-color: rgba(201, 169, 110, 0.95); }
+  20%  { box-shadow: 0 0 0 16px rgba(201, 169, 110, 0); transform: scale(1); }
+  32%  { box-shadow: 0 0 18px 8px rgba(201, 169, 110, 0.60), 0 0 0 3px rgba(201, 169, 110, 0.30); transform: scale(1.26); color: var(--color-bronze-clair); border-color: rgba(201, 169, 110, 0.80); }
+  44%  { box-shadow: 0 0 0 14px rgba(201, 169, 110, 0); transform: scale(1); }
+  56%  { box-shadow: 0 0 14px 6px rgba(201, 169, 110, 0.45); transform: scale(1.18); color: var(--color-bronze-clair); }
+  68%  { box-shadow: 0 0 0 12px rgba(201, 169, 110, 0); transform: scale(1); }
+  100% { box-shadow: 0 0 0 0 rgba(201, 169, 110, 0); transform: scale(1); }
 }
 
 @keyframes hubCardHint {
@@ -493,7 +495,7 @@ blockquote {
 }
 
 .entrance-hint-toggle {
-  animation: toggleHint 2s ease-in-out 1.5s 1;
+  animation: toggleHint 2.6s ease-in-out 0.6s 1;
 }
 
 .entrance-hint-hub {

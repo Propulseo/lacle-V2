@@ -172,11 +172,11 @@ export default function VocationPage() {
               </h2>
               <p className="mx-auto mb-16 max-w-lg leading-relaxed text-cendre">
                 Chaque parcours proposé par La Clé repose sur ce principe
-                fondateur. Les personnes qui incarnent cette vision sont le
-                reflet de cet engagement.
+                fondateur. Découvrez comment il prend forme, étape après étape,
+                dans notre approche.
               </p>
-              <Button href={ROUTES.team} size="large">
-                Découvrir l&apos;équipe fondatrice
+              <Button href={ROUTES.concept} size="large">
+                Découvrez le concept
               </Button>
             </div>
           </ScrollReveal>

@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { useTheme } from "@/lib/theme";
 
-const HINT_STORAGE_KEY = "toggle_hint_shown";
-
 function SunIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -66,11 +64,9 @@ export function ThemeToggle({ hintEnabled = true }: ThemeToggleProps) {
   useEffect(() => {
     if (!hintEnabled || !inView || playHint) return;
     if (typeof window === "undefined") return;
-    if (sessionStorage.getItem(HINT_STORAGE_KEY)) return;
-    sessionStorage.setItem(HINT_STORAGE_KEY, "true");
-    // Le hint dépend de `inView` (mesuré par framer-motion) et d'un drapeau
-    // sessionStorage : il ne peut pas être dérivé au rendu, le setState en
-    // effet est ici intentionnel et gardé contre toute répétition.
+    // Hint rejoué à CHAQUE chargement de la page (plus de verrou sessionStorage)
+    // pour signaler clairement la possibilité de changer de thème. Dépend de
+    // `inView` (mesuré par framer-motion) : le setState en effet est intentionnel.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPlayHint(true);
   }, [hintEnabled, inView, playHint]);
