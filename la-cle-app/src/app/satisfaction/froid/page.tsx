@@ -111,7 +111,7 @@ export default function SatisfactionFroidPage() {
                     className={`rounded-lg border px-3 py-2 text-sm transition-colors ${
                       recommended === opt
                         ? "border-or bg-or/10 text-or"
-                        : "border-filet text-cendre hover:border-filet"
+                        : "border-filet text-cendre hover:border-filet-accent"
                     }`}
                   >
                     {opt}

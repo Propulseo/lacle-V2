@@ -68,6 +68,10 @@ export function ThemeToggle({ hintEnabled = true }: ThemeToggleProps) {
     if (typeof window === "undefined") return;
     if (sessionStorage.getItem(HINT_STORAGE_KEY)) return;
     sessionStorage.setItem(HINT_STORAGE_KEY, "true");
+    // Le hint dépend de `inView` (mesuré par framer-motion) et d'un drapeau
+    // sessionStorage : il ne peut pas être dérivé au rendu, le setState en
+    // effet est ici intentionnel et gardé contre toute répétition.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPlayHint(true);
   }, [hintEnabled, inView, playHint]);
 

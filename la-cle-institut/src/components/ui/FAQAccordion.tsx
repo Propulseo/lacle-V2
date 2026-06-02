@@ -18,43 +18,53 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
 
   return (
     <div className="divide-y divide-filet border-t border-filet">
-      {items.map((item, index) => (
-        <div key={index}>
-          <button
-            onClick={() =>
-              setOpenIndex(openIndex === index ? null : index)
-            }
-            className="flex w-full items-center justify-between py-6 text-left transition-colors duration-300 hover:text-bronze-clair"
-            aria-expanded={openIndex === index}
-          >
-            <span className="pr-8 font-body text-base text-ivoire md:text-lg">
-              {item.question}
-            </span>
-            <span
-              className={`shrink-0 text-lg text-bronze transition-transform duration-500 ${
-                openIndex === index ? "rotate-45" : ""
-              }`}
+      {items.map((item, index) => {
+        const buttonId = `faq-question-${index}`;
+        const panelId = `faq-panel-${index}`;
+        const isOpen = openIndex === index;
+
+        return (
+          <div key={index}>
+            <button
+              id={buttonId}
+              onClick={() => setOpenIndex(isOpen ? null : index)}
+              className="flex w-full items-center justify-between py-6 text-left transition-colors duration-300 hover:text-bronze-clair"
+              aria-expanded={isOpen}
+              aria-controls={panelId}
             >
-              +
-            </span>
-          </button>
-          <AnimatePresence initial={false}>
-            {openIndex === index && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: EASE_SMOOTH }}
-                className="overflow-hidden"
+              <span className="pr-8 font-body text-base text-ivoire md:text-lg">
+                {item.question}
+              </span>
+              <span
+                aria-hidden="true"
+                className={`shrink-0 text-lg text-bronze transition-transform duration-500 ${
+                  isOpen ? "rotate-45" : ""
+                }`}
               >
-                <p className="pb-6 text-sm leading-relaxed text-cendre md:text-base">
-                  {item.answer}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      ))}
+                +
+              </span>
+            </button>
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: EASE_SMOOTH }}
+                  className="overflow-hidden"
+                >
+                  <p className="pb-6 text-sm leading-relaxed text-cendre md:text-base">
+                    {item.answer}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
     </div>
   );
 }

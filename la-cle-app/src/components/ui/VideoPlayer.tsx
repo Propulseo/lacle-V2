@@ -5,21 +5,44 @@ import { Play, Pause, Volume2, VolumeX, Maximize, SkipBack, SkipForward } from "
 import { cn } from "@/lib/utils";
 import { formatDuration } from "@/lib/utils";
 
+const PLAYBACK_RATES = [0.75, 1, 1.25, 1.5, 2] as const;
+
 interface VideoPlayerProps {
   src?: string;
   poster?: string;
   onTimeUpdate?: (currentTime: number) => void;
   onEnded?: () => void;
   className?: string;
+  /**
+   * Active le selecteur de vitesse de lecture (0.75x a 2x).
+   * Methode La Cle : l'acceleration n'est proposee qu'apres completion de la capsule.
+   * Par defaut desactive pour ne pas modifier le comportement des appels existants.
+   */
+  allowPlaybackRate?: boolean;
 }
 
-export function VideoPlayer({ src, poster, onTimeUpdate, onEnded, className }: VideoPlayerProps) {
+export function VideoPlayer({
+  src,
+  poster,
+  onTimeUpdate,
+  onEnded,
+  className,
+  allowPlaybackRate = false,
+}: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [playbackRate, setPlaybackRate] = useState(1);
+
+  const changePlaybackRate = useCallback((rate: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.playbackRate = rate;
+    setPlaybackRate(rate);
+  }, []);
 
   const togglePlay = useCallback(() => {
     const video = videoRef.current;
@@ -118,6 +141,7 @@ export function VideoPlayer({ src, poster, onTimeUpdate, onEnded, className }: V
           value={currentTime}
           onChange={handleSeekBar}
           aria-label="Progression de la video"
+          aria-valuetext={`${formatDuration(Math.floor(currentTime))} sur ${formatDuration(Math.floor(duration))}`}
           className="mb-3 h-1 w-full cursor-pointer appearance-none rounded-full bg-filet [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-or"
           style={{ background: `linear-gradient(to right, var(--color-or) ${progress}%, var(--color-filet) ${progress}%)` }}
         />
@@ -136,6 +160,20 @@ export function VideoPlayer({ src, poster, onTimeUpdate, onEnded, className }: V
             {formatDuration(Math.floor(currentTime))} / {formatDuration(Math.floor(duration))}
           </span>
           <div className="flex-1" />
+          {allowPlaybackRate && (
+            <select
+              value={playbackRate}
+              onChange={(e) => changePlaybackRate(Number(e.target.value))}
+              aria-label="Vitesse de lecture"
+              className="rounded-md border border-filet bg-surface px-2 py-1 text-xs text-ivoire tabular-nums transition-colors hover:border-or focus:border-or focus:outline-none"
+            >
+              {PLAYBACK_RATES.map((rate) => (
+                <option key={rate} value={rate}>
+                  {rate}×
+                </option>
+              ))}
+            </select>
+          )}
           <button type="button" onClick={toggleMute} aria-label={isMuted ? "Activer le son" : "Couper le son"} className="text-ivoire/70 hover:text-ivoire transition-colors">
             {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
           </button>

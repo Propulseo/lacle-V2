@@ -45,7 +45,7 @@ export function LearnerShell({ children }: LearnerShellProps) {
         {children}
       </main>
       {/* TODO // Qualiopi Ind.26: referent handicap */}
-      <footer className="border-t border-filet px-4 py-4 text-center text-xs text-pierre hidden md:block">
+      <footer className="border-t border-filet px-4 py-4 pb-24 text-center text-xs text-pierre md:pb-4">
         Referent handicap : <a href="mailto:contact@institutlacle.fr" className="text-cendre hover:text-ivoire transition-colors">contact@institutlacle.fr</a>
       </footer>
       <BugReportButton />

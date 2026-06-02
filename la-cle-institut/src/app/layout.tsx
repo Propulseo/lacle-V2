@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Libre_Franklin } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
 import { ThemeProvider } from "@/lib/theme";
 import "./globals.css";
@@ -20,6 +21,7 @@ const libreFranklin = Libre_Franklin({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.institutlacle.fr"),
   title: "La Clé | Institut de compréhension des mécanismes humains",
   description:
     "Institut de formation dédié à la compréhension et à la maîtrise des mécanismes humains.",
@@ -43,14 +45,16 @@ export default function RootLayout({
         className="font-body bg-noir text-ivoire antialiased"
       >
         <ThemeProvider>
-          <BackgroundAtmosphere />
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-bronze focus:text-noir focus:px-4 focus:py-2 focus:text-sm"
-          >
-            Aller au contenu principal
-          </a>
-          {children}
+          <MotionConfig reducedMotion="user">
+            <BackgroundAtmosphere />
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-bronze focus:text-noir focus:px-4 focus:py-2 focus:text-sm"
+            >
+              Aller au contenu principal
+            </a>
+            {children}
+          </MotionConfig>
         </ThemeProvider>
       </body>
     </html>

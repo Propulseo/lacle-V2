@@ -17,7 +17,7 @@ interface DiscoverNavProps {
 const ITEMS: { key: DiscoverNavCurrent; label: string; href: string }[] = [
   { key: "vocation", label: "Vocation", href: ROUTES.vocation },
   { key: "concept", label: "Concept", href: ROUTES.concept },
-  { key: "team", label: "\u00C9quipe", href: ROUTES.team },
+  { key: "team", label: "Équipe", href: ROUTES.team },
 ];
 
 /**
@@ -33,12 +33,12 @@ export function DiscoverNav({
 }: DiscoverNavProps) {
   return (
     <section
-      aria-label="Navigation entre les pages Nous d\u00E9couvrir"
+      aria-label="Navigation entre les pages Nous découvrir"
       className="border-t border-filet-discret py-16 md:py-20 lg:py-24"
     >
       <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-10 px-6 md:gap-12 md:px-10 lg:px-16">
         <nav
-          aria-label="Nous d\u00E9couvrir"
+          aria-label="Nous découvrir"
           className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[11px] uppercase tracking-[0.3em] md:text-[12px]"
         >
           {ITEMS.map((item, i) => {

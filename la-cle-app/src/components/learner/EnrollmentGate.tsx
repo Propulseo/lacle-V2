@@ -28,6 +28,11 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
     paymentActive: false,
   });
   const [unlocked, setUnlocked] = useState(false);
+  const [contractNotice, setContractNotice] = useState(false);
+  const [cgvNotice, setCgvNotice] = useState(false);
+
+  const DOC_NOTICE =
+    "Ce document sera disponible au telechargement une fois votre espace configure. Pour toute question, contactez contact@institutlacle.fr.";
 
   useEffect(() => {
     setConditions(getEnrollmentConditions());
@@ -85,29 +90,34 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
             label="Contrat de formation signe"
           >
             {!conditions.contractSigned && (
-              <div className="mt-3 flex flex-wrap items-center gap-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    // TODO // Supabase Storage: URL du contrat PDF
-                    alert("Le contrat de formation sera disponible au telechargement une fois votre espace configure. Contactez contact@institutlacle.fr pour toute question.");
-                  }}
-                >
-                  Voir le document
-                </Button>
-                <label className="flex cursor-pointer items-center gap-2">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-filet accent-or"
-                    onChange={(e) => {
-                      if (e.target.checked) handleSignContract();
+              <div className="mt-3 space-y-3">
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      // TODO // Supabase Storage: URL du contrat PDF
+                      setContractNotice(true);
                     }}
-                  />
-                  <span className="text-sm text-cendre">
-                    J&apos;ai lu et j&apos;accepte
-                  </span>
-                </label>
+                  >
+                    Voir le document
+                  </Button>
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-filet accent-or"
+                      onChange={(e) => {
+                        if (e.target.checked) handleSignContract();
+                      }}
+                    />
+                    <span className="text-sm text-cendre">
+                      J&apos;ai lu et j&apos;accepte
+                    </span>
+                  </label>
+                </div>
+                {contractNotice && (
+                  <Alert variant="info">{DOC_NOTICE}</Alert>
+                )}
               </div>
             )}
           </ConditionRow>
@@ -116,29 +126,34 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
         <ScrollReveal delay={0.15}>
           <ConditionRow done={conditions.cgvAccepted} label="CGV acceptees">
             {!conditions.cgvAccepted && (
-              <div className="mt-3 flex flex-wrap items-center gap-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    // TODO // Supabase Storage: URL des CGV PDF
-                    alert("Les CGV seront disponibles au telechargement une fois votre espace configure. Contactez contact@institutlacle.fr pour toute question.");
-                  }}
-                >
-                  Voir le document
-                </Button>
-                <label className="flex cursor-pointer items-center gap-2">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-filet accent-or"
-                    onChange={(e) => {
-                      if (e.target.checked) handleAcceptCgv();
+              <div className="mt-3 space-y-3">
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      // TODO // Supabase Storage: URL des CGV PDF
+                      setCgvNotice(true);
                     }}
-                  />
-                  <span className="text-sm text-cendre">
-                    J&apos;ai lu et j&apos;accepte
-                  </span>
-                </label>
+                  >
+                    Voir le document
+                  </Button>
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-filet accent-or"
+                      onChange={(e) => {
+                        if (e.target.checked) handleAcceptCgv();
+                      }}
+                    />
+                    <span className="text-sm text-cendre">
+                      J&apos;ai lu et j&apos;accepte
+                    </span>
+                  </label>
+                </div>
+                {cgvNotice && (
+                  <Alert variant="info">{DOC_NOTICE}</Alert>
+                )}
               </div>
             )}
           </ConditionRow>

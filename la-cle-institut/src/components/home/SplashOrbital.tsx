@@ -1,10 +1,8 @@
 "use client";
 
 import { useId } from "react";
-import { motion } from "framer-motion";
-
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const SMOOTH: [number, number, number, number] = [0.65, 0, 0.35, 1];
+import { motion, useReducedMotion } from "framer-motion";
+import { EASE_INSTITUTIONAL, EASE_SMOOTH } from "@/lib/animations";
 
 interface SplashOrbitalProps {
   phase: number;
@@ -15,6 +13,18 @@ interface SplashOrbitalProps {
 export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
   const uid = useId().replace(/:/g, "");
   const gradId = `og-${uid}`;
+  const reduceMotion = useReducedMotion();
+
+  // En mode "mouvement réduit", on neutralise les transitions framer-motion
+  // (durée 0, pas d'easing) et les animations CSS infinies (orbFloat/orbSpin)
+  // pour respecter prefers-reduced-motion : les éléments apparaissent sans
+  // déplacement ni rotation continue.
+  const EASE = EASE_INSTITUTIONAL;
+  const SMOOTH = EASE_SMOOTH;
+  const dur = (seconds: number) => (reduceMotion ? 0 : seconds);
+  const orbFloatAnim = reduceMotion ? undefined : "orbFloat 7s ease-in-out infinite";
+  const orbSpin = (declaration: string) =>
+    reduceMotion ? undefined : declaration;
 
   return (
     <motion.div
@@ -35,7 +45,7 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
           ? { left: "50%", translateX: "-50%", width: 300 }
           : { left: "76%", translateX: "-50%", width: 440 }
       }
-      transition={{ duration: 1.2, ease: SMOOTH }}
+      transition={{ duration: dur(1.2), ease: SMOOTH }}
       aria-hidden="true"
     >
       <div className="relative aspect-square w-full">
@@ -43,7 +53,7 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
           className="pointer-events-none absolute -inset-[25%] rounded-full"
           initial={{ opacity: 0 }}
           animate={{ opacity: phase >= 1 ? 1 : 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: dur(0.8) }}
           style={{
             background: "radial-gradient(circle, var(--hero-orbital-glow-inner) 0%, var(--hero-orbital-glow-outer) 40%, transparent 70%)",
           }}
@@ -54,9 +64,9 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
           <motion.g
             initial={{ opacity: 0 }}
             animate={{ opacity: phase >= 0 ? 0.55 : 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: dur(0.7), ease: EASE }}
           >
-            <g className="orb-a" style={{ animation: "orbFloat 7s ease-in-out infinite" }}>
+            <g className="orb-a" style={{ animation: orbFloatAnim }}>
               <circle cx="250" cy="200" r="42" stroke={`url(#${gradId})`} strokeWidth="2" fill="none" />
               <circle cx="250" cy="200" r="24" stroke="var(--color-ivoire)" strokeWidth="1.2" fill="none" />
               <circle cx="250" cy="200" r="8" stroke={`url(#${gradId})`} strokeWidth="0.8" fill="none" opacity="0.7" />
@@ -76,7 +86,7 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
               opacity: phase >= 1 ? 0.6 : 0,
               scale: phase >= 1 ? 1 : 0.9,
             }}
-            transition={{ duration: 0.6, ease: EASE }}
+            transition={{ duration: dur(0.6), ease: EASE }}
             style={{ transformOrigin: "250px 250px" }}
           />
 
@@ -84,9 +94,9 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
           <motion.g
             initial={{ opacity: 0 }}
             animate={{ opacity: phase >= 2 ? 1 : 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            transition={{ duration: dur(0.6), ease: EASE }}
           >
-            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: "orbSpin 110s linear infinite reverse" }}>
+            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: orbSpin("orbSpin 110s linear infinite reverse") }}>
               <circle cx="250" cy="250" r="175" stroke="var(--color-ivoire)" strokeWidth="0.7" opacity="0.3" strokeDasharray="6 14" />
             </g>
           </motion.g>
@@ -95,9 +105,9 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
           <motion.g
             initial={{ opacity: 0 }}
             animate={{ opacity: phase >= 3 ? 1 : 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            transition={{ duration: dur(0.6), ease: EASE }}
           >
-            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: "orbSpin 80s linear infinite" }}>
+            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: orbSpin("orbSpin 80s linear infinite") }}>
               <circle cx="250" cy="250" r="230" stroke="var(--color-ivoire)" strokeWidth="0.8" opacity="0.35" />
               <path d="M250 20A230 230 0 01 480 250" stroke={`url(#${gradId})`} strokeWidth="1.8" opacity="0.6" />
               <path d="M20 250A230 230 0 01 250 480" stroke="var(--color-ivoire)" strokeWidth="0.8" opacity="0.2" />
@@ -108,18 +118,18 @@ export function SplashOrbital({ phase, isSplash, skip }: SplashOrbitalProps) {
           <motion.g
             initial={{ opacity: 0 }}
             animate={{ opacity: phase >= 3 ? 1 : 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            transition={{ duration: dur(0.6), ease: EASE }}
           >
             <circle cx="250" cy="20" r="2.5" fill={`url(#${gradId})`} opacity="0.6" />
             <circle cx="480" cy="250" r="2" fill="var(--color-ivoire)" opacity="0.35" />
             <circle cx="250" cy="480" r="2.5" fill={`url(#${gradId})`} opacity="0.5" />
             <circle cx="20" cy="250" r="2" fill="var(--color-ivoire)" opacity="0.3" />
 
-            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: "orbSpin 45s linear infinite" }}>
+            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: orbSpin("orbSpin 45s linear infinite") }}>
               <circle cx="250" cy="12" r="2" fill={`url(#${gradId})`} opacity="0.7" />
               <circle cx="488" cy="250" r="1.5" fill="var(--color-ivoire)" opacity="0.4" />
             </g>
-            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: "orbSpin 60s linear infinite reverse" }}>
+            <g className="orb-a" style={{ transformOrigin: "250px 250px", animation: orbSpin("orbSpin 60s linear infinite reverse") }}>
               <circle cx="75" cy="115" r="1.5" fill={`url(#${gradId})`} opacity="0.45" />
               <circle cx="425" cy="385" r="1.5" fill="var(--color-ivoire)" opacity="0.35" />
             </g>

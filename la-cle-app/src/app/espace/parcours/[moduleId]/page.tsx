@@ -75,7 +75,8 @@ export default function ModuleDetailLearnerPage() {
                   <h1 className="mt-1 font-serif text-2xl text-ivoire">{module_.title}</h1>
                   <p className="mt-2 text-sm text-cendre">{module_.description}</p>
                   <div className="mt-3">
-                    <ProgressBar value={4} max={videos.length} showLabel size="sm" />
+                    {/* TODO // Supabase: deriver la progression reelle depuis video_progress (videos vues / total) pour cet apprenant. En l'absence de donnees de completion, on affiche 0% plutot qu'une valeur inventee. */}
+                    <ProgressBar value={0} max={videos.length} showLabel size="sm" />
                   </div>
                 </div>
               </ScrollReveal>
@@ -83,7 +84,8 @@ export default function ModuleDetailLearnerPage() {
               <div className="space-y-2">
                 <h2 className="font-serif text-lg text-ivoire">Videos du module</h2>
                 {videos.map((video, i) => {
-                  const watched = i < 2;
+                  // TODO // Supabase: deriver l'etat "vu" depuis video_progress pour cet apprenant. Sans donnee de completion reelle, aucune capsule n'est marquee comme vue.
+                  const watched = false;
                   return (
                     <ScrollReveal key={video.id} delay={i * 0.05}>
                       <Card variant="interactive" onClick={() => router.push(ROUTES.espace.video(moduleId, video.id))}>

@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "/acces-espace";
-
 function GraduationIcon({ className }: { className?: string }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -101,7 +99,7 @@ export function AccesEspaceContent() {
             {/* CTA */}
             <div className="mt-auto px-6 pb-8">
               <a
-                href={`${APP_URL}/login`}
+                href="/acces-espace/login"
                 className="flex w-full items-center justify-center gap-2 bg-bronze px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-noir transition-all duration-500 ease-[var(--ease-institutional)] hover:bg-bronze-clair"
               >
                 Se connecter
@@ -137,7 +135,7 @@ export function AccesEspaceContent() {
             {/* CTA */}
             <div className="mt-auto px-6 pb-8">
               <a
-                href={`${APP_URL}/admin/login`}
+                href="/acces-espace/admin/login"
                 className="flex w-full items-center justify-center gap-2 border border-filet px-6 py-3.5 text-[11px] uppercase tracking-[0.14em] text-ivoire transition-all duration-500 ease-[var(--ease-institutional)] hover:border-bronze hover:text-bronze-clair"
               >
                 Se connecter

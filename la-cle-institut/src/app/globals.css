@@ -15,12 +15,15 @@
   /* ---- Text ---- */
   --color-ivoire: #F5F0EB;
   --color-cendre: #A09A93;
-  --color-pierre: #6B665F;
+  --color-pierre: #8B857C;
 
   /* ---- Accent ---- */
   --color-bronze: #B08D57;
   --color-bronze-clair: #C9A96E;
   --color-bronze-sombre: #8A6D3B;
+
+  /* ---- Statut "erreur" ---- */
+  --color-erreur: #D98C7A;
 
   /* ---- Statut "en cours de création" ---- */
   --color-ambre: #D99A52;
@@ -61,8 +64,8 @@
   --hero-grid-opacity: 0.03;
   --hero-bottom-gradient: #0C1020;
   --hero-title: #F0EBE3;
-  --hero-surtitre: rgba(176, 144, 88, 0.5);
-  --hero-subtitle: rgba(240, 235, 227, 0.35);
+  --hero-surtitre: rgba(176, 144, 88, 0.78);
+  --hero-subtitle: rgba(240, 235, 227, 0.62);
   --hero-line-start: rgba(176, 144, 88, 0.5);
   --hero-line-mid: rgba(176, 144, 88, 0.25);
   --hero-orbital-glow-inner: rgba(176, 141, 87, 0.15);
@@ -262,6 +265,9 @@ blockquote {
   /* Statut "en cours de création" — ton ambre adapté au clair */
   --color-ambre: #A67334;
   --color-ambre-clair: #8A5C26;
+
+  /* Statut "erreur" — terracotta soutenu pour fond clair */
+  --color-erreur: #B0503C;
 
   /* Profondeur — tons parchemin doré */
   --color-nuit: #D5CAAC;

@@ -35,6 +35,10 @@ export function HubCard({
   useEffect(() => {
     if (!hintFirstVisit || !inView || playHint) return;
     if (typeof window === "undefined") return;
+    // Le hint dépend de `inView` (mesuré par framer-motion) : il ne peut pas
+    // être dérivé au rendu. Le setState en effet est intentionnel et gardé
+    // contre toute répétition par le drapeau `playHint`.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPlayHint(true);
   }, [hintFirstVisit, inView, playHint, hintStorageKey]);
 

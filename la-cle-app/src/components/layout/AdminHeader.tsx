@@ -19,7 +19,7 @@ export function AdminHeader({ breadcrumbs }: AdminHeaderProps) {
   }
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-filet bg-nuit-profond/50 px-6">
+    <header className="flex h-16 items-center justify-between border-b border-filet bg-nuit-profond/50 pl-14 pr-6 lg:px-6">
       <div>
         {breadcrumbs && breadcrumbs.length > 0 && (
           <Breadcrumb items={breadcrumbs} />

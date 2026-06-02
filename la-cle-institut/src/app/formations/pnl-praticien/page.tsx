@@ -97,7 +97,7 @@ export default function PNLPraticienPage() {
         {/* ---- Qu'est-ce que la PNL ---- */}
         <SectionBlock>
           <ScrollReveal>
-            <div className="grid items-start gap-12 lg:grid-cols-[1fr,1.5fr] lg:gap-20">
+            <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
               <div>
                 <p className="mb-3 text-label tracking-[0.25em] text-bronze/70">
                   Discipline
@@ -134,7 +134,7 @@ export default function PNLPraticienPage() {
         {/* ---- Pourquoi La Clé ---- */}
         <SectionBlock background="graphite">
           <ScrollReveal>
-            <div className="grid items-start gap-12 lg:grid-cols-[1fr,1.5fr] lg:gap-20">
+            <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
               <div>
                 <p className="mb-3 text-label tracking-[0.25em] text-bronze/70">
                   Approche

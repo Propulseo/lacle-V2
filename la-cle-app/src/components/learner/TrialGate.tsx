@@ -25,8 +25,8 @@ export function TrialGate() {
             Acces en mode decouverte
           </h3>
           <p className="mx-auto max-w-md text-sm text-cendre">
-            Tu as acces aux 7 premiers cours en essai gratuit.
-            Rejoins la formation pour continuer.
+            Vous avez acces aux 7 premiers cours en essai gratuit.
+            Rejoignez la formation pour continuer.
           </p>
         </div>
         <div className="flex flex-col items-center gap-2">

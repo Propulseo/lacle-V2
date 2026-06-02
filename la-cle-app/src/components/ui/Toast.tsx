@@ -2,17 +2,34 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, AlertCircle, Info } from "lucide-react";
 import { EASE_INSTITUTIONAL } from "@/lib/animations";
+
+type ToastVariant = "success" | "error" | "info";
 
 interface ToastProps {
   message: string;
   isVisible: boolean;
   onClose: () => void;
   duration?: number;
+  variant?: ToastVariant;
 }
 
-export function Toast({ message, isVisible, onClose, duration = 4000 }: ToastProps) {
+const VARIANT_CONFIG: Record<ToastVariant, { Icon: typeof CheckCircle; color: string }> = {
+  success: { Icon: CheckCircle, color: "text-succes" },
+  error: { Icon: AlertCircle, color: "text-erreur" },
+  info: { Icon: Info, color: "text-info" },
+};
+
+export function Toast({
+  message,
+  isVisible,
+  onClose,
+  duration = 4000,
+  variant = "success",
+}: ToastProps) {
+  const { Icon, color } = VARIANT_CONFIG[variant];
+
   useEffect(() => {
     if (!isVisible) return;
     const timer = setTimeout(onClose, duration);
@@ -32,7 +49,7 @@ export function Toast({ message, isVisible, onClose, duration = 4000 }: ToastPro
           aria-live="polite"
         >
           <div className="flex items-center gap-2 rounded-lg border border-filet bg-encre px-4 py-3 text-sm text-ivoire shadow-lg">
-            <CheckCircle className="h-4 w-4 shrink-0 text-succes" />
+            <Icon className={`h-4 w-4 shrink-0 ${color}`} />
             <span>{message}</span>
           </div>
         </motion.div>

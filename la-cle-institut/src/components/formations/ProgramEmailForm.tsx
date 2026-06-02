@@ -73,7 +73,7 @@ export function ProgramEmailForm() {
       </button>
 
       {status === "error" && (
-        <p className="text-xs text-red-400/80 sm:self-center">
+        <p className="text-xs text-erreur/80 sm:self-center">
           Une erreur est survenue. Veuillez r&eacute;essayer.
         </p>
       )}

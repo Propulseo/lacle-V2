@@ -58,6 +58,9 @@ export default function DesignSystemPage() {
 
   return (
     <>
+      {/* Page de démo interne : hors index moteurs. Rendu en <meta> hoisté
+          par Next (export `metadata` impossible dans un composant client). */}
+      <meta name="robots" content="noindex, nofollow" />
       <SplashScreen isVisible={showSplash} onComplete={() => setShowSplash(false)} />
       <Header showBack backHref="/" backLabel="Accueil" />
       <PageWrapper>
@@ -92,7 +95,13 @@ export default function DesignSystemPage() {
           <div className="space-y-8 border-b border-filet pb-12">
             <div>
               <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H1 — Cormorant Garamond · 600 · -0.02em</p>
-              <h1>Comprendre les mécanismes</h1>
+              {/* Démo typographique : élément non sémantique stylé comme un h1
+                  pour éviter un second <h1> sur la page (le seul vrai <h1>
+                  est porté par le HeroSection). Valeurs alignées sur la règle
+                  `h1` de globals.css. */}
+              <p className="font-display font-semibold leading-[1.08] tracking-[-0.02em] text-ivoire text-[clamp(2.5rem,5vw,4.5rem)]">
+                Comprendre les mécanismes
+              </p>
             </div>
             <div>
               <p className="mb-2 text-xs uppercase tracking-widest text-pierre">H2 · 600 · -0.015em</p>

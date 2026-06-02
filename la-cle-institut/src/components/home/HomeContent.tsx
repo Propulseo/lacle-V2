@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { FooterMinimal } from "@/components/layout/FooterMinimal";
@@ -8,11 +8,12 @@ import { Header } from "@/components/layout/Header";
 import { HeroAtmosphere } from "./HeroAtmosphere";
 import { SplashOrbital } from "./SplashOrbital";
 import { ROUTES, SPLASH_STORAGE_KEY, SITE } from "@/lib/constants";
+import { EASE_INSTITUTIONAL, EASE_SMOOTH, EASE_REVEAL } from "@/lib/animations";
 
 /* ── Easings ── */
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const SMOOTH: [number, number, number, number] = [0.65, 0, 0.35, 1];
+const EASE = EASE_INSTITUTIONAL;
+const REVEAL_EASE = EASE_REVEAL;
+const SMOOTH = EASE_SMOOTH;
 
 const fadeUp = (delay: number) => ({
   hidden: { opacity: 0, y: 20 },
@@ -27,18 +28,35 @@ const PHASE_DELAYS: Record<number, number> = {
   0: 800, 1: 600, 2: 600, 3: 700, 4: 1200, 5: 50,
 };
 
-export function HomeContent() {
-  const [skip, setSkip] = useState<boolean | null>(null);
-  const [phase, setPhase] = useState(0);
+/**
+ * Lecture synchrone de sessionStorage (splash déjà vu) au premier render
+ * client via un initialiseur lazy : évite le setState-dans-effect.
+ * Retourne `null` côté serveur (pas de `window`) pour garantir un premier
+ * paint identique au SSR et empêcher tout mismatch d'hydratation.
+ */
+function readSplashSeen(): boolean | null {
+  if (typeof window === "undefined") return null;
+  return Boolean(sessionStorage.getItem(SPLASH_STORAGE_KEY));
+}
 
-  useEffect(() => {
-    if (sessionStorage.getItem(SPLASH_STORAGE_KEY)) {
-      setSkip(true);
-      setPhase(6);
-    } else {
-      setSkip(false);
-    }
-  }, []);
+/**
+ * `true` une fois l'hydratation client terminée, `false` au SSR et au premier
+ * paint client. Évite le pattern setState-dans-effet (react-hooks/
+ * set-state-in-effect) tout en garantissant un premier rendu identique au SSR.
+ */
+const subscribeNoop = () => () => {};
+function useHydrated(): boolean {
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false,
+  );
+}
+
+export function HomeContent() {
+  const [skip] = useState<boolean | null>(readSplashSeen);
+  const [phase, setPhase] = useState(() => (readSplashSeen() ? 6 : 0));
+  const mounted = useHydrated();
 
   useEffect(() => {
     if (skip !== false || !(phase in PHASE_DELAYS)) return;
@@ -50,8 +68,8 @@ export function HomeContent() {
     return () => clearTimeout(t);
   }, [phase, skip]);
 
-  if (skip === null) {
-    return <div className="min-h-screen" data-theme="dark" style={{ backgroundColor: "#07080E" }} />;
+  if (!mounted || skip === null) {
+    return <div className="min-h-screen bg-noir" data-theme="dark" />;
   }
 
   const isSplash = phase < 5;
@@ -73,7 +91,7 @@ export function HomeContent() {
         <Header toggleHint={showHero} />
       </motion.div>
 
-      <section
+      <main
         id="main-content"
         className="relative min-h-screen overflow-hidden"
         style={{ backgroundColor: "var(--hero-bg)" }}
@@ -82,8 +100,7 @@ export function HomeContent() {
         <AnimatePresence>
           {isSplash && (
             <motion.div
-              className="absolute inset-0 z-20"
-              style={{ backgroundColor: "#07080E" }}
+              className="absolute inset-0 z-20 bg-noir"
               exit={{ opacity: 0 }}
               transition={{ duration: 1, ease: SMOOTH }}
             />
@@ -216,7 +233,7 @@ export function HomeContent() {
 
           <SplashOrbital phase={phase} isSplash={isSplash} skip={!!skip} />
         </div>
-      </section>
+      </main>
 
       <FooterMinimal />
     </>

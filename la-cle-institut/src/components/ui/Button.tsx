@@ -61,14 +61,32 @@ export function Button({
   const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
 
   if ("href" in props && props.href) {
+    const { href } = props;
+    // Liens externes (protocole, ancre, mailto, tel) → <a> natif.
+    const isExternal = /^(https?:|mailto:|tel:|#)/.test(href);
+
+    if (isExternal) {
+      const isHttp = href.startsWith("http");
+      return (
+        <a
+          href={href}
+          className={classes}
+          {...(isHttp ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        >
+          {children}
+        </a>
+      );
+    }
+
     return (
-      <Link href={props.href} className={classes}>
+      <Link href={href} className={classes}>
         {children}
       </Link>
     );
   }
 
-  const { href: _, ...buttonProps } = props as ButtonAsButton;
+  const { href: _href, ...buttonProps } = props as ButtonAsButton;
+  void _href;
   return (
     <button className={classes} {...buttonProps}>
       {children}

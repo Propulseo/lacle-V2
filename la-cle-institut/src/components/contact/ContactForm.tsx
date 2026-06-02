@@ -56,7 +56,7 @@ export function ContactForm() {
       </div>
 
       {/* Objet */}
-      <Field label="Objet" name="subject" placeholder="L\u2019objet de votre message" />
+      <Field label="Objet" name="subject" placeholder="L’objet de votre message" />
 
       {/* Message */}
       <div>
@@ -113,7 +113,7 @@ export function ContactForm() {
         </button>
 
         {status === "error" && (
-          <p className="text-xs text-red-400/80">
+          <p className="text-xs text-erreur/80">
             Une erreur est survenue. Veuillez réessayer.
           </p>
         )}

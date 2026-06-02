@@ -119,7 +119,7 @@ export function SatisfactionSurveyHot({ studentId, formationId = "pnl-praticien"
               className={`rounded-lg border px-4 py-2 text-sm transition-colors ${
                 wantsPublic === (opt === "Oui")
                   ? "border-or bg-or/10 text-or"
-                  : "border-filet text-cendre hover:border-filet"
+                  : "border-filet text-cendre hover:border-filet-accent"
               }`}
             >
               {opt}

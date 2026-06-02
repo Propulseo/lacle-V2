@@ -71,6 +71,10 @@ function VideoContent({
   const prevVideo = currentIndex > 0 ? allVideos[currentIndex - 1] : null;
   const nextVideo = currentIndex < allVideos.length - 1 ? allVideos[currentIndex + 1] : null;
 
+  // TODO // Supabase: deriver l'etat de completion depuis video_progress pour cet apprenant (meme source que la page module). Sans donnee reelle, la capsule reste non completee donc le titre reste masque (code).
+  const isCompleted = false;
+  const QUESTION_LABEL_MAX = 60;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm">
@@ -96,7 +100,7 @@ function VideoContent({
         <div>
           <p className="text-sm text-or">Video {video.order}/{allVideos.length}</p>
           <h1 className="mt-1 font-serif text-2xl text-ivoire">
-            {getCapsuleDisplayName(String(video.order), video.title, false)}
+            {getCapsuleDisplayName(String(video.order), video.title, isCompleted)}
           </h1>
           <p className="mt-2 text-sm text-cendre">{video.description}</p>
           <div className="mt-3 flex items-center gap-3 text-xs text-pierre">
@@ -120,7 +124,10 @@ function VideoContent({
                     <div className="h-4 w-4 rounded-full border border-filet" />
                   )}
                   <span className="text-cendre">
-                    {formatDuration(q.timestamp)} — {q.question.substring(0, 60)}...
+                    {formatDuration(q.timestamp)} —{" "}
+                    {q.question.length > QUESTION_LABEL_MAX
+                      ? `${q.question.substring(0, QUESTION_LABEL_MAX)}…`
+                      : q.question}
                   </span>
                 </div>
               ))}

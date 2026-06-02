@@ -28,7 +28,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Page precedente"
-        className="rounded-lg p-2 text-cendre hover:text-ivoire hover:bg-ivoire/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex h-11 min-w-[2.75rem] items-center justify-center rounded-lg text-cendre hover:text-ivoire hover:bg-ivoire/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -43,7 +43,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             type="button"
             onClick={() => onPageChange(page)}
             className={cn(
-              "min-w-[32px] rounded-lg px-2 py-1 text-sm transition-colors",
+              "flex h-11 min-w-[2.75rem] items-center justify-center rounded-lg px-2 text-sm transition-colors",
               page === currentPage
                 ? "bg-or/10 text-or"
                 : "text-cendre hover:text-ivoire hover:bg-ivoire/5"
@@ -58,7 +58,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Page suivante"
-        className="rounded-lg p-2 text-cendre hover:text-ivoire hover:bg-ivoire/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex h-11 min-w-[2.75rem] items-center justify-center rounded-lg text-cendre hover:text-ivoire hover:bg-ivoire/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronRight className="h-4 w-4" />
       </button>

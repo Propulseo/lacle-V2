@@ -27,9 +27,9 @@ export function SplashScreen({ isVisible, onComplete }: SplashScreenProps) {
           transition={{ duration: 0.5, ease: EASE_SMOOTH }}
           aria-hidden="true"
         >
-          <KeySymbol className="w-12 h-auto text-[#F5F0EB] mb-8" animate />
+          <KeySymbol className="w-12 h-auto text-ivoire mb-8" animate />
           <motion.p
-            className="font-display text-lg md:text-xl text-[#A09A93] tracking-[0.15em]"
+            className="font-display text-lg md:text-xl text-cendre tracking-[0.15em]"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0, duration: 0.6, ease: EASE_INSTITUTIONAL }}

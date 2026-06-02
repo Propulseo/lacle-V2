@@ -35,7 +35,7 @@ export function BugReportButton() {
         type="button"
         onClick={() => setIsOpen(true)}
         aria-label="Signaler un probleme"
-        className="fixed bottom-20 right-4 z-40 flex h-10 w-10 items-center justify-center rounded-full border border-filet bg-encre/80 text-cendre backdrop-blur-sm transition-colors hover:text-ivoire md:bottom-4"
+        className="fixed bottom-20 right-4 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-filet bg-encre/80 text-cendre backdrop-blur-sm transition-colors hover:text-ivoire md:bottom-4"
       >
         <TriangleAlert className="h-4 w-4" />
       </button>

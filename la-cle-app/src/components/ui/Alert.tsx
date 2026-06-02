@@ -31,8 +31,14 @@ const config: Record<AlertVariant, { icon: React.ReactNode; styles: string }> = 
 
 export function Alert({ variant = "info", title, children, className }: AlertProps) {
   const { icon, styles } = config[variant];
+  const ariaLive: "assertive" | "polite" =
+    variant === "error" || variant === "warning" ? "assertive" : "polite";
   return (
-    <div className={cn("flex gap-3 rounded-lg border p-4", styles, className)}>
+    <div
+      role="alert"
+      aria-live={ariaLive}
+      className={cn("flex gap-3 rounded-lg border p-4", styles, className)}
+    >
       <div className="shrink-0 mt-0.5">{icon}</div>
       <div className="text-sm">
         {title && <p className="font-medium">{title}</p>}

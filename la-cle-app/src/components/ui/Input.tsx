@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { cn } from "@/lib/utils";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -8,7 +9,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export function Input({ label, error, className, id, ...props }: InputProps) {
-  const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
+  const generatedId = useId();
+  const inputId = id || label?.toLowerCase().replace(/\s+/g, "-") || generatedId;
+  const errorId = `${inputId}-error`;
 
   return (
     <div className="space-y-1.5">
@@ -19,6 +22,8 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
       )}
       <input
         id={inputId}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         className={cn(
           "w-full rounded-lg border border-filet bg-encre px-4 py-2.5 text-sm text-ivoire placeholder:text-pierre transition-colors duration-200",
           "focus:border-or/50 focus:outline-none focus:ring-1 focus:ring-or/25",
@@ -27,7 +32,11 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
         )}
         {...props}
       />
-      {error && <p className="text-xs text-erreur">{error}</p>}
+      {error && (
+        <p id={errorId} className="text-xs text-erreur">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

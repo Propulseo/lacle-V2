@@ -29,7 +29,7 @@ export function LearnerMobileNav() {
           key={item.href}
           href={item.href}
           className={cn(
-            "flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] transition-colors",
+            "flex min-h-[3.25rem] flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] transition-colors",
             isActive(item.href) ? "text-or" : "text-pierre"
           )}
         >

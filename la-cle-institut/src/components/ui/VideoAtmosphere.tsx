@@ -50,7 +50,9 @@ export function VideoAtmosphere({
       className={`card-elevated relative overflow-hidden bg-graphite/60 ${className}`}
       style={{ aspectRatio }}
     >
-      {/* Poster fallback */}
+      {/* Poster fallback — image décorative (alt=""), source dynamique non
+          maîtrisée : next/image inadapté ici (composant atmosphère dormant). */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={poster}
         alt=""

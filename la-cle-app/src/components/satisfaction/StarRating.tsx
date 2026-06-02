@@ -14,15 +14,22 @@ export function StarRating({ value, onChange, readonly = false, size = "default"
   const iconSize = size === "sm" ? "h-4 w-4" : "h-6 w-6";
 
   return (
-    <div className="flex gap-1">
+    <div
+      className="flex gap-0.5"
+      role="radiogroup"
+      aria-label="Note sur 5 etoiles"
+    >
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
           type="button"
           disabled={readonly}
           onClick={() => onChange?.(star)}
+          role="radio"
+          aria-checked={star === value}
+          aria-label={`Noter ${star} sur 5`}
           className={cn(
-            "transition-colors",
+            "p-1 transition-colors",
             readonly ? "cursor-default" : "cursor-pointer hover:text-or"
           )}
         >

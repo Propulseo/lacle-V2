@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { cn } from "@/lib/utils";
 import type { VideoQuestion } from "@/types";
 
@@ -16,6 +17,8 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [textAnswer, setTextAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const containerRef = useFocusTrap(true);
+  const questionTitleId = useId();
 
   const isCorrect =
     question.type === "texte"
@@ -34,8 +37,16 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
       exit={{ opacity: 0 }}
       className="absolute inset-0 z-20 flex items-center justify-center bg-nuit-profond/90 backdrop-blur-sm p-4"
     >
-      <div className="w-full max-w-lg rounded-xl border border-filet bg-encre p-6">
-        <p className="mb-4 font-serif text-lg text-ivoire">{question.question}</p>
+      <div
+        ref={containerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={questionTitleId}
+        className="w-full max-w-lg rounded-xl border border-filet bg-encre p-6"
+      >
+        <p id={questionTitleId} className="mb-4 font-serif text-lg text-ivoire">
+          {question.question}
+        </p>
 
         {question.type === "qcm" && question.options && (
           <div className="space-y-2">
@@ -88,12 +99,17 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
             onChange={(e) => setTextAnswer(e.target.value)}
             disabled={submitted}
             placeholder="Votre réponse..."
+            aria-label="Votre réponse"
             className="w-full rounded-lg border border-filet bg-surface px-4 py-3 text-sm text-ivoire placeholder:text-pierre focus:border-or/50 focus:outline-none"
           />
         )}
 
         {submitted && (
-          <div className={cn("mt-4 flex items-start gap-2 rounded-lg p-3", isCorrect ? "bg-succes/10" : "bg-erreur/10")}>
+          <div
+            role="status"
+            aria-live="polite"
+            className={cn("mt-4 flex items-start gap-2 rounded-lg p-3", isCorrect ? "bg-succes/10" : "bg-erreur/10")}
+          >
             {isCorrect ? (
               <CheckCircle className="h-5 w-5 shrink-0 text-succes" />
             ) : (

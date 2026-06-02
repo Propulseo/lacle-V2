@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,6 +19,8 @@ const MOBILE_LINKS = [
   ...NAV_LINKS,
   { label: "Espace apprenant", href: ROUTES.accessSpace },
 ];
+
+const MOBILE_MENU_ID = "header-mobile-menu";
 
 interface HeaderProps {
   showBack?: boolean;
@@ -43,6 +45,21 @@ export function Header({
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
+  // Fermeture du menu mobile à la navigation : on ajuste l'état pendant le
+  // rendu (pattern officiel React « storing info from previous renders »)
+  // plutôt que dans un effet — évite un setState en effet et applique la
+  // fermeture sans frame intermédiaire, en n'utilisant que du state.
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    if (mobileOpen) setMobileOpen(false);
+  }
+
+  // Restauration du focus : élément actif avant ouverture du menu mobile.
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -61,9 +78,26 @@ export function Header({
     };
   }, [mobileOpen]);
 
+  // Gestion du focus + fermeture clavier (Escape) pour le menu mobile.
   useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+    if (!mobileOpen) return;
+
+    lastFocusedRef.current = document.activeElement as HTMLElement | null;
+    closeButtonRef.current?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      lastFocusedRef.current?.focus();
+    };
+  }, [mobileOpen]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -99,6 +133,7 @@ export function Header({
 
           {/* ── Nav pill ── */}
           <nav
+            aria-label="Navigation principale"
             className={`rounded-full backdrop-blur-lg transition-all duration-500 ${
               scrolled
                 ? "bg-noir/90 border border-ivoire/[0.08]"
@@ -112,26 +147,33 @@ export function Header({
           >
             {/* Desktop links */}
             <div className="hidden items-center gap-8 px-8 py-2.5 lg:flex lg:px-10">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`whitespace-nowrap font-body text-[13px] transition-colors duration-300 ${
-                    isActive(link.href)
-                      ? "text-ivoire/90"
-                      : "text-ivoire/40 hover:text-ivoire/80"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {NAV_LINKS.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`whitespace-nowrap font-body text-[13px] transition-colors duration-300 ${
+                      active
+                        ? "font-medium text-ivoire/90 underline decoration-bronze/60 decoration-1 underline-offset-[6px]"
+                        : "text-ivoire/40 hover:text-ivoire/80"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Mobile burger */}
             <button
+              ref={burgerRef}
               className="flex items-center px-5 py-2.5 lg:hidden"
               onClick={() => setMobileOpen(true)}
               aria-label="Ouvrir le menu"
+              aria-expanded={mobileOpen}
+              aria-controls={MOBILE_MENU_ID}
             >
               <svg
                 width="22"
@@ -181,6 +223,10 @@ export function Header({
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id={MOBILE_MENU_ID}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu de navigation"
             className="fixed inset-0 z-[60] flex flex-col bg-noir/[0.98] backdrop-blur-xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -190,6 +236,7 @@ export function Header({
             {/* Close */}
             <div className="flex justify-end px-6 pt-6 pb-4">
               <button
+                ref={closeButtonRef}
                 onClick={() => setMobileOpen(false)}
                 aria-label="Fermer le menu"
               >
@@ -211,26 +258,30 @@ export function Header({
 
             {/* Links */}
             <div className="flex flex-1 flex-col justify-center gap-1 px-10">
-              {MOBILE_LINKS.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.06, duration: 0.3 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block border-b border-ivoire/[0.04] py-4 font-display text-3xl font-medium transition-colors duration-300 ${
-                      isActive(link.href)
-                        ? "text-bronze"
-                        : "text-ivoire/70 hover:text-bronze-clair"
-                    }`}
+              {MOBILE_LINKS.map((link, i) => {
+                const active = isActive(link.href);
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06, duration: 0.3 }}
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                      className={`block border-b border-ivoire/[0.04] py-4 font-display text-3xl transition-colors duration-300 ${
+                        active
+                          ? "font-semibold text-bronze underline decoration-bronze/50 decoration-1 underline-offset-[6px]"
+                          : "font-medium text-ivoire/70 hover:text-bronze-clair"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                );
+              })}
 
               {/* Theme toggle */}
               <motion.div

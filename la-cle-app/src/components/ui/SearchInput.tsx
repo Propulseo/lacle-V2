@@ -24,6 +24,7 @@ export function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        aria-label="Rechercher"
         className="w-full rounded-lg border border-filet bg-encre py-2 pl-10 pr-9 text-sm text-ivoire placeholder:text-pierre transition-colors focus:border-or/50 focus:outline-none focus:ring-1 focus:ring-or/25"
       />
       {value && (

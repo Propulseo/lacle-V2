@@ -87,7 +87,7 @@ export default function ConceptPage() {
         {SECTIONS.map((section) => (
           <SectionBlock key={section.title} background={section.bg}>
             <ScrollReveal>
-              <div className="grid items-start gap-10 lg:grid-cols-[auto,1fr] lg:gap-16">
+              <div className="grid items-start gap-10 lg:grid-cols-[auto_1fr] lg:gap-16">
                 <span
                   className="hidden font-display text-6xl font-extralight text-bronze/10 lg:block lg:text-7xl"
                   aria-hidden="true"

@@ -36,11 +36,11 @@ const columns: Column<Learner>[] = [
     render: (l) => <ProgressBar value={l.progression.overallPercent} showLabel size="sm" />,
   },
   {
-    key: "createdAt", header: "Inscrit le", sortable: true, sortValue: (l) => l.createdAt,
+    key: "createdAt", header: "Inscrit le", sortable: true, sortValue: (l) => l.createdAt, hideOnMobile: true,
     render: (l) => <span className="text-sm text-cendre">{formatDate(l.createdAt)}</span>,
   },
   {
-    key: "active", header: "Actif", className: "w-16",
+    key: "active", header: "Actif", className: "w-16", hideOnMobile: true,
     render: (l) => <span className={`h-2 w-2 rounded-full inline-block ${l.isActive ? "bg-succes" : "bg-erreur"}`} />,
   },
 ];

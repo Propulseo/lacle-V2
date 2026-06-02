@@ -12,7 +12,7 @@
  */
 
 /** Format libre, affiché tel quel : "mai 2026", "Q3 2026", etc. */
-export const PAGE_LAST_UPDATED = "mai 2026";
+export const PAGE_LAST_UPDATED = "juin 2026";
 
 /** Email unique de contact du référent handicap de l'institut. */
 export const HANDICAP_REFERENT_EMAIL = "contact@institutlacle.fr";

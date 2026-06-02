@@ -16,8 +16,13 @@ interface AsyncBoundaryProps<T> {
 
 function DefaultLoading() {
   return (
-    <div className="flex h-64 items-center justify-center">
+    <div
+      role="status"
+      aria-live="polite"
+      className="flex h-64 items-center justify-center"
+    >
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-or border-t-transparent" />
+      <span className="sr-only">Chargement en cours</span>
     </div>
   );
 }

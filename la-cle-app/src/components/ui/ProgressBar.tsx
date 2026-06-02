@@ -20,6 +20,11 @@ export function ProgressBar({
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <div
+        role="progressbar"
+        aria-valuenow={percent}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Progression"
         className={cn(
           "flex-1 overflow-hidden rounded-full bg-filet",
           size === "sm" ? "h-1.5" : "h-2.5"

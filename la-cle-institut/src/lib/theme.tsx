@@ -23,10 +23,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-      document.documentElement.setAttribute("data-theme", stored);
-    }
+    if (stored !== "light" && stored !== "dark") return;
+    document.documentElement.setAttribute("data-theme", stored);
+    // Garde : on ne resynchronise l'état React que si le thème stocké
+    // diffère du défaut « dark », ce qui évite un setState inconditionnel.
+    // Sync légitime post-montage avec le thème pré-appliqué (script anti-FOUC
+    // + localStorage). Un lazy-init lirait le thème pendant le rendu et
+    // ré-introduirait un mismatch d'hydratation sur l'icône du ThemeToggle :
+    // d'où la dérogation ciblée à la règle.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTheme((prev) => (prev === stored ? prev : stored));
   }, []);
 
   const toggleTheme = useCallback((x?: number, y?: number) => {

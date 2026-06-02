@@ -1,5 +1,6 @@
 export const EASE_INSTITUTIONAL = [0.16, 1, 0.3, 1] as const;
 export const EASE_SMOOTH = [0.65, 0, 0.35, 1] as const;
+export const EASE_REVEAL = [0.22, 1, 0.36, 1] as const;
 
 export const fadeInUp = {
   hidden: { opacity: 0, y: 24 },
