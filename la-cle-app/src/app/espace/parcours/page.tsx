@@ -39,13 +39,13 @@ export default function ParcoursPage() {
     <LearnerShell>
       <div className="space-y-6">
         <div>
-          <h1 className="font-serif text-2xl text-ivoire">Parcours pedagogique</h1>
+          <h1 className="font-serif text-2xl text-ivoire">Parcours pédagogique</h1>
           <p className="mt-1 text-sm text-cendre">
-            Progressez a travers les modules pour obtenir votre certification
+            Progressez à travers les modules pour obtenir votre certification
           </p>
         </div>
 
-        <AsyncBoundary state={modulesState} empty={<p className="text-sm text-cendre">Aucun module disponible.</p>}>
+        <AsyncBoundary state={modulesState} loadingLabel="Chargement de votre parcours…" empty={<p className="text-sm text-cendre">Aucun module disponible.</p>}>
           {(modules) => (
             <div className="relative space-y-4">
               <div className="absolute left-6 top-0 hidden h-full w-px bg-filet sm:block" />
@@ -87,13 +87,13 @@ export default function ParcoursPage() {
                             <div className="flex items-center gap-2">
                               <span className="text-xs text-or sm:hidden">Module {mod.order}</span>
                               <Badge variant={isCompleted ? "success" : isInProgress ? "gold" : "default"}>
-                                {isCompleted ? "Termine" : isInProgress ? "En cours" : "Verrouille"}
+                                {isCompleted ? "Terminé" : isInProgress ? "En cours" : "Verrouillé"}
                               </Badge>
                             </div>
                             <h3 className="mt-2 font-serif text-lg text-ivoire">{mod.title}</h3>
                             <p className="mt-1 text-sm text-cendre line-clamp-2">{mod.description}</p>
                             <div className="mt-3 flex items-center gap-4 text-xs text-pierre">
-                              <span>{mod.videosCount} videos</span>
+                              <span>{mod.videosCount} vidéos</span>
                               <span>{formatDuration(mod.totalDuration)}</span>
                               {!isLocked && (
                                 <span>{mod.videosWatched}/{mod.videosCount} vues</span>

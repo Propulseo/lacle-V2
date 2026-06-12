@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Pagination } from "./Pagination";
 
 export interface Column<T> {
   key: string;
@@ -20,6 +21,10 @@ interface DataTableProps<T> {
   keyExtractor: (item: T) => string;
   onRowClick?: (item: T) => void;
   emptyMessage?: string;
+  /** Rendu riche affiché quand data est vide (prioritaire sur emptyMessage). */
+  emptyState?: ReactNode;
+  /** Active la pagination côté client. Absent = comportement inchangé. */
+  pageSize?: number;
 }
 
 export function DataTable<T>({
@@ -28,9 +33,12 @@ export function DataTable<T>({
   keyExtractor,
   onRowClick,
   emptyMessage = "Aucune donnée",
+  emptyState,
+  pageSize,
 }: DataTableProps<T>) {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [page, setPage] = useState(1);
 
   function handleSort(key: string) {
     if (sortKey === key) {
@@ -51,68 +59,85 @@ export function DataTable<T>({
     return sortDir === "asc" ? cmp : -cmp;
   });
 
+  // Clamp : si les données rétrécissent (filtre), on reste sur une page valide sans useEffect.
+  const totalPages = pageSize ? Math.max(1, Math.ceil(sorted.length / pageSize)) : 1;
+  const currentPage = Math.min(page, totalPages);
+  const paged = pageSize
+    ? sorted.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+    : sorted;
+
   if (data.length === 0) {
+    if (emptyState) return <>{emptyState}</>;
     return (
       <div className="py-12 text-center text-cendre">{emptyMessage}</div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-filet">
-      <table className="w-full text-sm">
-        <thead className="sticky top-0 border-b border-filet bg-surface">
-          <tr>
-            {columns.map((col) => (
-              <th
-                key={col.key}
-                className={cn(
-                  "px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-cendre",
-                  col.sortable && "cursor-pointer select-none hover:text-ivoire",
-                  col.hideOnMobile && "hidden md:table-cell",
-                  col.className
-                )}
-                onClick={col.sortable ? () => handleSort(col.key) : undefined}
-              >
-                <span className="flex items-center gap-1">
-                  {col.header}
-                  {col.sortable && sortKey === col.key && (
-                    sortDir === "asc" ? (
-                      <ChevronUp className="h-3 w-3" />
-                    ) : (
-                      <ChevronDown className="h-3 w-3" />
-                    )
-                  )}
-                </span>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-filet/50">
-          {sorted.map((item) => (
-            <tr
-              key={keyExtractor(item)}
-              className={cn(
-                "transition-colors",
-                onRowClick && "cursor-pointer hover:bg-ivoire/[0.03]"
-              )}
-              onClick={onRowClick ? () => onRowClick(item) : undefined}
-            >
+    <div className="space-y-4">
+      <div className="overflow-x-auto rounded-xl border border-filet">
+        <table className="w-full text-sm">
+          <thead className="sticky top-0 border-b border-filet bg-surface">
+            <tr>
               {columns.map((col) => (
-                <td
+                <th
                   key={col.key}
                   className={cn(
-                    "px-4 py-3 text-ivoire",
+                    "px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-cendre",
+                    col.sortable && "cursor-pointer select-none hover:text-ivoire",
                     col.hideOnMobile && "hidden md:table-cell",
                     col.className
                   )}
+                  onClick={col.sortable ? () => handleSort(col.key) : undefined}
                 >
-                  {col.render(item)}
-                </td>
+                  <span className="flex items-center gap-1">
+                    {col.header}
+                    {col.sortable && sortKey === col.key && (
+                      sortDir === "asc" ? (
+                        <ChevronUp className="h-3 w-3" />
+                      ) : (
+                        <ChevronDown className="h-3 w-3" />
+                      )
+                    )}
+                  </span>
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-filet/50">
+            {paged.map((item) => (
+              <tr
+                key={keyExtractor(item)}
+                className={cn(
+                  "transition-colors",
+                  onRowClick && "cursor-pointer hover:bg-ivoire/[0.03]"
+                )}
+                onClick={onRowClick ? () => onRowClick(item) : undefined}
+              >
+                {columns.map((col) => (
+                  <td
+                    key={col.key}
+                    className={cn(
+                      "px-4 py-3 text-ivoire",
+                      col.hideOnMobile && "hidden md:table-cell",
+                      col.className
+                    )}
+                  >
+                    {col.render(item)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {pageSize !== undefined && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 }

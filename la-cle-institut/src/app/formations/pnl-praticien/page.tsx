@@ -3,10 +3,11 @@ import { FooterMinimal } from "@/components/layout/FooterMinimal";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { SectionBlock } from "@/components/ui/SectionBlock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Button } from "@/components/ui/Button";
+import { PNLHero } from "@/components/formations/PNLHero";
 import { PNLModules } from "@/components/formations/PNLModules";
 import { ParcoursSteps } from "@/components/formations/ParcoursSteps";
 import { PNLFAQ } from "@/components/formations/PNLFAQ";
+import { PNLCtaFinal } from "@/components/formations/PNLCtaFinal";
 import { FormationDocuments } from "@/components/formations/FormationDocuments";
 import { FormationResultats } from "@/components/formations/FormationResultats";
 import { ROUTES } from "@/lib/constants";
@@ -17,68 +18,13 @@ export const metadata = {
     "Formation complète de Praticien PNL. Parcours distanciel structuré en sept modules, menant à la certification.",
 };
 
-const METRICS = [
-  { value: "7", label: "Modules distanciels" },
-  { value: "10", label: "Compétences clés" },
-  { value: "1", label: "Certification délivrée" },
-];
-
 export default function PNLPraticienPage() {
   return (
     <>
       <Header showBack backHref={ROUTES.formations} backLabel="Formations" />
       <PageWrapper>
         {/* ---- HERO CINÉMATIQUE ---- */}
-        <section className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden pb-20 pt-32 md:pb-28 md:pt-40">
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-graphite/40 via-noir to-noir"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_35%,rgba(176,141,87,0.04),transparent)]"
-            aria-hidden="true"
-          />
-
-          <div className="relative mx-auto w-full max-w-[1200px] px-6 md:px-10 lg:px-16">
-            <ScrollReveal>
-              <p className="text-label tracking-[0.3em] text-bronze">
-                Formation certifiante
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.1}>
-              <h1 className="mt-6 max-w-4xl font-display text-5xl font-semibold leading-[1.02] text-ivoire md:text-7xl lg:text-8xl xl:text-[6.5rem]">
-                Praticien PNL
-              </h1>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.2}>
-              <div className="mt-12 flex items-start gap-6 md:mt-16">
-                <div className="mt-3 hidden h-px w-20 shrink-0 bg-gradient-to-r from-bronze/60 to-transparent md:block" />
-                <p className="max-w-xl text-lg leading-relaxed text-cendre md:text-xl">
-                  Comprendre les mécanismes fondamentaux de la Programmation
-                  Neuro-Linguistique avec exigence et profondeur.
-                </p>
-              </div>
-            </ScrollReveal>
-
-            {/* Métriques */}
-            <ScrollReveal delay={0.3}>
-              <div className="mt-20 grid grid-cols-1 gap-6 border-t border-filet/60 pt-10 sm:grid-cols-3 sm:gap-8 md:mt-24 md:max-w-lg md:gap-16">
-                {METRICS.map((m) => (
-                  <div key={m.label}>
-                    <span className="block font-display text-4xl font-light text-ivoire md:text-5xl">
-                      {m.value}
-                    </span>
-                    <p className="mt-2 text-[0.65rem] uppercase tracking-[0.12em] text-pierre md:text-xs md:tracking-widest">
-                      {m.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </ScrollReveal>
-          </div>
-        </section>
+        <PNLHero />
 
         {/* ---- INTRO / MANIFESTO ---- */}
         <SectionBlock background="graphite">
@@ -238,46 +184,7 @@ export default function PNLPraticienPage() {
         </SectionBlock>
 
         {/* ---- CTA FINAL ---- */}
-        <section className="relative overflow-hidden py-28 md:py-36">
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-noir via-graphite/60 to-noir"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_50%_50%,rgba(176,141,87,0.04),transparent)]"
-            aria-hidden="true"
-          />
-          <ScrollReveal>
-            <div className="relative mx-auto max-w-[1200px] px-6 text-center md:px-10 lg:px-16">
-              <span
-                className="mb-8 block font-display text-7xl font-extralight text-bronze/10 md:text-9xl"
-                aria-hidden="true"
-              >
-                &rarr;
-              </span>
-              <h2 className="mb-6 font-display text-3xl text-ivoire md:text-4xl lg:text-5xl">
-                Prêt à commencer
-              </h2>
-              <p className="mx-auto mb-14 max-w-lg leading-relaxed text-cendre">
-                L&apos;espace de formation vous attend. Vous y trouverez le
-                parcours complet et tout ce dont vous avez besoin pour démarrer.
-              </p>
-              {/*
-                CTA principal de la page de vente — variante "elegant".
-                Pour revenir au bouton d'origine, retirer simplement la prop
-                `variant="elegant"` (ou la remettre à "default").
-                Définition de la variante : globals.css → .btn-elegant
-              */}
-              <Button
-                href={ROUTES.accessSpace}
-                size="large"
-                variant="elegant"
-              >
-                Accéder à l&apos;espace de formation
-              </Button>
-            </div>
-          </ScrollReveal>
-        </section>
+        <PNLCtaFinal />
 
         <FooterMinimal />
       </PageWrapper>

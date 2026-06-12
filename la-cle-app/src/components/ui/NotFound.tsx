@@ -10,7 +10,7 @@ interface NotFoundProps {
 
 export function NotFound({
   title = "Page introuvable",
-  message = "La ressource demandee n'existe pas ou a ete supprimee.",
+  message = "La ressource demandée n'existe pas ou a été supprimée.",
   backHref,
   backLabel = "Retour",
 }: NotFoundProps) {

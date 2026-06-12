@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { TrialGate } from "@/components/learner/TrialGate";
 import { EnrollmentGate } from "@/components/learner/EnrollmentGate";
 import { isEnrollmentComplete } from "@/lib/enrollment-gate";
+import { getModuleAccessDecision } from "@/lib/module-access";
 import type { StudentStatus } from "@/types";
 
 interface ModuleAccessResult {
@@ -13,8 +14,9 @@ interface ModuleAccessResult {
 
 /**
  * Determine si un apprenant peut acceder a un module.
- * Bloque l'acces au module 7+ en mode decouverte (TrialGate)
- * et au module 2 sans inscription completee (EnrollmentGate).
+ * Mode Decouverte : cours 1 a 7 consultables, TrialGate au-dela.
+ * Cours 8 et suivants : EnrollmentGate tant que contrat + CGV + paiement
+ * ne sont pas valides (docs/PARCOURS_UTILISATEUR.md).
  *
  * @param moduleOrder - Numero d'ordre du module
  * @param learnerStatus - Statut actuel de l'apprenant
@@ -26,11 +28,17 @@ export function getModuleAccess(
   learnerStatus: StudentStatus | null,
   onEnrollmentUnlocked: () => void
 ): ModuleAccessResult {
-  if (learnerStatus === "decouverte" && moduleOrder >= 7) {
+  const decision = getModuleAccessDecision(
+    moduleOrder,
+    learnerStatus,
+    isEnrollmentComplete()
+  );
+
+  if (decision === "trial_blocked") {
     return { canAccess: false, gate: <TrialGate /> };
   }
 
-  if (moduleOrder === 2 && !isEnrollmentComplete()) {
+  if (decision === "enrollment_required") {
     return {
       canAccess: false,
       gate: <EnrollmentGate onUnlocked={onEnrollmentUnlocked} />,

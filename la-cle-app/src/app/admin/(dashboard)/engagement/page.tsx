@@ -63,7 +63,7 @@ export default function EngagementPage() {
 
             const tabs = [
               { id: "actifs" as const, label: "Actifs", count: grouped.actifs.length },
-              { id: "risque" as const, label: "A risque", count: grouped.risque.length },
+              { id: "risque" as const, label: "À risque", count: grouped.risque.length },
               { id: "abandons" as const, label: "Abandons", count: grouped.abandons.length },
               { id: "reprises" as const, label: "Reprises", count: grouped.reprises.length },
             ];
@@ -73,7 +73,9 @@ export default function EngagementPage() {
             function handleExport() {
               const rows = buildCsvRows(currentList);
               // TODO // Qualiopi Ind.12 : cet export est requis pour audit
-              exportToCsv(rows, `engagement-${activeTab}-${new Date().toISOString().slice(0, 10)}.csv`);
+              exportToCsv(rows, `engagement-${activeTab}`, {
+                qualiopiIndicator: "Ind.12 — Suivi de l'engagement et prévention du décrochage",
+              });
             }
 
             return (
@@ -92,7 +94,7 @@ export default function EngagementPage() {
 
                 <div className="space-y-2">
                   {currentList.length === 0 ? (
-                    <EmptyState title="Aucun apprenant dans cette categorie" />
+                    <EmptyState title="Aucun apprenant dans cette catégorie" />
                   ) : (
                     currentList.map((l) => <EngagementRow key={l.id} learner={l} />)
                   )}

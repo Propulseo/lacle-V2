@@ -15,9 +15,9 @@ import { formatDate } from "@/lib/utils";
 import type { SatisfactionSurvey, SatisfactionType } from "@/types";
 
 const HOT_LABELS: Record<string, string> = {
-  "hot-1": "Qualite globale",
+  "hot-1": "Qualité globale",
   "hot-2": "Contenu / attentes",
-  "hot-3": "Facilite d'utilisation",
+  "hot-3": "Facilité d'utilisation",
   "hot-4": "Recommandation",
 };
 
@@ -54,8 +54,8 @@ export default function SatisfactionPage() {
             const labels = activeTab === "chaud" ? HOT_LABELS : COLD_LABELS;
 
             const tabs = [
-              { id: "chaud", label: "A chaud", count: surveys.filter((s) => s.type === "chaud").length },
-              { id: "froid", label: "A froid", count: surveys.filter((s) => s.type === "froid").length },
+              { id: "chaud", label: "À chaud", count: surveys.filter((s) => s.type === "chaud").length },
+              { id: "froid", label: "À froid", count: surveys.filter((s) => s.type === "froid").length },
             ];
 
             async function handleToggle(id: string) {
@@ -76,7 +76,9 @@ export default function SatisfactionPage() {
                 ),
                 avis_public: s.publicReview ?? "",
               }));
-              exportToCsv(rows, `satisfaction-${activeTab}-${new Date().toISOString().slice(0, 10)}.csv`);
+              exportToCsv(rows, `satisfaction-${activeTab}`, {
+                qualiopiIndicator: "Ind.30 — Recueil et traitement de la satisfaction",
+              });
             }
 
             return (
@@ -84,7 +86,7 @@ export default function SatisfactionPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h1 className="font-serif text-2xl text-ivoire">Satisfaction</h1>
-                    <p className="mt-1 text-sm text-cendre">{surveys.length} reponses au total</p>
+                    <p className="mt-1 text-sm text-cendre">{surveys.length} réponses au total</p>
                   </div>
                   <Button variant="ghost" size="sm" icon={<Download className="h-4 w-4" />} onClick={handleExport}>Exporter CSV</Button>
                 </div>

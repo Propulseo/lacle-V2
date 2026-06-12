@@ -8,3 +8,15 @@ export class NotFoundError extends Error {
     this.name = "NotFoundError";
   }
 }
+
+/**
+ * Thrown by form submit handlers when field-level validation fails.
+ * FormModal/ConfirmDialog catch it silently: the field errors are already
+ * displayed inline, no generic message is needed.
+ */
+export class FormValidationError extends Error {
+  constructor() {
+    super("Validation du formulaire échouée");
+    this.name = "FormValidationError";
+  }
+}

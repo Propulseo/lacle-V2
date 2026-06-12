@@ -45,17 +45,17 @@ export default function InscriptionPage() {
         <div className="w-full max-w-md rounded-xl border border-filet bg-encre/80 p-8 text-center backdrop-blur-sm">
           <CheckCircle className="mx-auto h-12 w-12 text-succes" />
           <h1 className="mt-4 font-serif text-2xl text-ivoire">
-            Votre profil a bien ete enregistre.
+            Votre profil a bien été enregistré.
           </h1>
           <p className="mt-2 text-sm text-cendre">
-            Creez votre compte pour continuer.
+            Créez votre compte pour continuer.
           </p>
           <Button
             variant="primary"
             className="mt-6 w-full"
             onClick={() => router.push("/login")}
           >
-            Creer mon compte
+            Créer mon compte
           </Button>
         </div>
       </div>

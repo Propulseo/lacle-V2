@@ -40,7 +40,7 @@ export function SupportSection({ userId, userName, messages, onMessageSent }: Su
         <MessageSquare className="h-5 w-5 text-or" />
         <h2 className="font-serif text-lg text-ivoire">Contacter le support</h2>
       </div>
-      {sent && <Alert variant="success" className="mb-4">Message envoye.</Alert>}
+      {sent && <Alert variant="success" className="mb-4">Message envoyé.</Alert>}
       <form onSubmit={handleSubmit} className="space-y-3">
         <Input label="Sujet" value={subject} onChange={(e) => setSubject(e.target.value)} required />
         <Textarea label="Message" value={message} onChange={(e) => setMessage(e.target.value)} required />
@@ -55,7 +55,7 @@ export function SupportSection({ userId, userName, messages, onMessageSent }: Su
               <p className="text-sm font-medium text-ivoire">{msg.subject}</p>
               <p className="text-xs text-cendre">{formatDate(msg.createdAt)}</p>
               {msg.reply ? (
-                <p className="mt-2 text-sm text-succes">Repondu : {msg.reply}</p>
+                <p className="mt-2 text-sm text-succes">Répondu : {msg.reply}</p>
               ) : (
                 <Badge variant="warning" className="mt-1">En attente</Badge>
               )}

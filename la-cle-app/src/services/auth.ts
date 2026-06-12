@@ -6,6 +6,10 @@ export type AuthUser =
   | { type: "admin"; id: string; email: string; firstName: string; lastName: string }
   | { type: "learner"; id: string; email: string; firstName: string; lastName: string };
 
+// Comptes de demo exposes via le service (les composants n'importent jamais
+// la mock directement) — a supprimer lors du branchement Supabase Auth.
+export { DEMO_ACCOUNTS } from "@/data/mock/demo-accounts";
+
 /**
  * Authentifie un administrateur par email et mot de passe.
  *

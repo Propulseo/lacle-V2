@@ -27,7 +27,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         type="button"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        aria-label="Page precedente"
+        aria-label="Page précédente"
         className="flex h-11 min-w-[2.75rem] items-center justify-center rounded-lg text-cendre hover:text-ivoire hover:bg-ivoire/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronLeft className="h-4 w-4" />

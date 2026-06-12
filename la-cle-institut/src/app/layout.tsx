@@ -20,11 +20,26 @@ const libreFranklin = Libre_Franklin({
   display: "swap",
 });
 
+const SITE_TITLE = "La Clé | Institut de compréhension des mécanismes humains";
+const SITE_DESCRIPTION =
+  "Institut de formation dédié à la compréhension et à la maîtrise des mécanismes humains.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.institutlacle.fr"),
-  title: "La Clé | Institut de compréhension des mécanismes humains",
-  description:
-    "Institut de formation dédié à la compréhension et à la maîtrise des mécanismes humains.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  // icon.tsx et opengraph-image.tsx (convention de fichiers Next.js) sont
+  // référencés automatiquement — aucune déclaration manuelle nécessaire.
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: "La Clé Institut",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

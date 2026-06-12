@@ -97,9 +97,9 @@ export default function ApprenantDetailPage() {
                 </div>
                 <div className="mt-4 flex flex-wrap gap-4 text-xs text-pierre">
                   <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> Inscrit le {formatDate(learner.createdAt)}</span>
-                  {learner.lastLoginAt && <span>Derniere connexion : {formatDate(learner.lastLoginAt)}</span>}
+                  {learner.lastLoginAt && <span>Dernière connexion : {formatDate(learner.lastLoginAt)}</span>}
                   {learner.mustChangePassword && (
-                    <span className="flex items-center gap-1 text-attention"><Shield className="h-3 w-3" /> Mot de passe a changer</span>
+                    <span className="flex items-center gap-1 text-attention"><Shield className="h-3 w-3" /> Mot de passe à changer</span>
                   )}
                 </div>
               </Card>
@@ -119,7 +119,7 @@ export default function ApprenantDetailPage() {
                       <ProgressBar value={prog.modulesCompleted} max={prog.modulesTotal} className="mt-2" size="sm" />
                     </Card>
                     <Card>
-                      <p className="text-sm text-cendre">Videos</p>
+                      <p className="text-sm text-cendre">Vidéos</p>
                       <p className="mt-1 font-serif text-xl text-ivoire">{prog.videosWatched}/{prog.videosTotal}</p>
                       <ProgressBar value={prog.videosWatched} max={prog.videosTotal} className="mt-2" size="sm" />
                     </Card>
@@ -137,10 +137,10 @@ export default function ApprenantDetailPage() {
                   <h3 className="mb-4 font-serif text-lg text-ivoire">Examen final</h3>
                   <div className="flex items-center gap-3">
                     <Badge variant={prog.finalExamStatus === "passed" ? "success" : prog.finalExamStatus === "requested" ? "warning" : "default"}>
-                      {prog.finalExamStatus === "not_started" ? "Non demarre" :
-                       prog.finalExamStatus === "requested" ? "Demande" :
-                       prog.finalExamStatus === "scheduled" ? "Planifie" :
-                       prog.finalExamStatus === "passed" ? "Reussi" : "Echoue"}
+                      {prog.finalExamStatus === "not_started" ? "Non démarré" :
+                       prog.finalExamStatus === "requested" ? "Demandé" :
+                       prog.finalExamStatus === "scheduled" ? "Planifié" :
+                       prog.finalExamStatus === "passed" ? "Réussi" : "Échoué"}
                     </Badge>
                   </div>
                 </Card>

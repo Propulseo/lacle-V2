@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
+import { DEMO_ACCOUNTS } from "@/services/auth";
 import { SITE } from "@/lib/constants";
 
 export default function AdminLoginPage() {
@@ -29,6 +30,12 @@ export default function AdminLoginPage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function fillDemo() {
+    setEmail(DEMO_ACCOUNTS.admin.email);
+    setPassword(DEMO_ACCOUNTS.admin.password);
+    setError("");
   }
 
   return (
@@ -72,6 +79,16 @@ export default function AdminLoginPage() {
             Se connecter
           </Button>
         </form>
+
+        {/* Acces rapide demo — a supprimer lors du branchement Supabase Auth */}
+        <div className="mt-6 border-t border-filet pt-4">
+          <p className="text-center text-xs text-pierre">Connexion rapide (démo)</p>
+          <div className="mt-3 flex justify-center">
+            <Button type="button" variant="ghost" size="sm" onClick={fillDemo}>
+              Compte administrateur
+            </Button>
+          </div>
+        </div>
 
         <p className="mt-6 text-center text-xs text-pierre">
           Accès réservé aux administrateurs

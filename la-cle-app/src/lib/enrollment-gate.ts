@@ -1,5 +1,5 @@
 /**
- * Conditions d'acces au cours 8 (module 2).
+ * Conditions d'acces au cours 8 (seuil defini dans lib/module-access.ts).
  *
  * 3 conditions cumulatives :
  * 1. Contrat de formation distancielle signe

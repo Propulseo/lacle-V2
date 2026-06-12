@@ -196,6 +196,51 @@ export const mockExams: ModularExam[] = [
       },
     ],
   },
+  {
+    id: "exam-7",
+    moduleId: "module-7",
+    title: "Examen — Croyances et valeurs",
+    passingScore: 100,
+    maxAttempts: 3,
+    timeLimitMinutes: null,
+    createdAt: "2025-08-15T10:00:00Z",
+    questions: [
+      {
+        id: "eq-7-1",
+        type: "qcm",
+        question: "Une croyance limitante se reconnaît à :",
+        options: [
+          "Sa véracité objective",
+          "L'effet restrictif qu'elle produit sur les choix de la personne",
+          "Son ancienneté",
+          "Sa formulation négative uniquement",
+        ],
+        correctAnswer:
+          "L'effet restrictif qu'elle produit sur les choix de la personne",
+        points: 40,
+      },
+      {
+        id: "eq-7-2",
+        type: "vrai_faux",
+        question: "Les valeurs sont hiérarchisées différemment selon les contextes de vie.",
+        correctAnswer: "vrai",
+        points: 30,
+      },
+      {
+        id: "eq-7-3",
+        type: "qcm",
+        question: "Le travail sur les croyances intervient de préférence :",
+        options: [
+          "Avant toute autre technique",
+          "Quand un comportement résiste aux techniques de surface",
+          "Uniquement en fin de parcours",
+          "Jamais en accompagnement individuel",
+        ],
+        correctAnswer: "Quand un comportement résiste aux techniques de surface",
+        points: 30,
+      },
+    ],
+  },
 ];
 
 export const mockExamAttempts: LegacyExamAttempt[] = [

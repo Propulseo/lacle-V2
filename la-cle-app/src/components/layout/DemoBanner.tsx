@@ -23,7 +23,7 @@ export function DemoBanner() {
 
   return (
     <div className="relative flex h-8 items-center justify-center bg-or/90 text-xs font-medium text-nuit">
-      <span>Demo en donnees fictives — feedback bienvenu</span>
+      <span>Démo en données fictives — feedback bienvenu</span>
       <button
         type="button"
         onClick={dismiss}

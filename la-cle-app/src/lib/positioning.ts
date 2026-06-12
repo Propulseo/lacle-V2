@@ -69,14 +69,14 @@ export const POSITIONING_QUESTIONS: ReadonlyArray<PosQuestion> = [
   {
     id: "introspection",
     order: 2,
-    prompt: "Avez-vous deja pratique une technique d'introspection ?",
+    prompt: "Avez-vous déjà pratiqué une technique d'introspection ?",
     kind: "radio",
     scored: true,
     correctAnswer: "regulierement",
     options: [
       { value: "jamais", label: "Jamais" },
       { value: "rarement", label: "Rarement" },
-      { value: "regulierement", label: "Regulierement" },
+      { value: "regulierement", label: "Régulièrement" },
     ],
   },
   {
@@ -88,15 +88,15 @@ export const POSITIONING_QUESTIONS: ReadonlyArray<PosQuestion> = [
     correctAnswer: "les-deux",
     options: [
       { value: "comportements", label: "Les comportements observables" },
-      { value: "croyances", label: "Les croyances et representations mentales" },
-      { value: "les-deux", label: "Les deux a la fois" },
+      { value: "croyances", label: "Les croyances et représentations mentales" },
+      { value: "les-deux", label: "Les deux à la fois" },
       { value: "aucun", label: "Ni l'un ni l'autre" },
     ],
   },
   {
     id: "profile-type",
     order: 4,
-    prompt: "Vous etes plutot :",
+    prompt: "Vous êtes plutôt :",
     kind: "radio",
     scored: false,
     options: [
@@ -121,20 +121,20 @@ export const POSITIONING_QUESTIONS: ReadonlyArray<PosQuestion> = [
   {
     id: "manipulation",
     order: 6,
-    prompt: "Selon vous, la PNL peut-elle etre utilisee pour manipuler ?",
-    helper: "Question philosophique — il n'y a pas de bonne reponse.",
+    prompt: "Selon vous, la PNL peut-elle être utilisée pour manipuler ?",
+    helper: "Question philosophique — il n'y a pas de bonne réponse.",
     kind: "radio",
     scored: false,
     options: [
       { value: "oui", label: "Oui" },
       { value: "non", label: "Non" },
-      { value: "depend", label: "Ca depend de l'intention" },
+      { value: "depend", label: "Ça dépend de l'intention" },
     ],
   },
   {
     id: "failure",
     order: 7,
-    prompt: "Votre rapport a l'echec :",
+    prompt: "Votre rapport à l'échec :",
     kind: "radio",
     scored: false,
     options: [
@@ -146,11 +146,11 @@ export const POSITIONING_QUESTIONS: ReadonlyArray<PosQuestion> = [
   {
     id: "orientation",
     order: 8,
-    prompt: "Dans votre quotidien, vous etes oriente :",
+    prompt: "Dans votre quotidien, vous êtes orienté :",
     kind: "radio",
     scored: false,
     options: [
-      { value: "resultats", label: "Resultats" },
+      { value: "resultats", label: "Résultats" },
       { value: "relations", label: "Relations" },
       { value: "processus", label: "Processus" },
       { value: "sens", label: "Sens" },
@@ -159,7 +159,7 @@ export const POSITIONING_QUESTIONS: ReadonlyArray<PosQuestion> = [
   {
     id: "role-model",
     order: 9,
-    prompt: "Avez-vous un modele dont vous aimeriez adopter certaines qualites ?",
+    prompt: "Avez-vous un modèle dont vous aimeriez adopter certaines qualités ?",
     kind: "radio",
     scored: false,
     options: [
@@ -171,7 +171,7 @@ export const POSITIONING_QUESTIONS: ReadonlyArray<PosQuestion> = [
   {
     id: "attraction",
     order: 10,
-    prompt: "Apres cette introduction, qu'est-ce qui vous attire le plus dans la PNL ?",
+    prompt: "Après cette introduction, qu'est-ce qui vous attire le plus dans la PNL ?",
     kind: "textarea",
     scored: false,
     placeholder: "Exprimez-vous librement.",
@@ -205,23 +205,23 @@ export function computePositioningResult(
   if (score < 4) {
     startingLevel = "debutant";
     recommendations = [
-      "Prenez le temps de bien assimiler chaque capsule avant de passer a la suivante.",
-      "Les questions d'integration sont la pour consolider — ne les survolez pas.",
-      "Le rythme recommande : 2 a 3 capsules par semaine.",
+      "Prenez le temps de bien assimiler chaque capsule avant de passer à la suivante.",
+      "Les questions d'intégration sont là pour consolider — ne les survolez pas.",
+      "Le rythme recommandé : 2 à 3 capsules par semaine.",
     ];
   } else if (score <= 7) {
     startingLevel = "initie";
     recommendations = [
       "Vous avez de bonnes bases — concentrez-vous sur les nuances.",
-      "Les capsules d'approfondissement seront particulierement utiles.",
-      "Le rythme recommande : 3 a 5 capsules par semaine.",
+      "Les capsules d'approfondissement seront particulièrement utiles.",
+      "Le rythme recommandé : 3 à 5 capsules par semaine.",
     ];
   } else {
     startingLevel = "avance";
     recommendations = [
-      "Vos connaissances sont solides — visez l'integration comportementale.",
+      "Vos connaissances sont solides — visez l'intégration comportementale.",
       "Les questions philosophiques vous permettront d'aller plus loin.",
-      "Le rythme recommande : a votre convenance, en maintenant la regularite.",
+      "Le rythme recommandé : à votre convenance, en maintenant la régularité.",
     ];
   }
 

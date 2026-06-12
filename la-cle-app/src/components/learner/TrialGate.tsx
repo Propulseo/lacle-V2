@@ -22,10 +22,10 @@ export function TrialGate() {
         <Lock className="h-8 w-8 text-or/60" />
         <div className="space-y-2">
           <h3 className="font-serif text-lg text-ivoire">
-            Acces en mode decouverte
+            Accès en mode découverte
           </h3>
           <p className="mx-auto max-w-md text-sm text-cendre">
-            Vous avez acces aux 7 premiers cours en essai gratuit.
+            Vous avez accès aux 7 premiers cours en essai gratuit.
             Rejoignez la formation pour continuer.
           </p>
         </div>

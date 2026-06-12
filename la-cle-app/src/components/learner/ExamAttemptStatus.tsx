@@ -54,11 +54,11 @@ export function ExamAttemptStatus({ status, examType }: ExamAttemptStatusProps) 
       <Card className="text-center">
         <Lock className="mx-auto h-10 w-10 text-erreur" />
         <h3 className="mt-3 font-serif text-lg text-ivoire">
-          Toutes les tentatives utilisees
+          Toutes les tentatives utilisées
         </h3>
         <p className="mt-2 text-sm text-cendre">
           {examType === "final"
-            ? "Vous avez utilise vos 4 tentatives pour l'examen final. Contactez l'institut pour convenir de la suite."
+            ? "Vous avez utilisé vos 4 tentatives pour l'examen final. Contactez l'institut pour convenir de la suite."
             : "Vous avez atteint le nombre maximum de tentatives. Contactez-nous pour en discuter."}
         </p>
         <Button
@@ -93,7 +93,7 @@ export function ExamAttemptStatus({ status, examType }: ExamAttemptStatusProps) 
         </div>
         {examType === "module" && status.attemptsToday >= 5 && (
           <p className="mt-2 text-xs">
-            Vous avez utilise vos 5 tentatives sur 24h. Profitez de ce temps pour revoir vos cours.
+            Vous avez utilisé vos 5 tentatives sur 24h. Profitez de ce temps pour revoir vos cours.
           </p>
         )}
       </Alert>

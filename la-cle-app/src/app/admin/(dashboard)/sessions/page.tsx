@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, MapPin, Clock, Users, Check, X, MoreVertical } from "lucide-react";
+import { Plus, MapPin, Clock, Users, Check, X, MoreVertical, CalendarDays } from "lucide-react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { DropdownMenu } from "@/components/ui/DropdownMenu";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -50,13 +51,13 @@ export default function SessionsPage() {
     <AdminShell
       breadcrumbs={[
         { label: "Dashboard", href: "/admin" },
-        { label: "Sessions presentielles" },
+        { label: "Sessions présentielles" },
       ]}
     >
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="font-serif text-2xl text-ivoire">Sessions presentielles</h1>
+            <h1 className="font-serif text-2xl text-ivoire">Sessions présentielles</h1>
             <p className="mt-1 text-sm text-cendre">{sessionsState.data?.length ?? 0} sessions</p>
           </div>
           <Button variant="primary" icon={<Plus className="h-4 w-4" />} onClick={handleCreate}>
@@ -64,7 +65,22 @@ export default function SessionsPage() {
           </Button>
         </div>
 
-        <AsyncBoundary state={sessionsState}>
+        <AsyncBoundary
+          state={sessionsState}
+          loadingLabel="Chargement des sessions…"
+          empty={
+            <EmptyState
+              icon={<CalendarDays className="h-12 w-12" />}
+              title="Aucune session planifiée"
+              description="Créez votre première session présentielle pour les apprenants certifiés."
+              action={
+                <Button variant="primary" size="sm" icon={<Plus className="h-4 w-4" />} onClick={handleCreate}>
+                  Nouvelle session
+                </Button>
+              }
+            />
+          }
+        >
           {(sessions) => (
             <div className="space-y-4">
               {sessions.map((session, i) => {
@@ -78,7 +94,7 @@ export default function SessionsPage() {
                           <p className="mt-1 text-sm text-cendre">{session.description}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant={past ? "default" : "info"}>{past ? "Passee" : "A venir"}</Badge>
+                          <Badge variant={past ? "default" : "info"}>{past ? "Passée" : "À venir"}</Badge>
                           <DropdownMenu
                             trigger={
                               <span className="rounded p-1 text-pierre hover:text-ivoire hover:bg-ivoire/5 transition-colors inline-flex">
@@ -108,11 +124,11 @@ export default function SessionsPage() {
                                 <div className="flex items-center gap-2">
                                   {reg.attended === null && past ? (
                                     <>
-                                      <button type="button" onClick={() => handleAttendance(session.id, reg.id, true)} aria-label="Marquer present" className="rounded p-1 text-succes hover:bg-succes/10"><Check className="h-4 w-4" /></button>
+                                      <button type="button" onClick={() => handleAttendance(session.id, reg.id, true)} aria-label="Marquer présent" className="rounded p-1 text-succes hover:bg-succes/10"><Check className="h-4 w-4" /></button>
                                       <button type="button" onClick={() => handleAttendance(session.id, reg.id, false)} aria-label="Marquer absent" className="rounded p-1 text-erreur hover:bg-erreur/10"><X className="h-4 w-4" /></button>
                                     </>
                                   ) : reg.attended === true ? (
-                                    <Badge variant="success">Present</Badge>
+                                    <Badge variant="success">Présent</Badge>
                                   ) : reg.attended === false ? (
                                     <Badge variant="error">Absent</Badge>
                                   ) : (
@@ -145,7 +161,7 @@ export default function SessionsPage() {
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         title="Supprimer la session"
-        message={`Voulez-vous vraiment supprimer la session "${deleteTarget?.title}" ? Cette action est irreversible.`}
+        message={`Voulez-vous vraiment supprimer la session "${deleteTarget?.title}" ? Cette action est irréversible.`}
         confirmLabel="Supprimer"
       />
     </AdminShell>

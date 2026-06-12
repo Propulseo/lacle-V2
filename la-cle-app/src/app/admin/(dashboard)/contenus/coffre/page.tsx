@@ -11,13 +11,18 @@ import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { getRevisionResources } from "@/services/revision";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { RevisionResourceFormModal } from "@/components/admin/RevisionResourceFormModal";
+import { getRevisionResources, deleteRevisionResource } from "@/services/revision";
+import type { RevisionResource } from "@/types";
 
 const typeIcons = { pdf: FileText, question: HelpCircle, video: Video };
-const typeLabels = { pdf: "PDF", question: "Question", video: "Video" };
+const typeLabels = { pdf: "PDF", question: "Question", video: "Vidéo" };
 
 export default function CoffrePage() {
   const [activeTab, setActiveTab] = useState("all");
+  const [addOpen, setAddOpen] = useState(false);
+  const [resourceToDelete, setResourceToDelete] = useState<RevisionResource | null>(null);
   const resourcesState = useAsyncData(() => getRevisionResources(), []);
 
   return (
@@ -25,16 +30,16 @@ export default function CoffrePage() {
       breadcrumbs={[
         { label: "Dashboard", href: "/admin" },
         { label: "Contenus", href: "/admin/contenus" },
-        { label: "Coffre de revision" },
+        { label: "Coffre de révision" },
       ]}
     >
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="font-serif text-2xl text-ivoire">Coffre de revision</h1>
-            <p className="mt-1 text-sm text-cendre">Ressources complementaires pour les apprenants</p>
+            <h1 className="font-serif text-2xl text-ivoire">Coffre de révision</h1>
+            <p className="mt-1 text-sm text-cendre">Ressources complémentaires pour les apprenants</p>
           </div>
-          <Button variant="primary" size="sm" icon={<Plus className="h-4 w-4" />}>Ajouter</Button>
+          <Button variant="primary" size="sm" icon={<Plus className="h-4 w-4" />} onClick={() => setAddOpen(true)}>Ajouter</Button>
         </div>
 
         <AsyncBoundary state={resourcesState}>
@@ -44,7 +49,7 @@ export default function CoffrePage() {
               { id: "all", label: "Tout", count: resources.length },
               { id: "pdf", label: "PDF", count: resources.filter((r) => r.type === "pdf").length },
               { id: "question", label: "Questions", count: resources.filter((r) => r.type === "question").length },
-              { id: "video", label: "Videos", count: resources.filter((r) => r.type === "video").length },
+              { id: "video", label: "Vidéos", count: resources.filter((r) => r.type === "video").length },
             ];
 
             return (
@@ -52,7 +57,7 @@ export default function CoffrePage() {
                 <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
                 {filtered.length === 0 ? (
-                  <EmptyState title="Aucune ressource" description="Ajoutez des ressources de revision." />
+                  <EmptyState title="Aucune ressource" description="Ajoutez des ressources de révision." />
                 ) : (
                   <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {filtered.map((resource, i) => {
@@ -67,7 +72,7 @@ export default function CoffrePage() {
                                 <p className="mt-1 text-xs text-cendre line-clamp-2">{resource.description}</p>
                                 <Badge variant="default" className="mt-2">{typeLabels[resource.type]}</Badge>
                               </div>
-                              <button type="button" aria-label="Supprimer" className="text-pierre hover:text-erreur transition-colors"><Trash2 className="h-4 w-4" /></button>
+                              <button type="button" aria-label="Supprimer la ressource" onClick={() => setResourceToDelete(resource)} className="text-pierre hover:text-erreur transition-colors"><Trash2 className="h-4 w-4" /></button>
                             </div>
                           </Card>
                         </ScrollReveal>
@@ -80,6 +85,29 @@ export default function CoffrePage() {
           }}
         </AsyncBoundary>
       </div>
+
+      <RevisionResourceFormModal
+        isOpen={addOpen}
+        onClose={() => setAddOpen(false)}
+        onSuccess={() => {
+          setAddOpen(false);
+          resourcesState.refetch();
+        }}
+      />
+
+      <ConfirmDialog
+        isOpen={resourceToDelete !== null}
+        onClose={() => setResourceToDelete(null)}
+        onConfirm={async () => {
+          if (!resourceToDelete) return;
+          await deleteRevisionResource(resourceToDelete.id);
+          setResourceToDelete(null);
+          resourcesState.refetch();
+        }}
+        title="Supprimer la ressource"
+        message={`Voulez-vous vraiment supprimer "${resourceToDelete?.title ?? ""}" ? Les apprenants n'y auront plus accès.`}
+        confirmLabel="Supprimer"
+      />
     </AdminShell>
   );
 }

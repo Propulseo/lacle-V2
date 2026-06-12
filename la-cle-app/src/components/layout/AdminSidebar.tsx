@@ -92,7 +92,7 @@ export function AdminSidebar() {
           <button
             type="button"
             onClick={() => setCollapsed(!collapsed)}
-            aria-label={collapsed ? "Deplier le menu" : "Replier le menu"}
+            aria-label={collapsed ? "Déplier le menu" : "Replier le menu"}
             className="hidden rounded-lg p-1.5 text-cendre hover:text-ivoire lg:block"
           >
             <ChevronLeft

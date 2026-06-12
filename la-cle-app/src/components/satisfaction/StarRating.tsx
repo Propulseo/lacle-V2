@@ -17,7 +17,7 @@ export function StarRating({ value, onChange, readonly = false, size = "default"
     <div
       className="flex gap-0.5"
       role="radiogroup"
-      aria-label="Note sur 5 etoiles"
+      aria-label="Note sur 5 étoiles"
     >
       {[1, 2, 3, 4, 5].map((star) => (
         <button

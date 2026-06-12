@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
@@ -12,8 +13,11 @@ import { OverlayQuestion } from "@/components/learner/OverlayQuestion";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import { useAsyncData } from "@/hooks/useAsyncData";
+import { useAuth } from "@/hooks/useAuth";
+import { getModuleAccess } from "@/hooks/useModuleAccess";
 import { getVideo, getVideosByModule } from "@/services/videos";
 import { getModule } from "@/services/modules";
+import { getLearner } from "@/services/learners";
 import { formatDuration } from "@/lib/utils";
 import { getCapsuleDisplayName } from "@/lib/capsule-utils";
 import { ROUTES } from "@/lib/constants";
@@ -21,31 +25,41 @@ import { NotFoundError } from "@/lib/errors";
 
 export default function VideoPlayerPage() {
   const { moduleId, videoId } = useParams<{ moduleId: string; videoId: string }>();
+  const { user } = useAuth();
   const router = useRouter();
+  const [enrollmentOk, setEnrollmentOk] = useState(false);
 
   const pageState = useAsyncData(async () => {
-    const [video, module_, allVideos] = await Promise.all([
+    const [video, module_, allVideos, learner] = await Promise.all([
       getVideo(videoId),
       getModule(moduleId),
       getVideosByModule(moduleId),
+      user?.id ? getLearner(user.id) : Promise.resolve(null),
     ]);
     if (!module_) throw new NotFoundError("Module", moduleId);
-    if (!video) throw new NotFoundError("Video", videoId);
-    return { video, module_, allVideos };
-  }, [videoId, moduleId]);
+    if (!video) throw new NotFoundError("Vidéo", videoId);
+    return { video, module_, allVideos, learnerStatus: learner?.status ?? null };
+  }, [videoId, moduleId, user?.id]);
 
   return (
     <LearnerShell>
       <AsyncBoundary state={pageState}>
-        {({ video, module_, allVideos }) => (
-          <VideoContent
-            video={video}
-            module_={module_}
-            allVideos={allVideos}
-            moduleId={moduleId}
-            router={router}
-          />
-        )}
+        {({ video, module_, allVideos, learnerStatus }) => {
+          // Gating identique a la page module : un deep-link vers une video
+          // d'un module bloque doit afficher le meme gate.
+          const access = getModuleAccess(module_.order, learnerStatus, () => setEnrollmentOk(true));
+          if (!access.canAccess && !enrollmentOk) return <>{access.gate}</>;
+
+          return (
+            <VideoContent
+              video={video}
+              module_={module_}
+              allVideos={allVideos}
+              moduleId={moduleId}
+              router={router}
+            />
+          );
+        }}
       </AsyncBoundary>
     </LearnerShell>
   );
@@ -98,7 +112,7 @@ function VideoContent({
 
       <ScrollReveal delay={0.1}>
         <div>
-          <p className="text-sm text-or">Video {video.order}/{allVideos.length}</p>
+          <p className="text-sm text-or">Vidéo {video.order}/{allVideos.length}</p>
           <h1 className="mt-1 font-serif text-2xl text-ivoire">
             {getCapsuleDisplayName(String(video.order), video.title, isCompleted)}
           </h1>
@@ -106,7 +120,7 @@ function VideoContent({
           <div className="mt-3 flex items-center gap-3 text-xs text-pierre">
             <span>{formatDuration(video.duration)}</span>
             <span>&bull;</span>
-            <span>{answeredQuestions.size}/{video.questions.length} questions repondues</span>
+            <span>{answeredQuestions.size}/{video.questions.length} questions répondues</span>
           </div>
         </div>
       </ScrollReveal>
@@ -114,7 +128,7 @@ function VideoContent({
       {video.questions.length > 0 && (
         <ScrollReveal delay={0.2}>
           <Card>
-            <h3 className="mb-3 text-sm font-medium text-ivoire">Questions de la video</h3>
+            <h3 className="mb-3 text-sm font-medium text-ivoire">Questions de la vidéo</h3>
             <div className="space-y-2">
               {video.questions.map((q) => (
                 <div key={q.id} className="flex items-center gap-2 text-sm">
@@ -139,7 +153,7 @@ function VideoContent({
       <div className="flex items-center justify-between">
         {prevVideo ? (
           <Button variant="ghost" icon={<ArrowLeft className="h-4 w-4" />} onClick={() => router.push(ROUTES.espace.video(moduleId, prevVideo.id))}>
-            Precedente
+            Précédente
           </Button>
         ) : <div />}
         {nextVideo ? (

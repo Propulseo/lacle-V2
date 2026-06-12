@@ -23,7 +23,7 @@ export function ExamStartView({ exam, examStatus, onStart }: ExamStartViewProps)
             {exam.questions.length} questions • Score requis : {exam.passingScore}%
           </p>
           <p className="mt-1 text-xs text-pierre">
-            Vous ne pourrez pas revenir en arriere une fois une question validee.
+            Vous ne pourrez pas revenir en arrière une fois une question validée.
           </p>
           <div className="mt-6 space-y-4">
             <ExamAttemptStatus status={examStatus} examType="module" />

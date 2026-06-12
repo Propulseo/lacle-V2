@@ -12,12 +12,12 @@ import type { SatisfactionAnswer } from "@/types";
 const STORAGE_KEY = "satisfaction_hot_completed";
 
 const questions = [
-  { id: "hot-1", label: "Qualite globale de la formation", type: "stars" as const },
-  { id: "hot-2", label: "Le contenu a repondu a vos attentes", type: "stars" as const },
-  { id: "hot-3", label: "La plateforme etait facile a utiliser", type: "stars" as const },
+  { id: "hot-1", label: "Qualité globale de la formation", type: "stars" as const },
+  { id: "hot-2", label: "Le contenu a répondu à vos attentes", type: "stars" as const },
+  { id: "hot-3", label: "La plateforme était facile à utiliser", type: "stars" as const },
   { id: "hot-4", label: "Recommanderiez-vous cette formation ?", type: "stars" as const },
-  { id: "hot-5", label: "Ce que vous avez le plus apprecie", type: "text" as const, required: true },
-  { id: "hot-6", label: "Ce qui pourrait etre ameliore", type: "text" as const, required: false },
+  { id: "hot-5", label: "Ce que vous avez le plus apprécié", type: "text" as const, required: true },
+  { id: "hot-6", label: "Ce qui pourrait être amélioré", type: "text" as const, required: false },
 ];
 
 interface Props {
@@ -73,7 +73,7 @@ export function SatisfactionSurveyHot({ studentId, formationId = "pnl-praticien"
       <Card className="mt-6 text-center py-6">
         <CheckCircle className="mx-auto h-10 w-10 text-succes" />
         <p className="mt-3 font-serif text-lg text-ivoire">Merci pour votre retour !</p>
-        <p className="mt-1 text-sm text-cendre">Vos reponses nous aident a ameliorer la formation.</p>
+        <p className="mt-1 text-sm text-cendre">Vos réponses nous aident à améliorer la formation.</p>
         <Button variant="ghost" className="mt-4" onClick={onComplete}>
           Continuer
         </Button>

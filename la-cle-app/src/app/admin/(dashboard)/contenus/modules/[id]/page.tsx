@@ -17,6 +17,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { VideoFormModal } from "@/components/admin/VideoFormModal";
+import { ModuleExamTab } from "@/components/admin/ModuleExamTab";
 import { getModule, updateModule, deleteModule } from "@/services/modules";
 import { getVideosByModule } from "@/services/videos";
 import { getExamByModule } from "@/services/exams";
@@ -117,9 +118,9 @@ function ModuleDetailContent({
   }
 
   const tabs = [
-    { id: "videos", label: "Videos", count: videos.length },
+    { id: "videos", label: "Vidéos", count: videos.length },
     { id: "exam", label: "Examen", count: exam?.questions.length },
-    { id: "settings", label: "Parametres" },
+    { id: "settings", label: "Paramètres" },
   ];
 
   return (
@@ -138,7 +139,7 @@ function ModuleDetailContent({
             <p className="mt-1 text-sm text-cendre">{module_.description}</p>
           </div>
           <Badge variant={module_.isPublished ? "success" : "default"}>
-            {module_.isPublished ? "Publie" : "Brouillon"}
+            {module_.isPublished ? "Publié" : "Brouillon"}
           </Badge>
         </div>
 
@@ -148,11 +149,11 @@ function ModuleDetailContent({
           <div className="space-y-4">
             <div className="flex justify-end">
               <Button variant="primary" size="sm" icon={<Plus className="h-4 w-4" />} onClick={() => setVideoFormOpen(true)}>
-                Ajouter une video
+                Ajouter une vidéo
               </Button>
             </div>
             {videos.length === 0 ? (
-              <EmptyState icon={<Play className="h-12 w-12" />} title="Aucune video" description="Ajoutez des videos a ce module pour commencer." />
+              <EmptyState icon={<Play className="h-12 w-12" />} title="Aucune vidéo" description="Ajoutez des vidéos à ce module pour commencer." />
             ) : (
               <div className="space-y-2">
                 {videos.map((video, i) => (
@@ -166,7 +167,7 @@ function ModuleDetailContent({
                         </div>
                         <span className="text-sm text-cendre">{formatDuration(video.duration)}</span>
                         <Badge variant={video.isPublished ? "success" : "default"} className="text-[10px]">
-                          {video.isPublished ? "Publie" : "Brouillon"}
+                          {video.isPublished ? "Publiée" : "Brouillon"}
                         </Badge>
                       </div>
                     </Card>
@@ -178,43 +179,12 @@ function ModuleDetailContent({
         )}
 
         {activeTab === "exam" && (
-          <div className="space-y-4">
-            {exam ? (
-              <>
-                <Card>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-serif text-lg text-ivoire">{exam.title}</h3>
-                    <Button size="sm" icon={<Plus className="h-4 w-4" />}>Ajouter une question</Button>
-                  </div>
-                  <div className="space-y-3">
-                    {exam.questions.map((q, i) => (
-                      <div key={q.id} className="flex items-start gap-3 rounded-lg bg-surface p-4">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-or/10 text-xs text-or">{i + 1}</span>
-                        <div className="flex-1">
-                          <p className="text-sm text-ivoire">{q.question}</p>
-                          <div className="mt-1 flex items-center gap-2">
-                            <Badge variant="default">{q.type.toUpperCase()}</Badge>
-                            <span className="text-xs text-cendre">{q.points} pts</span>
-                          </div>
-                        </div>
-                        <button type="button" aria-label="Supprimer" className="text-pierre hover:text-erreur transition-colors"><Trash2 className="h-4 w-4" /></button>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-                <Card>
-                  <h4 className="mb-3 text-sm font-medium text-ivoire">Configuration</h4>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="text-sm"><span className="text-cendre">Score requis : </span><span className="text-ivoire">{exam.passingScore}%</span></div>
-                    <div className="text-sm"><span className="text-cendre">Tentatives max : </span><span className="text-ivoire">{exam.maxAttempts}</span></div>
-                  </div>
-                </Card>
-              </>
-            ) : (
-              <EmptyState title="Aucun examen configure" description="Creez un examen pour ce module."
-                action={<Button variant="primary" size="sm">Creer un examen</Button>} />
-            )}
-          </div>
+          <ModuleExamTab
+            moduleId={id}
+            moduleTitle={module_.title}
+            exam={exam}
+            onRefetch={onRefetch}
+          />
         )}
 
         {activeTab === "settings" && (
@@ -223,7 +193,7 @@ function ModuleDetailContent({
               <Input label="Titre du module" value={title} onChange={(e) => setTitle(e.target.value)} />
               <Textarea label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
               <div className="flex items-center justify-between">
-                <Toggle enabled={isPublished} onChange={setIsPublished} label="Module publie" />
+                <Toggle enabled={isPublished} onChange={setIsPublished} label="Module publié" />
                 <div className="flex gap-3">
                   <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={() => setDeleteOpen(true)}>
                     Supprimer
@@ -251,7 +221,7 @@ function ModuleDetailContent({
         onClose={() => setDeleteOpen(false)}
         onConfirm={onDelete}
         title="Supprimer le module"
-        message={`Voulez-vous vraiment supprimer "${module_.title}" ? Toutes les videos et examens seront perdus.`}
+        message={`Voulez-vous vraiment supprimer "${module_.title}" ? Toutes les vidéos et examens seront perdus.`}
         confirmLabel="Supprimer"
       />
     </AdminShell>

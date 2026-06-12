@@ -9,23 +9,54 @@ import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { createLearner } from "@/services/learners";
 import { ROUTES } from "@/lib/constants";
+import {
+  collectErrors,
+  isBlank,
+  isValidEmail,
+  isValidPhoneFr,
+  type FieldErrors,
+} from "@/lib/validation";
 
 export default function NouvelApprenantPage() {
   const router = useRouter();
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   function updateField(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setFieldErrors((prev) => {
+      if (!(field in prev)) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+
+    const errs = collectErrors([
+      ["firstName", isBlank(form.firstName), "Veuillez renseigner un prénom."],
+      ["lastName", isBlank(form.lastName), "Veuillez renseigner un nom."],
+      ["email", !isValidEmail(form.email), "Veuillez renseigner une adresse email valide."],
+      ["phone", !isBlank(form.phone) && !isValidPhoneFr(form.phone), "Veuillez renseigner un numéro de téléphone français valide."],
+    ]);
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const learner = await createLearner(form);
+      const learner = await createLearner({
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+      });
       router.push(ROUTES.admin.apprenant(learner.id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur lors de la création");
@@ -58,12 +89,14 @@ export default function NouvelApprenantPage() {
               <Input
                 label="Prénom"
                 value={form.firstName}
+                error={fieldErrors.firstName}
                 onChange={(e) => updateField("firstName", e.target.value)}
                 required
               />
               <Input
                 label="Nom"
                 value={form.lastName}
+                error={fieldErrors.lastName}
                 onChange={(e) => updateField("lastName", e.target.value)}
                 required
               />
@@ -72,6 +105,7 @@ export default function NouvelApprenantPage() {
               label="Email"
               type="email"
               value={form.email}
+              error={fieldErrors.email}
               onChange={(e) => updateField("email", e.target.value)}
               required
             />
@@ -79,6 +113,7 @@ export default function NouvelApprenantPage() {
               label="Téléphone"
               type="tel"
               value={form.phone}
+              error={fieldErrors.phone}
               onChange={(e) => updateField("phone", e.target.value)}
             />
             <div className="flex justify-end gap-3 pt-4">

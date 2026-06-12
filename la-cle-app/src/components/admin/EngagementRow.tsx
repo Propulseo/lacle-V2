@@ -24,7 +24,7 @@ const statusBadge: Record<EngagementStatus, { label: string; variant: "success" 
   inactif_14j: { label: "Inactif 14j", variant: "warning" },
   inactif_28j: { label: "Inactif 28j", variant: "warning" },
   inactif_42j: { label: "Inactif 42j+", variant: "error" },
-  abandonne: { label: "Abandonne", variant: "error" },
+  abandonne: { label: "Abandonné", variant: "error" },
 };
 
 export function EngagementRow({ learner }: { learner: EngagementLearner }) {
@@ -44,14 +44,14 @@ export function EngagementRow({ learner }: { learner: EngagementLearner }) {
         </div>
         <p className="text-xs text-cendre">{learner.email}</p>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-pierre">
-          <span>Derniere activite : {relativeDays(engagement.daysSinceLastActivity)}</span>
+          <span>Dernière activité : {relativeDays(engagement.daysSinceLastActivity)}</span>
           <span>Module {learner.currentModule} — Cours {learner.currentCourse} sur {learner.totalCourses}</span>
         </div>
       </div>
 
       <div className="flex items-center gap-3 shrink-0">
         {/* Relances */}
-        <div className="flex items-center gap-1" title={`${reminders.length} relance(s) envoyee(s)`}>
+        <div className="flex items-center gap-1" title={`${reminders.length} relance(s) envoyée(s)`}>
           {[1, 2, 3].map((level) => {
             const sent = reminders.some((r) => r.level === level);
             return (

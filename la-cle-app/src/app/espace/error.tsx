@@ -19,8 +19,8 @@ export default function EspaceError({ error, reset }: ErrorProps) {
         <div>
           <h1 className="font-serif text-2xl text-ivoire">Une erreur est survenue</h1>
           <p className="mt-2 text-sm text-cendre">
-            Nous sommes desoles, quelque chose ne s&apos;est pas passe comme prevu.
-            Vous pouvez reessayer ou revenir a votre espace.
+            Nous sommes désolés, quelque chose ne s&apos;est pas passé comme prévu.
+            Vous pouvez réessayer ou revenir à votre espace.
           </p>
         </div>
 
@@ -31,14 +31,14 @@ export default function EspaceError({ error, reset }: ErrorProps) {
             className="inline-flex items-center gap-2 rounded-lg border border-or bg-or/10 px-5 py-2.5 text-sm font-medium text-or transition-colors hover:bg-or/20"
           >
             <RefreshCw className="h-4 w-4" />
-            Reessayer
+            Réessayer
           </button>
           <Link
             href="/espace"
             className="inline-flex items-center gap-2 rounded-lg border border-filet px-5 py-2.5 text-sm text-cendre transition-colors hover:border-filet-accent hover:text-ivoire"
           >
             <ArrowLeft className="h-4 w-4" />
-            Retour a l&apos;espace
+            Retour à l&apos;espace
           </Link>
         </div>
 
@@ -47,12 +47,12 @@ export default function EspaceError({ error, reset }: ErrorProps) {
           className="inline-flex items-center gap-1 text-xs text-pierre transition-colors hover:text-cendre"
         >
           <Mail className="h-3 w-3" />
-          Nous signaler le probleme
+          Nous signaler le problème
         </a>
 
         {process.env.NODE_ENV === "development" && (
           <details className="mt-4 rounded-lg border border-filet bg-surface p-4 text-left">
-            <summary className="cursor-pointer text-xs text-pierre">Details de l&apos;erreur (dev)</summary>
+            <summary className="cursor-pointer text-xs text-pierre">Détails de l&apos;erreur (dev)</summary>
             <pre className="mt-2 overflow-auto text-xs text-erreur">{error.message}</pre>
             {error.digest && <p className="mt-1 text-xs text-pierre">Digest: {error.digest}</p>}
           </details>

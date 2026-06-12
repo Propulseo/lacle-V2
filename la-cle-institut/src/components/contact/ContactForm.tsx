@@ -1,18 +1,39 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  // Horodatage du montage : permet à l'API de rejeter silencieusement les
+  // soumissions trop rapides pour être humaines (anti-spam).
+  const mountedAtRef = useRef(Date.now());
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
 
-    // TODO: wire to an API route or external service
-    setTimeout(() => setStatus("sent"), 1200);
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+          website: formData.get("website"),
+          elapsedMs: Date.now() - mountedAtRef.current,
+        }),
+      });
+      if (!res.ok) throw new Error("Échec de l’envoi");
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
   if (status === "sent") {
@@ -57,6 +78,19 @@ export function ContactForm() {
 
       {/* Objet */}
       <Field label="Objet" name="subject" placeholder="L’objet de votre message" />
+
+      {/* Honeypot anti-spam : invisible pour les humains (sr-only +
+          aria-hidden + tabIndex -1), seuls les robots le remplissent. */}
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor="website">Ne pas remplir ce champ</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
 
       {/* Message */}
       <div>

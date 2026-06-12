@@ -23,16 +23,16 @@ export function ExamResultView({ result, passingScore, examStatus, onRetry, onBa
         <Card variant="elevated" className="text-center">
           <ProgressRing value={result.score} size={120} strokeWidth={10} className="mx-auto" />
           <h1 className="mt-4 font-serif text-2xl text-ivoire">
-            {result.passed ? "Examen reussi !" : "Examen non valide"}
+            {result.passed ? "Examen réussi !" : "Examen non validé"}
           </h1>
           <p className="mt-2 text-cendre">
-            Score : {result.score}% — {result.passed ? "Felicitations !" : `Score requis : ${passingScore}%`}
+            Score : {result.score}% — {result.passed ? "Félicitations !" : `Score requis : ${passingScore}%`}
           </p>
           <ExamAttemptStatus status={examStatus} examType="module" />
           <div className="mt-6 flex justify-center gap-3">
             {!result.passed && (
               <Button variant="primary" disabled={!examStatus.canAttempt} onClick={onRetry}>
-                Reessayer
+                Réessayer
               </Button>
             )}
             <Button variant="ghost" onClick={onBack}>

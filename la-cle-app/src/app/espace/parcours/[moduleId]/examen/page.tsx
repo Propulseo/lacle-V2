@@ -10,10 +10,14 @@ import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
 import { ExamStartView } from "@/components/exam/ExamStartView";
 import { ExamQuizView } from "@/components/exam/ExamQuizView";
 import { ExamResultView } from "@/components/exam/ExamResultView";
+import { TrialGate } from "@/components/learner/TrialGate";
+import { getModuleAccess } from "@/hooks/useModuleAccess";
 import { getExamByModule, getAttempts, submitAttempt } from "@/services/exams";
 import { getModule } from "@/services/modules";
+import { getLearner } from "@/services/learners";
 import { ROUTES } from "@/lib/constants";
 import { NotFoundError } from "@/lib/errors";
+import { canTakeModuleExam } from "@/lib/module-access";
 import type { LegacyExamAttempt } from "@/types";
 
 export default function ExamenModulairePage() {
@@ -27,11 +31,13 @@ export default function ExamenModulairePage() {
   const [started, setStarted] = useState(false);
   const [pastAttempts, setPastAttempts] = useState<LegacyExamAttempt[]>([]);
   const [attemptsLoaded, setAttemptsLoaded] = useState(false);
+  const [enrollmentOk, setEnrollmentOk] = useState(false);
 
   const pageState = useAsyncData(async () => {
-    const [module_, exam] = await Promise.all([
+    const [module_, exam, learner] = await Promise.all([
       getModule(moduleId),
       getExamByModule(moduleId),
+      user?.id ? getLearner(user.id) : Promise.resolve(null),
     ]);
     let attempts: LegacyExamAttempt[] = [];
     if (exam && user?.id) {
@@ -43,7 +49,7 @@ export default function ExamenModulairePage() {
     }
     if (!module_) throw new NotFoundError("Module", moduleId);
     if (!exam) throw new NotFoundError("Examen", moduleId);
-    return { module_, exam };
+    return { module_, exam, learnerStatus: learner?.status ?? null };
   }, [moduleId, user?.id]);
 
   const examStatus = useExamLogic(pastAttempts, "module");
@@ -76,7 +82,13 @@ export default function ExamenModulairePage() {
   return (
     <LearnerShell>
       <AsyncBoundary state={pageState}>
-        {({ module_, exam }) => {
+        {({ module_, exam, learnerStatus }) => {
+          // Gating deep-link : meme regle que la page module + blocage
+          // specifique de l'examen du cours 7 en mode Decouverte.
+          const access = getModuleAccess(module_.order, learnerStatus, () => setEnrollmentOk(true));
+          if (!access.canAccess && !enrollmentOk) return <>{access.gate}</>;
+          if (!canTakeModuleExam(module_.order, learnerStatus)) return <TrialGate />;
+
           if (result) {
             return (
               <ExamResultView

@@ -68,11 +68,11 @@ export default function ModulesListPage() {
                         <p className="mt-0.5 text-sm text-cendre line-clamp-1">{mod.description}</p>
                       </div>
                       <div className="hidden items-center gap-3 sm:flex">
-                        <span className="text-sm text-cendre">{mod.videosCount} videos</span>
+                        <span className="text-sm text-cendre">{mod.videosCount} vidéos</span>
                         <span className="text-sm text-pierre">&bull;</span>
                         <span className="text-sm text-cendre">{formatDuration(mod.totalDuration)}</span>
                         <Badge variant={mod.isPublished ? "success" : "default"}>
-                          {mod.isPublished ? "Publie" : "Brouillon"}
+                          {mod.isPublished ? "Publié" : "Brouillon"}
                         </Badge>
                       </div>
                       <div onClick={(e) => e.stopPropagation()}>
@@ -83,7 +83,7 @@ export default function ModulesListPage() {
                             </span>
                           }
                           items={[
-                            { label: "Voir le detail", onClick: () => router.push(ROUTES.admin.module(mod.id)) },
+                            { label: "Voir le détail", onClick: () => router.push(ROUTES.admin.module(mod.id)) },
                             { label: "Supprimer", onClick: () => setDeleteTarget(mod), danger: true },
                           ]}
                         />
@@ -109,7 +109,7 @@ export default function ModulesListPage() {
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         title="Supprimer le module"
-        message={`Voulez-vous vraiment supprimer le module "${deleteTarget?.title}" ? Toutes les videos et examens associes seront perdus.`}
+        message={`Voulez-vous vraiment supprimer le module "${deleteTarget?.title}" ? Toutes les vidéos et examens associés seront perdus.`}
         confirmLabel="Supprimer"
       />
     </AdminShell>

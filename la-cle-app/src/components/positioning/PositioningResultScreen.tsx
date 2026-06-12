@@ -10,18 +10,18 @@ interface PositioningResultScreenProps {
 }
 
 const LEVEL_LABEL: Record<PositioningResult["startingLevel"], string> = {
-  debutant: "Debutant",
-  initie: "Initie",
-  avance: "Avance",
+  debutant: "Débutant",
+  initie: "Initié",
+  avance: "Avancé",
 };
 
 const LEVEL_DESCRIPTION: Record<PositioningResult["startingLevel"], string> = {
   debutant:
-    "Vous partez de zero ou presque — c'est le meilleur endroit pour construire des bases solides.",
+    "Vous partez de zéro ou presque — c'est le meilleur endroit pour construire des bases solides.",
   initie:
-    "Vous avez deja une sensibilite a ces sujets — le parcours va structurer et approfondir vos acquis.",
+    "Vous avez déjà une sensibilité à ces sujets — le parcours va structurer et approfondir vos acquis.",
   avance:
-    "Vos connaissances sont deja significatives — concentrez-vous sur l'integration et la posture.",
+    "Vos connaissances sont déjà significatives — concentrez-vous sur l'intégration et la posture.",
 };
 
 export function PositioningResultScreen({
@@ -39,17 +39,17 @@ export function PositioningResultScreen({
 
       <div className="space-y-3">
         <h2 className="font-serif text-3xl text-ivoire sm:text-4xl">
-          Votre point de depart
+          Votre point de départ
         </h2>
         <p className="text-base leading-relaxed text-cendre">
-          Ce test nous permet d&apos;adapter nos recommandations a votre niveau
-          actuel. Ce n&apos;est pas une evaluation — c&apos;est un repere.
+          Ce test nous permet d&apos;adapter nos recommandations à votre niveau
+          actuel. Ce n&apos;est pas une évaluation — c&apos;est un repère.
         </p>
       </div>
 
       <div className="rounded-xl border border-filet bg-encre/60 p-6">
         <p className="text-xs uppercase tracking-wider text-or">
-          Niveau de depart
+          Niveau de départ
         </p>
         <p className="mt-2 font-serif text-2xl text-ivoire">
           {LEVEL_LABEL[result.startingLevel]}

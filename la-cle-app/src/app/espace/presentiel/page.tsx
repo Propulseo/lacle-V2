@@ -37,12 +37,12 @@ export default function PresentielPage() {
       <div className="space-y-6">
         <ScrollReveal>
           <div>
-            <h1 className="font-serif text-2xl text-ivoire">Sessions presentielles</h1>
-            <p className="mt-1 text-sm text-cendre">Ateliers pratiques en presentiel</p>
+            <h1 className="font-serif text-2xl text-ivoire">Sessions présentielles</h1>
+            <p className="mt-1 text-sm text-cendre">Ateliers pratiques en présentiel</p>
           </div>
         </ScrollReveal>
 
-        <AsyncBoundary state={pageState}>
+        <AsyncBoundary state={pageState} loadingLabel="Chargement des sessions présentielles…">
           {({ sessions, learner }) => {
             const canAccess = learner && hasAccess(learner.status, "inscrit");
             const isPast = (date: string) => new Date(date) < new Date();
@@ -51,8 +51,8 @@ export default function PresentielPage() {
               <>
                 {!canAccess && (
                   <ScrollReveal delay={0.1}>
-                    <Alert variant="warning" title="Acces restreint">
-                      Les sessions presentielles sont accessibles aux apprenants ayant valide tous les modules.
+                    <Alert variant="warning" title="Accès restreint">
+                      Les sessions présentielles sont accessibles aux apprenants ayant validé tous les modules.
                     </Alert>
                   </ScrollReveal>
                 )}
@@ -69,7 +69,7 @@ export default function PresentielPage() {
                           <div className="flex items-start justify-between mb-3">
                             <h3 className="font-serif text-lg text-ivoire">{session.title}</h3>
                             <Badge variant={past ? "default" : isRegistered ? "success" : "info"}>
-                              {past ? "Passee" : isRegistered ? "Inscrit" : "A venir"}
+                              {past ? "Passée" : isRegistered ? "Inscrit" : "À venir"}
                             </Badge>
                           </div>
                           <p className="text-sm text-cendre">{session.description}</p>
@@ -87,7 +87,7 @@ export default function PresentielPage() {
                             </div>
                           )}
                           {isFull && !isRegistered && !past && (
-                            <p className="mt-3 text-xs text-attention">Session complete</p>
+                            <p className="mt-3 text-xs text-attention">Session complète</p>
                           )}
                         </Card>
                       </ScrollReveal>

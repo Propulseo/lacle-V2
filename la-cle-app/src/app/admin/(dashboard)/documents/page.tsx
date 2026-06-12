@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Plus, Reply, Send } from "lucide-react";
+import { FileText, Plus, Reply, Send, MessageCircle } from "lucide-react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
@@ -11,13 +11,16 @@ import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { Textarea } from "@/components/ui/Textarea";
 import { SearchInput } from "@/components/ui/SearchInput";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { DocumentFormModal } from "@/components/admin/DocumentFormModal";
 import { getDocuments, getSupportMessages, replySupportMessage } from "@/services/documents";
 import { formatDate } from "@/lib/utils";
 
 export default function DocumentsPage() {
   const [activeTab, setActiveTab] = useState("documents");
   const [search, setSearch] = useState("");
+  const [addOpen, setAddOpen] = useState(false);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [replySending, setReplySending] = useState(false);
@@ -70,7 +73,7 @@ export default function DocumentsPage() {
                     <h1 className="font-serif text-2xl text-ivoire">Documents & Support</h1>
                     <p className="mt-1 text-sm text-cendre">{documents.length} documents &bull; {unreplied.length} message(s) en attente</p>
                   </div>
-                  <Button variant="primary" size="sm" icon={<Plus className="h-4 w-4" />}>Ajouter un document</Button>
+                  <Button variant="primary" size="sm" icon={<Plus className="h-4 w-4" />} onClick={() => setAddOpen(true)}>Ajouter un document</Button>
                 </div>
 
                 <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
@@ -78,6 +81,17 @@ export default function DocumentsPage() {
                 {activeTab === "documents" && (
                   <>
                     <SearchInput value={search} onChange={setSearch} placeholder="Rechercher un document..." />
+                    {filteredDocs.length === 0 && (
+                      <EmptyState
+                        icon={<FileText className="h-12 w-12" />}
+                        title="Aucun document"
+                        description={
+                          search
+                            ? "Aucun document ne correspond à votre recherche."
+                            : "Ajoutez un document pour le mettre à disposition d'un apprenant."
+                        }
+                      />
+                    )}
                     <div className="space-y-2">
                       {filteredDocs.map((doc, i) => (
                         <ScrollReveal key={doc.id} delay={i * 0.03}>
@@ -99,6 +113,13 @@ export default function DocumentsPage() {
                   </>
                 )}
 
+                {activeTab === "support" && messages.length === 0 && (
+                  <EmptyState
+                    icon={<MessageCircle className="h-12 w-12" />}
+                    title="Aucun message"
+                    description="Les messages envoyés par les apprenants depuis leur espace apparaîtront ici."
+                  />
+                )}
                 {activeTab === "support" && (
                   <div className="space-y-3">
                     {messages.map((msg, i) => (
@@ -109,26 +130,26 @@ export default function DocumentsPage() {
                               <p className="font-medium text-ivoire">{msg.subject}</p>
                               <p className="text-xs text-cendre">{msg.learnerName} &bull; {formatDate(msg.createdAt)}</p>
                             </div>
-                            <Badge variant={msg.reply ? "success" : "warning"}>{msg.reply ? "Repondu" : "En attente"}</Badge>
+                            <Badge variant={msg.reply ? "success" : "warning"}>{msg.reply ? "Répondu" : "En attente"}</Badge>
                           </div>
                           <p className="text-sm text-cendre">{msg.message}</p>
                           {msg.reply && (
                             <div className="mt-3 rounded-lg bg-surface p-3">
-                              <p className="text-xs text-pierre mb-1 flex items-center gap-1"><Reply className="h-3 w-3" /> Reponse &bull; {msg.repliedAt && formatDate(msg.repliedAt)}</p>
+                              <p className="text-xs text-pierre mb-1 flex items-center gap-1"><Reply className="h-3 w-3" /> Réponse &bull; {msg.repliedAt && formatDate(msg.repliedAt)}</p>
                               <p className="text-sm text-ivoire">{msg.reply}</p>
                             </div>
                           )}
                           {!msg.reply && replyingTo !== msg.id && (
                             <div className="mt-3">
                               <Button size="sm" icon={<Reply className="h-4 w-4" />} onClick={() => { setReplyingTo(msg.id); setReplyText(""); }}>
-                                Repondre
+                                Répondre
                               </Button>
                             </div>
                           )}
                           {!msg.reply && replyingTo === msg.id && (
                             <div className="mt-3 space-y-3">
                               <Textarea
-                                placeholder="Votre reponse..."
+                                placeholder="Votre réponse..."
                                 value={replyText}
                                 onChange={(e) => setReplyText(e.target.value)}
                                 className="min-h-[80px]"
@@ -160,6 +181,15 @@ export default function DocumentsPage() {
           }}
         </AsyncBoundary>
       </div>
+
+      <DocumentFormModal
+        isOpen={addOpen}
+        onClose={() => setAddOpen(false)}
+        onSuccess={() => {
+          setAddOpen(false);
+          pageState.refetch();
+        }}
+      />
     </AdminShell>
   );
 }

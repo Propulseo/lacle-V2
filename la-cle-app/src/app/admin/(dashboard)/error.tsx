@@ -19,7 +19,7 @@ export default function AdminError({ error, reset }: ErrorProps) {
         <div>
           <h1 className="font-serif text-2xl text-ivoire">Erreur dans l&apos;espace admin</h1>
           <p className="mt-2 text-sm text-cendre">
-            Un probleme est survenu. Vous pouvez reessayer ou revenir au dashboard.
+            Un problème est survenu. Vous pouvez réessayer ou revenir au dashboard.
           </p>
         </div>
 
@@ -30,7 +30,7 @@ export default function AdminError({ error, reset }: ErrorProps) {
             className="inline-flex items-center gap-2 rounded-lg border border-or bg-or/10 px-5 py-2.5 text-sm font-medium text-or transition-colors hover:bg-or/20"
           >
             <RefreshCw className="h-4 w-4" />
-            Reessayer
+            Réessayer
           </button>
           <Link
             href="/admin"
@@ -43,7 +43,7 @@ export default function AdminError({ error, reset }: ErrorProps) {
 
         {process.env.NODE_ENV === "development" && (
           <details className="mt-4 rounded-lg border border-filet bg-surface p-4 text-left">
-            <summary className="cursor-pointer text-xs text-pierre">Details de l&apos;erreur (dev)</summary>
+            <summary className="cursor-pointer text-xs text-pierre">Détails de l&apos;erreur (dev)</summary>
             <pre className="mt-2 overflow-auto text-xs text-erreur">{error.message}</pre>
             {error.digest && <p className="mt-1 text-xs text-pierre">Digest: {error.digest}</p>}
           </details>

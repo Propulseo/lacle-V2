@@ -16,9 +16,9 @@ import type { SatisfactionAnswer } from "@/types";
 const questions = [
   { id: "cold-1", label: "Avez-vous mis en pratique ce que vous avez appris ?", type: "stars" as const },
   { id: "cold-2", label: "Impact concret sur votre quotidien", type: "stars" as const },
-  { id: "cold-3", label: "Votre niveau en PNL a progresse", type: "stars" as const },
-  { id: "cold-4", label: "Suggestions pour ameliorer la formation", type: "text" as const },
-  { id: "cold-5", label: "Avez-vous recommande la formation a quelqu'un ?", type: "choice" as const },
+  { id: "cold-3", label: "Votre niveau en PNL a progressé", type: "stars" as const },
+  { id: "cold-4", label: "Suggestions pour améliorer la formation", type: "text" as const },
+  { id: "cold-5", label: "Avez-vous recommandé la formation à quelqu'un ?", type: "choice" as const },
 ];
 
 export default function SatisfactionFroidPage() {
@@ -68,7 +68,7 @@ export default function SatisfactionFroidPage() {
             Merci pour votre retour !
           </h1>
           <p className="mt-2 text-sm text-cendre">
-            Vos reponses nous aident a ameliorer continuellement la formation.
+            Vos réponses nous aident à améliorer continuellement la formation.
           </p>
         </Card>
       </div>
@@ -81,7 +81,7 @@ export default function SatisfactionFroidPage() {
         <div>
           <h1 className="font-serif text-xl text-ivoire">Questionnaire de satisfaction</h1>
           <p className="mt-1 text-xs text-cendre">
-            90 jours apres votre formation — votre avis avec du recul
+            90 jours après votre formation — votre avis avec du recul
           </p>
         </div>
 

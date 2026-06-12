@@ -8,6 +8,7 @@ import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
 import { Card } from "@/components/ui/Card";
 import { Tabs } from "@/components/ui/Tabs";
 import { Expandable } from "@/components/ui/Expandable";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getRevisionResources } from "@/services/revision";
 import type { RevisionResource } from "@/types";
@@ -27,14 +28,14 @@ export default function RevisionPage() {
       <div className="space-y-6">
         <ScrollReveal>
           <div>
-            <h1 className="font-serif text-2xl text-ivoire">Coffre de revision</h1>
+            <h1 className="font-serif text-2xl text-ivoire">Coffre de révision</h1>
             <p className="mt-1 text-sm text-cendre">
-              Ressources complementaires pour consolider vos apprentissages
+              Ressources complémentaires pour consolider vos apprentissages
             </p>
           </div>
         </ScrollReveal>
 
-        <AsyncBoundary state={resourcesState}>
+        <AsyncBoundary state={resourcesState} loadingLabel="Chargement du coffre de révision…">
           {(resources) => <RevisionContent resources={resources} activeTab={activeTab} setActiveTab={setActiveTab} />}
         </AsyncBoundary>
       </div>
@@ -53,12 +54,20 @@ function RevisionContent({ resources, activeTab, setActiveTab }: {
     { id: "all", label: "Tout", count: resources.length },
     { id: "pdf", label: "Fiches", count: resources.filter((r) => r.type === "pdf").length },
     { id: "question", label: "Questions", count: resources.filter((r) => r.type === "question").length },
-    { id: "video", label: "Videos", count: resources.filter((r) => r.type === "video").length },
+    { id: "video", label: "Vidéos", count: resources.filter((r) => r.type === "video").length },
   ];
 
   return (
     <>
       <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
+
+      {filtered.length === 0 && (
+        <EmptyState
+          icon={<FileText className="h-12 w-12" />}
+          title="Aucune ressource"
+          description="Aucune ressource dans cette catégorie pour le moment."
+        />
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         {filtered.map((resource, i) => {
@@ -74,14 +83,20 @@ function RevisionContent({ resources, activeTab, setActiveTab }: {
                     <h3 className="text-sm font-medium text-ivoire">{resource.title}</h3>
                     <p className="mt-1 text-xs text-cendre">{resource.description}</p>
                     {resource.type === "question" && resource.answer && (
-                      <Expandable title="Voir la reponse" defaultOpen={false}>
+                      <Expandable title="Voir la réponse" defaultOpen={false}>
                         <p className="text-sm">{resource.answer}</p>
                       </Expandable>
                     )}
                     {resource.type !== "question" && (
-                      <button type="button" className="mt-2 inline-flex items-center gap-1 text-xs text-or hover:text-or-doux transition-colors">
+                      // TODO // Supabase: Storage — activer l'ouverture une fois les fichiers reellement heberges
+                      <button
+                        type="button"
+                        disabled
+                        title="Disponible prochainement"
+                        className="mt-2 inline-flex cursor-not-allowed items-center gap-1 text-xs text-pierre"
+                      >
                         <ExternalLink className="h-3 w-3" />
-                        Ouvrir
+                        Bientôt disponible
                       </button>
                     )}
                   </div>

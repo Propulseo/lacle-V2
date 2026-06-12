@@ -32,7 +32,7 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
   const [cgvNotice, setCgvNotice] = useState(false);
 
   const DOC_NOTICE =
-    "Ce document sera disponible au telechargement une fois votre espace configure. Pour toute question, contactez contact@institutlacle.fr.";
+    "Ce document sera disponible au téléchargement une fois votre espace configuré. Pour toute question, contactez contact@institutlacle.fr.";
 
   useEffect(() => {
     setConditions(getEnrollmentConditions());
@@ -62,7 +62,7 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
   if (unlocked) {
     return (
       <ScrollReveal>
-        <Alert variant="success" title="Acces debloque">
+        <Alert variant="success" title="Accès débloqué">
           Bienvenue dans la suite de votre formation !
         </Alert>
       </ScrollReveal>
@@ -74,11 +74,11 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
       <ScrollReveal>
         <div>
           <h1 className="font-serif text-2xl text-ivoire">
-            Conditions d&apos;acces
+            Conditions d&apos;accès
           </h1>
           <p className="mt-2 text-sm text-cendre">
-            Pour acceder a la suite de votre formation, les conditions suivantes
-            doivent etre remplies.
+            Pour accéder à la suite de votre formation, les conditions suivantes
+            doivent être remplies.
           </p>
         </div>
       </ScrollReveal>
@@ -87,7 +87,7 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
         <ScrollReveal delay={0.1}>
           <ConditionRow
             done={conditions.contractSigned}
-            label="Contrat de formation signe"
+            label="Contrat de formation signé"
           >
             {!conditions.contractSigned && (
               <div className="mt-3 space-y-3">
@@ -124,7 +124,7 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
         </ScrollReveal>
 
         <ScrollReveal delay={0.15}>
-          <ConditionRow done={conditions.cgvAccepted} label="CGV acceptees">
+          <ConditionRow done={conditions.cgvAccepted} label="CGV acceptées">
             {!conditions.cgvAccepted && (
               <div className="mt-3 space-y-3">
                 <div className="flex flex-wrap items-center gap-4">
@@ -162,7 +162,7 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
         <ScrollReveal delay={0.2}>
           <ConditionRow
             done={conditions.paymentActive}
-            label="Paiement confirme"
+            label="Paiement confirmé"
           >
             {!conditions.paymentActive && (
               <p className="mt-2 text-sm text-pierre">

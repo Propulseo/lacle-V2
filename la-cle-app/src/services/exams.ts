@@ -1,5 +1,5 @@
 import { mockExams, mockExamAttempts } from "@/data/mock/exams";
-import type { ModularExam, LegacyExamAttempt, ExamQuestion, FinalExam, ExamType } from "@/types";
+import type { ModularExam, LegacyExamAttempt, ExamQuestion, ExamType } from "@/types";
 import { sleep, generateId } from "@/lib/utils";
 import { computeExamStatus } from "@/lib/exam-logic";
 
@@ -26,6 +26,40 @@ export async function getExam(id: string): Promise<ModularExam | null> {
 export async function getExamByModule(moduleId: string): Promise<ModularExam | null> {
   await sleep(200);
   return exams.find((e) => e.moduleId === moduleId) || null;
+}
+
+/**
+ * Cree un examen modulaire vide pour un module.
+ *
+ * @param data - Donnees de l'examen (sans id, questions ni createdAt)
+ * @returns L'examen cree
+ */
+export async function createExam(
+  data: Omit<ModularExam, "id" | "createdAt" | "questions">
+): Promise<ModularExam> {
+  await sleep(400);
+  const exam: ModularExam = {
+    ...data,
+    id: `exam-${generateId()}`,
+    questions: [],
+    createdAt: new Date().toISOString(),
+  };
+  exams.push(exam);
+  return exam;
+}
+
+/**
+ * Compte les validations de modules sur la plateforme
+ * (tentatives reussies, dedupliquees par examen et par apprenant).
+ *
+ * @returns Nombre de modules valides
+ */
+export async function getPassedModuleExamCount(): Promise<number> {
+  await sleep(200);
+  const passed = new Set(
+    attempts.filter((a) => a.passed).map((a) => `${a.examId}:${a.learnerId}`)
+  );
+  return passed.size;
 }
 
 /**
@@ -143,88 +177,5 @@ export async function submitAttempt(
   return attempt;
 }
 
-// Final exam mock
-const finalExams: FinalExam[] = [
-  {
-    id: "final-2",
-    learnerId: "learner-2",
-    status: "requested",
-    requestedAt: "2026-03-10T10:00:00Z",
-    scheduledAt: null,
-    completedAt: null,
-    score: null,
-    notes: null,
-  },
-  {
-    id: "final-3",
-    learnerId: "learner-3",
-    status: "passed",
-    requestedAt: "2026-01-15T10:00:00Z",
-    scheduledAt: "2026-02-01T09:00:00Z",
-    completedAt: "2026-02-01T11:00:00Z",
-    score: 95,
-    notes: "Excellente maîtrise des protocoles.",
-  },
-];
-
-/**
- * Recupere tous les examens finaux (vue admin).
- *
- * @returns Liste de tous les examens finaux
- */
-export async function getFinalExams(): Promise<FinalExam[]> {
-  await sleep(200);
-  return [...finalExams];
-}
-
-/**
- * Recupere l'examen final d'un apprenant.
- *
- * @param learnerId - Identifiant de l'apprenant
- * @returns L'examen final ou null si aucune demande
- */
-export async function getFinalExam(learnerId: string): Promise<FinalExam | null> {
-  await sleep(200);
-  return finalExams.find((e) => e.learnerId === learnerId) || null;
-}
-
-/**
- * Envoie une demande d'examen final pour un apprenant.
- *
- * @param learnerId - Identifiant de l'apprenant
- * @returns L'examen final cree avec statut "requested"
- * @throws Si une demande existe deja
- */
-export async function requestFinalExam(learnerId: string): Promise<FinalExam> {
-  await sleep(400);
-  const existing = finalExams.find((e) => e.learnerId === learnerId);
-  if (existing) throw new Error("Demande déjà existante");
-  const exam: FinalExam = {
-    id: `final-${generateId()}`,
-    learnerId,
-    status: "requested",
-    requestedAt: new Date().toISOString(),
-    scheduledAt: null,
-    completedAt: null,
-    score: null,
-    notes: null,
-  };
-  finalExams.push(exam);
-  return exam;
-}
-
-/**
- * Met a jour un examen final (planification, notation, etc.).
- *
- * @param id - Identifiant de l'examen final
- * @param data - Champs a modifier
- * @returns L'examen final mis a jour
- * @throws Si l'examen final n'existe pas
- */
-export async function updateFinalExam(id: string, data: Partial<FinalExam>): Promise<FinalExam> {
-  await sleep(300);
-  const idx = finalExams.findIndex((e) => e.id === id);
-  if (idx === -1) throw new Error("Examen final non trouvé");
-  finalExams[idx] = { ...finalExams[idx], ...data };
-  return finalExams[idx];
-}
+// Les examens finaux (demande, planification, notation) vivent dans
+// services/final-exams.ts

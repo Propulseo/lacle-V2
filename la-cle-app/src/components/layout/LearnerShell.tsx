@@ -28,7 +28,7 @@ export function LearnerShell({ children }: LearnerShellProps) {
           <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-sm text-erreur">
               <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>Un probleme a ete detecte avec votre paiement.</span>
+              <span>Un problème a été détecté avec votre paiement.</span>
             </div>
             <a
               href="mailto:contact@institutlacle.fr?subject=Probleme%20de%20paiement"
@@ -44,9 +44,9 @@ export function LearnerShell({ children }: LearnerShellProps) {
       <main className="mx-auto max-w-5xl px-4 py-6 pb-20 sm:px-6 md:pb-6">
         {children}
       </main>
-      {/* TODO // Qualiopi Ind.26: referent handicap */}
+      {/* Qualiopi Ind.26 : mention du referent handicap dans le footer LMS */}
       <footer className="border-t border-filet px-4 py-4 pb-24 text-center text-xs text-pierre md:pb-4">
-        Referent handicap : <a href="mailto:contact@institutlacle.fr" className="text-cendre hover:text-ivoire transition-colors">contact@institutlacle.fr</a>
+        Référent handicap : <a href="mailto:contact@institutlacle.fr" className="text-cendre hover:text-ivoire transition-colors">contact@institutlacle.fr</a>
       </footer>
       <BugReportButton />
       <LearnerMobileNav />

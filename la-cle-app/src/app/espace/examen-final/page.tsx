@@ -11,7 +11,8 @@ import { Alert } from "@/components/ui/Alert";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { FinalExamRequestView } from "@/components/exam/FinalExamRequestView";
 import { FinalExamStatusView } from "@/components/exam/FinalExamStatusView";
-import { getFinalExam, getAttempts, requestFinalExam } from "@/services/exams";
+import { getAttempts } from "@/services/exams";
+import { getFinalExam, requestFinalExam } from "@/services/final-exams";
 import { getLearner } from "@/services/learners";
 import type { FinalExam, LegacyExamAttempt } from "@/types";
 
@@ -70,7 +71,7 @@ export default function ExamenFinalPage() {
 
               {!allModulesCompleted && !exam && (
                 <ScrollReveal delay={0.1}>
-                  <Alert variant="warning" title="Modules a completer">
+                  <Alert variant="warning" title="Modules à compléter">
                     Vous devez valider tous les modules avant de pouvoir demander l&apos;examen final.
                   </Alert>
                 </ScrollReveal>

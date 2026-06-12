@@ -5,7 +5,7 @@ export const STATUS_CONFIG: Record<
   { label: string; color: string; bgColor: string }
 > = {
   decouverte: {
-    label: "Decouverte",
+    label: "Découverte",
     color: "text-info",
     bgColor: "bg-info/10",
   },
@@ -15,12 +15,12 @@ export const STATUS_CONFIG: Record<
     bgColor: "bg-succes/10",
   },
   bloque: {
-    label: "Bloque",
+    label: "Bloqué",
     color: "text-erreur",
     bgColor: "bg-erreur/10",
   },
   certifie: {
-    label: "Certifie",
+    label: "Certifié",
     color: "text-or",
     bgColor: "bg-or/10",
   },

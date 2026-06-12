@@ -19,38 +19,38 @@ const sections = [
     icon: Server,
     title: "Plateforme LMS",
     items: [
-      { label: "Application", value: "La Cle LMS — plateforme proprietaire" },
-      { label: "Hebergement", value: "Vercel (CDN mondial, HTTPS, haute disponibilite)" },
-      { label: "Base de donnees", value: "Supabase (PostgreSQL managee, chiffrement au repos)" },
-      { label: "Stockage fichiers", value: "Supabase Storage (documents, videos)" },
+      { label: "Application", value: "La Clé LMS — plateforme propriétaire" },
+      { label: "Hébergement", value: "Vercel (CDN mondial, HTTPS, haute disponibilité)" },
+      { label: "Base de données", value: "Supabase (PostgreSQL managée, chiffrement au repos)" },
+      { label: "Stockage fichiers", value: "Supabase Storage (documents, vidéos)" },
     ],
   },
   {
     icon: Mail,
     title: "Outils emailing",
     items: [
-      { label: "Service transactionnel", value: "Resend (emails automatises, securises)" },
+      { label: "Service transactionnel", value: "Resend (emails automatisés, sécurisés)" },
       { label: "Adresse de contact", value: "contact@institutlacle.fr" },
-      { label: "Delai de reponse", value: "48h ouvrees maximum" },
+      { label: "Délai de réponse", value: "48h ouvrées maximum" },
     ],
   },
   {
     icon: BookOpen,
-    title: "Suivi pedagogique",
+    title: "Suivi pédagogique",
     items: [
-      { label: "Progression", value: "Suivi en temps reel par capsule video et par module" },
-      { label: "Evaluations", value: "QCM inter-capsules, examens de module, examen final" },
-      { label: "Engagement", value: "Dashboard anti-decrochage avec alertes automatiques" },
-      { label: "Satisfaction", value: "Questionnaires a chaud (post-examen) et a froid (J+90)" },
+      { label: "Progression", value: "Suivi en temps réel par capsule vidéo et par module" },
+      { label: "Évaluations", value: "QCM inter-capsules, examens de module, examen final" },
+      { label: "Engagement", value: "Dashboard anti-décrochage avec alertes automatiques" },
+      { label: "Satisfaction", value: "Questionnaires à chaud (post-examen) et à froid (J+90)" },
     ],
   },
   {
     icon: Shield,
-    title: "Continuite de service",
+    title: "Continuité de service",
     items: [
-      { label: "Sauvegardes", value: "Quotidiennes automatiques (base de donnees + fichiers)" },
-      { label: "Procedure panne", value: "Email contact@institutlacle.fr + message d'alerte affiche sur la plateforme" },
-      { label: "Delai de retablissement", value: "24h maximum en cas d'incident majeur" },
+      { label: "Sauvegardes", value: "Quotidiennes automatiques (base de données + fichiers)" },
+      { label: "Procédure panne", value: "Email contact@institutlacle.fr + message d'alerte affiché sur la plateforme" },
+      { label: "Délai de rétablissement", value: "24h maximum en cas d'incident majeur" },
     ],
   },
   {
@@ -58,8 +58,8 @@ const sections = [
     title: "Support utilisateur",
     items: [
       { label: "Email", value: "contact@institutlacle.fr" },
-      { label: "Signalement integre", value: "Bouton de signalement de bugs dans l'espace apprenant" },
-      { label: "Referent handicap", value: "contact@institutlacle.fr (Qualiopi Ind.26)" },
+      { label: "Signalement intégré", value: "Bouton de signalement de bugs dans l'espace apprenant" },
+      { label: "Référent handicap", value: "contact@institutlacle.fr (Qualiopi Ind.26)" },
     ],
   },
 ];
@@ -77,7 +77,7 @@ export default function MoyensTechniquesPage() {
           <div>
             <h1 className="font-serif text-2xl text-ivoire">Moyens techniques</h1>
             <p className="mt-1 text-sm text-cendre">
-              Ressources et outils mobilises pour la formation a distance
+              Ressources et outils mobilisés pour la formation à distance
             </p>
           </div>
           <Button

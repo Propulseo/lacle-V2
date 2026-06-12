@@ -62,7 +62,7 @@ export default function ComptePage() {
 
             <ScrollReveal delay={0.25}>
               <Button variant="danger" className="w-full" icon={<LogOut className="h-4 w-4" />} onClick={handleLogout}>
-                Deconnexion
+                Déconnexion
               </Button>
             </ScrollReveal>
           </div>

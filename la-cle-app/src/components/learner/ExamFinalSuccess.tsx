@@ -33,7 +33,7 @@ export function ExamFinalSuccess({ score, notes }: ExamFinalSuccessProps) {
         <Card variant="elevated" className="text-center py-8">
           <Award className="mx-auto h-14 w-14 text-or" />
           <h2 className="mt-4 font-serif text-2xl text-ivoire">
-            Felicitations !
+            Félicitations !
           </h2>
           <p className="mt-2 text-lg text-or">{score}%</p>
           {notes && (
@@ -49,13 +49,13 @@ export function ExamFinalSuccess({ score, notes }: ExamFinalSuccessProps) {
               variant="primary"
               onClick={() => router.push(ROUTES.espace.documents)}
             >
-              Acceder a mon Coffre
+              Accéder à mon Coffre
             </Button>
             <Button
               variant="ghost"
               onClick={() => router.push(ROUTES.espace.presentiel)}
             >
-              S&apos;inscrire au presentiel
+              S&apos;inscrire au présentiel
             </Button>
           </div>
         </Card>

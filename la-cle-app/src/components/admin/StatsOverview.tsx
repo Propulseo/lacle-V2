@@ -20,11 +20,11 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
         value={stats.totalLearners}
         icon={<Users className="h-5 w-5" />}
       />
+      {/* TODO // Supabase: calculer la tendance mensuelle reelle (inscriptions du mois courant vs precedent) */}
       <StatCard
         label="Apprenants actifs"
         value={stats.activeLearners}
         icon={<Users className="h-5 w-5" />}
-        trend={{ value: "+2 ce mois", positive: true }}
       />
       <StatCard
         label="Modules complétés"

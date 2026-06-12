@@ -32,7 +32,7 @@ export default function VideoDetailPage() {
       getModule(moduleId),
     ]);
     if (!module_) throw new NotFoundError("Module", moduleId);
-    if (!video) throw new NotFoundError("Video", videoId);
+    if (!video) throw new NotFoundError("Vidéo", videoId);
     return { video, module_ };
   }, [videoId, moduleId]);
 
@@ -126,23 +126,23 @@ function VideoDetailContent({
         <div className="flex items-start justify-between">
           <div>
             <h1 className="font-serif text-2xl text-ivoire">{video.title}</h1>
-            <p className="mt-1 text-sm text-cendre">Video {video.order} &bull; {formatDuration(video.duration)}</p>
+            <p className="mt-1 text-sm text-cendre">Vidéo {video.order} &bull; {formatDuration(video.duration)}</p>
           </div>
           <Badge variant={video.isPublished ? "success" : "default"}>
-            {video.isPublished ? "Publie" : "Brouillon"}
+            {video.isPublished ? "Publiée" : "Brouillon"}
           </Badge>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           <div><VideoPlayer src={video.src || undefined} /></div>
           <Card>
-            <h3 className="mb-4 font-serif text-lg text-ivoire">Parametres</h3>
+            <h3 className="mb-4 font-serif text-lg text-ivoire">Paramètres</h3>
             <div className="space-y-4">
               <Input label="Titre" value={title} onChange={(e) => setTitle(e.target.value)} />
               <Textarea label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
               <Input label="Ordre" type="number" value={String(order)} onChange={(e) => setOrder(Number(e.target.value))} />
               <div className="flex items-center justify-between">
-                <Toggle enabled={isPublished} onChange={setIsPublished} label="Video publiee" />
+                <Toggle enabled={isPublished} onChange={setIsPublished} label="Vidéo publiée" />
                 <div className="flex gap-3">
                   <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={() => setDeleteOpen(true)}>
                     Supprimer
@@ -163,7 +163,7 @@ function VideoDetailContent({
           </div>
 
           {video.questions.length === 0 ? (
-            <p className="py-8 text-center text-sm text-cendre">Aucune question overlay pour cette video</p>
+            <p className="py-8 text-center text-sm text-cendre">Aucune question overlay pour cette vidéo</p>
           ) : (
             <div className="space-y-3">
               {video.questions.map((q) => (
@@ -193,7 +193,7 @@ function VideoDetailContent({
                       ))}
                     </div>
                   )}
-                  {q.type === "vrai_faux" && <p className="mt-1 text-xs text-succes">Reponse : {q.correctAnswer}</p>}
+                  {q.type === "vrai_faux" && <p className="mt-1 text-xs text-succes">Réponse : {q.correctAnswer}</p>}
                 </div>
               ))}
             </div>
@@ -205,8 +205,8 @@ function VideoDetailContent({
         isOpen={deleteOpen}
         onClose={() => setDeleteOpen(false)}
         onConfirm={onDelete}
-        title="Supprimer la video"
-        message={`Voulez-vous vraiment supprimer "${video.title}" ? Cette action est irreversible.`}
+        title="Supprimer la vidéo"
+        message={`Voulez-vous vraiment supprimer "${video.title}" ? Cette action est irréversible.`}
         confirmLabel="Supprimer"
       />
 

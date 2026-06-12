@@ -29,7 +29,7 @@ function getStarRatings(survey: SatisfactionSurvey) {
 
 export function SatisfactionTable({ surveys, onTogglePublic }: Props) {
   if (surveys.length === 0) {
-    return <p className="text-sm text-cendre py-4">Aucune reponse pour l&apos;instant.</p>;
+    return <p className="text-sm text-cendre py-4">Aucune réponse pour l&apos;instant.</p>;
   }
 
   return (
@@ -44,7 +44,7 @@ export function SatisfactionTable({ surveys, onTogglePublic }: Props) {
               <div>
                 <p className="font-medium text-ivoire">{getStudentLabel(survey.studentId)}</p>
                 <p className="text-xs text-pierre">
-                  {survey.completedAt ? formatDate(survey.completedAt) : "Non complete"}
+                  {survey.completedAt ? formatDate(survey.completedAt) : "Non complété"}
                 </p>
               </div>
               <div className="flex items-center gap-3">

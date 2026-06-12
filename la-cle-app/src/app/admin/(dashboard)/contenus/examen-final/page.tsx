@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
@@ -8,7 +9,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { getFinalExams } from "@/services/exams";
+import { ScheduleFinalExamModal } from "@/components/admin/ScheduleFinalExamModal";
+import { getFinalExams } from "@/services/final-exams";
 import { getLearner } from "@/services/learners";
 import { formatDate } from "@/lib/utils";
 import type { FinalExam, Learner } from "@/types";
@@ -18,14 +20,15 @@ interface FinalExamWithLearner extends FinalExam {
 }
 
 const statusBadge: Record<string, { variant: "default" | "warning" | "info" | "success" | "error"; label: string }> = {
-  not_started: { variant: "default", label: "Non demarre" },
-  requested: { variant: "warning", label: "Demande" },
-  scheduled: { variant: "info", label: "Planifie" },
-  passed: { variant: "success", label: "Reussi" },
-  failed: { variant: "error", label: "Echoue" },
+  not_started: { variant: "default", label: "Non démarré" },
+  requested: { variant: "warning", label: "Demandé" },
+  scheduled: { variant: "info", label: "Planifié" },
+  passed: { variant: "success", label: "Réussi" },
+  failed: { variant: "error", label: "Échoué" },
 };
 
 export default function FinalExamPage() {
+  const [examToSchedule, setExamToSchedule] = useState<FinalExamWithLearner | null>(null);
   const examsState = useAsyncData(async () => {
     const rawExams = await getFinalExams();
     const withLearners: FinalExamWithLearner[] = await Promise.all(
@@ -54,7 +57,7 @@ export default function FinalExamPage() {
         </div>
 
         <AsyncBoundary state={examsState} empty={
-          <EmptyState title="Aucune demande" description="Les apprenants ayant valide tous les modules pourront demander l'examen final." />
+          <EmptyState title="Aucune demande" description="Les apprenants ayant validé tous les modules pourront demander l'examen final." />
         }>
           {(exams) => (
             <div className="space-y-3">
@@ -65,8 +68,8 @@ export default function FinalExamPage() {
                       <div>
                         <p className="font-medium text-ivoire">{exam.learner?.firstName} {exam.learner?.lastName}</p>
                         <p className="text-sm text-cendre">{exam.learner?.email}</p>
-                        {exam.requestedAt && <p className="mt-1 text-xs text-pierre">Demande le {formatDate(exam.requestedAt)}</p>}
-                        {exam.scheduledAt && <p className="text-xs text-info">Planifie le {formatDate(exam.scheduledAt)}</p>}
+                        {exam.requestedAt && <p className="mt-1 text-xs text-pierre">Demandé le {formatDate(exam.requestedAt)}</p>}
+                        {exam.scheduledAt && <p className="text-xs text-info">Planifié le {formatDate(exam.scheduledAt)}</p>}
                         {exam.score !== null && <p className="text-xs text-or">Score : {exam.score}%</p>}
                         {exam.notes && <p className="mt-1 text-xs text-cendre italic">{exam.notes}</p>}
                       </div>
@@ -74,7 +77,11 @@ export default function FinalExamPage() {
                         <Badge variant={statusBadge[exam.status]?.variant || "default"}>
                           {statusBadge[exam.status]?.label || exam.status}
                         </Badge>
-                        {exam.status === "requested" && <Button size="sm" variant="primary">Planifier</Button>}
+                        {exam.status === "requested" && (
+                          <Button size="sm" variant="primary" onClick={() => setExamToSchedule(exam)}>
+                            Planifier
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </Card>
@@ -84,6 +91,21 @@ export default function FinalExamPage() {
           )}
         </AsyncBoundary>
       </div>
+
+      <ScheduleFinalExamModal
+        isOpen={examToSchedule !== null}
+        onClose={() => setExamToSchedule(null)}
+        onSuccess={() => {
+          setExamToSchedule(null);
+          examsState.refetch();
+        }}
+        exam={examToSchedule}
+        learnerName={
+          examToSchedule
+            ? `${examToSchedule.learner?.firstName ?? ""} ${examToSchedule.learner?.lastName ?? ""}`.trim()
+            : ""
+        }
+      />
     </AdminShell>
   );
 }

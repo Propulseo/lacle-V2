@@ -97,13 +97,13 @@ export function PositioningTest({ onComplete, className }: PositioningTestProps)
       <div className="mt-10 flex items-center justify-between border-t border-filet pt-6">
         {!isFirst ? (
           <Button variant="ghost" onClick={goPrev} icon={<ArrowLeft className="h-4 w-4" />}>
-            Precedent
+            Précédent
           </Button>
         ) : (
           <span aria-hidden="true" />
         )}
         <Button variant="primary" onClick={goNextOrFinish} disabled={!canContinue}>
-          {isLast ? "Voir mon resultat" : "Continuer"}
+          {isLast ? "Voir mon résultat" : "Continuer"}
           {!isLast && <ArrowRight className="ml-1 h-4 w-4" />}
         </Button>
       </div>

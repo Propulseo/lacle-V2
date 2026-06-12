@@ -85,7 +85,7 @@ export function ExamQuizView({
             type="text"
             value={selected || ""}
             onChange={(e) => onSelect(e.target.value)}
-            placeholder="Votre reponse..."
+            placeholder="Votre réponse..."
             className="w-full rounded-lg border border-filet bg-surface px-4 py-3 text-sm text-ivoire placeholder:text-pierre focus:border-or/50 focus:outline-none"
           />
         )}

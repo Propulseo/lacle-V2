@@ -1,5 +1,10 @@
 "use client";
 
+// global-error remplace le root layout : globals.css n'est pas charge ici.
+// Les valeurs hex sont volontairement dupliquees depuis les tokens de
+// globals.css (nuit, ivoire, cendre, pierre, or, erreur, filet, surface)
+// et doivent rester synchronisees avec eux.
+
 interface GlobalErrorProps {
   error: Error & { digest?: string };
   reset: () => void;
@@ -25,7 +30,7 @@ export default function GlobalError({ error, reset: _reset }: GlobalErrorProps) 
             </h1>
 
             <p style={{ fontSize: "0.875rem", color: "#7e8094", marginBottom: "1.5rem", lineHeight: 1.6 }}>
-              L&apos;application a rencontre un probleme inattendu.
+              L&apos;application a rencontré un problème inattendu.
               Veuillez recharger la page.
             </p>
 

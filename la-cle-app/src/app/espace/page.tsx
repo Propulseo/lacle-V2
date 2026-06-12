@@ -78,7 +78,7 @@ export default function EspaceDashboardPage() {
                     <div className="flex items-center gap-3">
                       <Award className="h-5 w-5 text-or" />
                       <div>
-                        <p className="text-sm text-cendre">Examens reussis</p>
+                        <p className="text-sm text-cendre">Examens réussis</p>
                         <p className="font-serif text-xl text-ivoire">{prog.examsPassed}/{prog.examsTotal}</p>
                       </div>
                     </div>
@@ -88,7 +88,7 @@ export default function EspaceDashboardPage() {
                     <div className="flex items-center gap-3">
                       <AlertCircle className="h-5 w-5 text-or" />
                       <div>
-                        <p className="text-sm text-cendre">Videos vues</p>
+                        <p className="text-sm text-cendre">Vidéos vues</p>
                         <p className="font-serif text-xl text-ivoire">{prog.videosWatched}/{prog.videosTotal}</p>
                       </div>
                     </div>
@@ -105,7 +105,7 @@ export default function EspaceDashboardPage() {
                         <p className="text-xs uppercase tracking-wider text-or">Continuer</p>
                         <h3 className="mt-1 font-serif text-lg text-ivoire">{nextModule.title}</h3>
                         <p className="mt-1 text-sm text-cendre">
-                          {nextModule.videosWatched}/{nextModule.videosCount} videos • Module {nextModule.order}
+                          {nextModule.videosWatched}/{nextModule.videosCount} vidéos • Module {nextModule.order}
                         </p>
                       </div>
                       <ArrowRight className="h-5 w-5 text-or" />

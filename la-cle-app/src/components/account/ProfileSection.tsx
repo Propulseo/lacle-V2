@@ -30,7 +30,7 @@ export function ProfileSection({ learner }: ProfileSectionProps) {
           <p className="text-ivoire">{learner.email}</p>
         </div>
         <div>
-          <p className="text-cendre">Telephone</p>
+          <p className="text-cendre">Téléphone</p>
           <p className="text-ivoire">{learner.phone}</p>
         </div>
         <div>

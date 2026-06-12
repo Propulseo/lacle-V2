@@ -20,6 +20,7 @@ import { useAsyncData } from "@/hooks/useAsyncData";
 import { getModuleAccess } from "@/hooks/useModuleAccess";
 import { formatDuration, cn } from "@/lib/utils";
 import { getCapsuleDisplayName } from "@/lib/capsule-utils";
+import { canTakeModuleExam } from "@/lib/module-access";
 import { hasCompletedPositioning } from "@/lib/positioning";
 import { ROUTES } from "@/lib/constants";
 import { NotFoundError } from "@/lib/errors";
@@ -82,7 +83,7 @@ export default function ModuleDetailLearnerPage() {
               </ScrollReveal>
 
               <div className="space-y-2">
-                <h2 className="font-serif text-lg text-ivoire">Videos du module</h2>
+                <h2 className="font-serif text-lg text-ivoire">Vidéos du module</h2>
                 {videos.map((video, i) => {
                   // TODO // Supabase: deriver l'etat "vu" depuis video_progress pour cet apprenant. Sans donnee de completion reelle, aucune capsule n'est marquee comme vue.
                   const watched = false;
@@ -109,10 +110,10 @@ export default function ModuleDetailLearnerPage() {
                 })}
               </div>
 
-              {exam && learnerStatus === "decouverte" && (
+              {exam && !canTakeModuleExam(module_.order, learnerStatus) && (
                 <ScrollReveal delay={0.3}><TrialGate /></ScrollReveal>
               )}
-              {exam && learnerStatus !== "decouverte" && (
+              {exam && canTakeModuleExam(module_.order, learnerStatus) && (
                 <ScrollReveal delay={0.3}>
                   <Card variant={examPassed ? "default" : "elevated"}>
                     <div className="flex items-center justify-between">
@@ -131,7 +132,7 @@ export default function ModuleDetailLearnerPage() {
                         </div>
                       </div>
                       {examPassed ? (
-                        <Badge variant="success">Valide</Badge>
+                        <Badge variant="success">Validé</Badge>
                       ) : (
                         <Button variant="primary" size="sm" onClick={() => router.push(ROUTES.espace.examenModule(moduleId))}>
                           Passer l&apos;examen

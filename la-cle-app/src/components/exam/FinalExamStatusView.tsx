@@ -18,9 +18,9 @@ export function FinalExamStatusView({ exam, examStatus }: FinalExamStatusViewPro
     return (
       <div className="text-center py-8">
         <Calendar className="mx-auto h-12 w-12 text-info" />
-        <h2 className="mt-4 font-serif text-xl text-ivoire">Examen planifie</h2>
-        <p className="mt-2 text-sm text-cendre">Votre examen est prevu le {formatDate(exam.scheduledAt!)}.</p>
-        <Badge variant="info" className="mt-3">Rendez-vous confirme</Badge>
+        <h2 className="mt-4 font-serif text-xl text-ivoire">Examen planifié</h2>
+        <p className="mt-2 text-sm text-cendre">Votre examen est prévu le {formatDate(exam.scheduledAt!)}.</p>
+        <Badge variant="info" className="mt-3">Rendez-vous confirmé</Badge>
         <div className="mt-4"><ExamAttemptStatus status={examStatus} examType="final" /></div>
       </div>
     );
@@ -34,11 +34,11 @@ export function FinalExamStatusView({ exam, examStatus }: FinalExamStatusViewPro
     return (
       <div className="text-center py-8">
         <Award className="mx-auto h-12 w-12 text-erreur" />
-        <h2 className="mt-4 font-serif text-xl text-ivoire">Examen non valide</h2>
+        <h2 className="mt-4 font-serif text-xl text-ivoire">Examen non validé</h2>
         <p className="mt-2 text-sm text-cendre">
           Score obtenu : {exam.score}%. Contactez l&apos;institut pour plus d&apos;informations.
         </p>
-        <Badge variant="error" className="mt-3">Non valide</Badge>
+        <Badge variant="error" className="mt-3">Non validé</Badge>
         <div className="mt-4"><ExamAttemptStatus status={examStatus} examType="final" /></div>
       </div>
     );

@@ -16,8 +16,8 @@ import type { VaultDocument } from "@/types";
 const VAULT_TABS = [
   { id: "contractuels", label: "Contractuels" },
   { id: "financiers", label: "Financiers" },
-  { id: "pedagogiques", label: "Pedagogiques" },
-  { id: "qualite", label: "Qualite" },
+  { id: "pedagogiques", label: "Pédagogiques" },
+  { id: "qualite", label: "Qualité" },
   { id: "pratiques", label: "Pratiques" },
 ];
 
@@ -32,7 +32,7 @@ function getDocStatus(doc: VaultDocument): DocStatus {
 const STATUS_LABEL: Record<DocStatus, string> = {
   disponible: "Disponible",
   en_attente: "En attente",
-  a_signer: "A signer",
+  a_signer: "À signer",
 };
 
 const STATUS_VARIANT: Record<DocStatus, "success" | "default" | "error"> = {
@@ -58,7 +58,7 @@ export default function DocumentsPage() {
           </div>
         </ScrollReveal>
 
-        <AsyncBoundary state={docsState}>
+        <AsyncBoundary state={docsState} loadingLabel="Chargement de vos documents…">
           {(documents) => {
             const filtered = documents.filter((d) => d.category === activeTab);
             const tabsWithCount = VAULT_TABS.map((t) => ({
@@ -74,7 +74,7 @@ export default function DocumentsPage() {
                   <EmptyState
                     icon={<FileText className="h-12 w-12" />}
                     title="Aucun document"
-                    description="Les documents de cette categorie apparaitront ici."
+                    description="Les documents de cette catégorie apparaîtront ici."
                   />
                 ) : (
                   <div className="space-y-2">
@@ -109,7 +109,7 @@ function VaultDocRow({ doc }: { doc: VaultDocument }) {
           {status === "disponible" && (
             <button
               type="button"
-              aria-label="Telecharger"
+              aria-label="Télécharger"
               className="rounded-lg p-2 text-cendre transition-colors hover:text-or"
               onClick={() => {
                 // TODO // Supabase Storage: URL reelle du fichier

@@ -106,7 +106,7 @@ export function VideoPlayer({
       <div className={cn("relative aspect-video rounded-xl bg-encre flex items-center justify-center", className)}>
         <div className="text-center">
           <Play className="mx-auto h-12 w-12 text-pierre" />
-          <p className="mt-2 text-sm text-cendre">Video non disponible</p>
+          <p className="mt-2 text-sm text-cendre">Vidéo non disponible</p>
         </div>
       </div>
     );
@@ -140,7 +140,7 @@ export function VideoPlayer({
           max={duration || 0}
           value={currentTime}
           onChange={handleSeekBar}
-          aria-label="Progression de la video"
+          aria-label="Progression de la vidéo"
           aria-valuetext={`${formatDuration(Math.floor(currentTime))} sur ${formatDuration(Math.floor(duration))}`}
           className="mb-3 h-1 w-full cursor-pointer appearance-none rounded-full bg-filet [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-or"
           style={{ background: `linear-gradient(to right, var(--color-or) ${progress}%, var(--color-filet) ${progress}%)` }}
@@ -180,7 +180,7 @@ export function VideoPlayer({
           <button
             type="button"
             onClick={() => videoRef.current?.requestFullscreen()}
-            aria-label="Plein ecran"
+            aria-label="Plein écran"
             className="text-ivoire/70 hover:text-ivoire transition-colors"
           >
             <Maximize className="h-4 w-4" />

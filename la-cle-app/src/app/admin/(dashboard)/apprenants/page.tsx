@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
+import { Users } from "lucide-react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
 import { Button } from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { Select } from "@/components/ui/Select";
 import { DataTable, type Column } from "@/components/ui/DataTable";
@@ -82,7 +84,24 @@ export default function ApprenantsPage() {
             if (statusFilter) filtered = filtered.filter((l) => l.status === statusFilter);
 
             return (
-              <DataTable data={filtered} columns={columns} keyExtractor={(l) => l.id} onRowClick={(l) => router.push(ROUTES.admin.apprenant(l.id))} emptyMessage="Aucun apprenant trouve" />
+              <DataTable
+                data={filtered}
+                columns={columns}
+                keyExtractor={(l) => l.id}
+                onRowClick={(l) => router.push(ROUTES.admin.apprenant(l.id))}
+                pageSize={10}
+                emptyState={
+                  <EmptyState
+                    icon={<Users className="h-12 w-12" />}
+                    title="Aucun apprenant trouvé"
+                    description={
+                      search || statusFilter
+                        ? "Aucun apprenant ne correspond à votre recherche. Modifiez les filtres."
+                        : "Créez votre premier apprenant pour commencer."
+                    }
+                  />
+                }
+              />
             );
           }}
         </AsyncBoundary>
