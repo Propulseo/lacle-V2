@@ -1,81 +1,87 @@
-import { mockAdmin } from "@/data/mock/admin";
-import { mockLearners } from "@/data/mock/learners";
-import { sleep } from "@/lib/utils";
+// Service d'authentification — Supabase Auth (cle anon, soumis a la RLS).
+// Conserve l'interface AuthUser { type: "admin" | "learner" } : le type derive
+// de profiles.role (admin/formateur => "admin" staff, eleve => "learner").
+import { createClient } from "@/lib/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database.types";
 
 export type AuthUser =
   | { type: "admin"; id: string; email: string; firstName: string; lastName: string }
   | { type: "learner"; id: string; email: string; firstName: string; lastName: string };
 
-// Comptes de demo exposes via le service (les composants n'importent jamais
-// la mock directement) — a supprimer lors du branchement Supabase Auth.
+// Comptes de demo (hints du formulaire de login). A retirer en prod.
 export { DEMO_ACCOUNTS } from "@/data/mock/demo-accounts";
 
-/**
- * Authentifie un administrateur par email et mot de passe.
- *
- * @param email - Adresse email de l'admin
- * @param password - Mot de passe en clair
- * @returns L'utilisateur authentifie avec type "admin"
- * @throws Si les identifiants sont incorrects
- * @example
- * const user = await loginAdmin('admin@institutlacle.fr', 'secret')
- */
-export async function loginAdmin(email: string, password: string): Promise<AuthUser> {
-  await sleep(500);
-  if (email.trim().toLowerCase() === mockAdmin.email.toLowerCase() && password.trim() === mockAdmin.password) {
-    return {
-      type: "admin",
-      id: mockAdmin.id,
-      email: mockAdmin.email,
-      firstName: mockAdmin.firstName,
-      lastName: mockAdmin.lastName,
-    };
-  }
-  throw new Error("Email ou mot de passe incorrect");
+type SB = SupabaseClient<Database>;
+
+const GENERIC_ERROR = "Email ou mot de passe incorrect";
+
+/** Construit l'AuthUser depuis le profil applicatif (role -> type). */
+async function profileToUser(supabase: SB, userId: string, fallbackEmail: string): Promise<AuthUser> {
+  const { data } = await supabase
+    .from("profiles")
+    .select("role, first_name, last_name, email")
+    .eq("id", userId)
+    .single();
+
+  const isStaff = data?.role === "admin" || data?.role === "formateur";
+  return {
+    type: isStaff ? "admin" : "learner",
+    id: userId,
+    email: data?.email ?? fallbackEmail,
+    firstName: data?.first_name ?? "",
+    lastName: data?.last_name ?? "",
+  };
 }
 
-/**
- * Authentifie un apprenant par email et mot de passe.
- *
- * @param email - Adresse email de l'apprenant
- * @param password - Mot de passe en clair
- * @returns L'utilisateur authentifie avec type "learner"
- * @throws Si les identifiants sont incorrects
- * @example
- * const user = await loginLearner('eleve@example.com', 'mdp123')
- */
+/** Authentifie un apprenant (eleve) par email + mot de passe. */
 export async function loginLearner(email: string, password: string): Promise<AuthUser> {
-  await sleep(500);
-  const learner = mockLearners.find((l) => l.email.toLowerCase() === email.trim().toLowerCase() && l.isActive);
-  // Mock: any password works for existing learners
-  if (learner && password.length >= 3) {
-    return {
-      type: "learner",
-      id: learner.id,
-      email: learner.email,
-      firstName: learner.firstName,
-      lastName: learner.lastName,
-    };
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.trim().toLowerCase(),
+    password,
+  });
+  if (error || !data.user) throw new Error(GENERIC_ERROR);
+  return profileToUser(supabase, data.user.id, data.user.email ?? email);
+}
+
+/** Authentifie un membre du staff (admin/formateur). Refuse les eleves. */
+export async function loginAdmin(email: string, password: string): Promise<AuthUser> {
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.trim().toLowerCase(),
+    password,
+  });
+  if (error || !data.user) throw new Error(GENERIC_ERROR);
+  const user = await profileToUser(supabase, data.user.id, data.user.email ?? email);
+  if (user.type !== "admin") {
+    await supabase.auth.signOut();
+    throw new Error("Acces reserve a l'administration");
   }
-  throw new Error("Email ou mot de passe incorrect");
+  return user;
+}
+
+/** Retourne l'utilisateur de la session courante, ou null. */
+export async function getCurrentUser(): Promise<AuthUser | null> {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return null;
+  return profileToUser(supabase, data.user.id, data.user.email ?? "");
 }
 
 /**
- * Change le mot de passe d'un utilisateur et desactive le flag `mustChangePassword`.
- *
- * @param userId - Identifiant de l'utilisateur
- * @param newPassword - Nouveau mot de passe
+ * Change le mot de passe de l'utilisateur connecte.
+ * NB : le flag profiles.must_change_password est protege par trigger (B1) et ne
+ * peut etre baisse que cote serveur — gere par une Server Action dediee (service_role).
  */
-export async function changePassword(userId: string, _newPassword: string): Promise<void> {
-  await sleep(300);
-  // Mock: just mark password as changed
-  const learner = mockLearners.find((l) => l.id === userId);
-  if (learner) {
-    learner.mustChangePassword = false;
-  }
+export async function changePassword(_userId: string, newPassword: string): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) throw new Error(error.message);
 }
 
-/** Deconnecte l'utilisateur courant et invalide la session. */
+/** Deconnecte l'utilisateur courant. */
 export async function logout(): Promise<void> {
-  await sleep(200);
+  const supabase = createClient();
+  await supabase.auth.signOut();
 }

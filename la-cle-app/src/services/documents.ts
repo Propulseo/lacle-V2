@@ -1,9 +1,75 @@
-import { mockDocuments, mockSupportMessages } from "@/data/mock/documents";
+// Service documents — cable Supabase (table user_documents + support_messages),
+// adaptateur vers les DTO LegacyDocument/SupportMessage (pages inchangees).
+// RLS : un eleve ne lit que ses propres documents/messages ; le staff voit tout.
+// NB PostgREST : l'embed profiles via la FK learner_id (many-to-one) revient en OBJET.
+// Upload de fichier hors scope : on conserve la signature et on insere uniquement
+// les metadonnees (file_url = placeholder en attendant le branchement Storage).
+import { createClient } from "@/lib/supabase/client";
 import type { LegacyDocument, SupportMessage } from "@/types";
-import { sleep, generateId } from "@/lib/utils";
+import type { Database } from "@/types/database.types";
 
-const documents = [...mockDocuments];
-const messages = [...mockSupportMessages];
+type ProfileEmbed = { first_name: string; last_name: string } | null;
+
+type DocumentRow = {
+  id: string;
+  learner_id: string;
+  type: Database["public"]["Enums"]["document_type"];
+  title: string;
+  file_name: string;
+  file_url: string;
+  file_size: number | null;
+  uploaded_at: string;
+  uploaded_by: Database["public"]["Enums"]["upload_source"];
+  profiles: ProfileEmbed;
+};
+
+type MessageRow = {
+  id: string;
+  learner_id: string;
+  subject: string;
+  message: string;
+  reply: string | null;
+  created_at: string;
+  replied_at: string | null;
+  profiles: ProfileEmbed;
+};
+
+const DOCUMENT_SELECT =
+  "id, learner_id, type, title, file_name, file_url, file_size, uploaded_at, uploaded_by, profiles(first_name, last_name)";
+
+const MESSAGE_SELECT =
+  "id, learner_id, subject, message, reply, created_at, replied_at, profiles(first_name, last_name)";
+
+function fullName(p: ProfileEmbed): string {
+  return p ? `${p.first_name} ${p.last_name}`.trim() : "";
+}
+
+function mapDocument(d: DocumentRow): LegacyDocument {
+  return {
+    id: d.id,
+    learnerId: d.learner_id,
+    learnerName: fullName(d.profiles),
+    type: d.type,
+    title: d.title,
+    fileName: d.file_name,
+    fileSize: d.file_size ?? 0,
+    uploadedAt: d.uploaded_at,
+    uploadedBy: d.uploaded_by,
+  };
+}
+
+function mapMessage(m: MessageRow): SupportMessage {
+  return {
+    id: m.id,
+    learnerId: m.learner_id,
+    learnerName: fullName(m.profiles),
+    subject: m.subject,
+    message: m.message,
+    reply: m.reply,
+    createdAt: m.created_at,
+    repliedAt: m.replied_at,
+  };
+}
 
 /**
  * Recupere les documents, filtres par apprenant si precise.
@@ -12,41 +78,51 @@ const messages = [...mockSupportMessages];
  * @returns Tableau des documents
  */
 export async function getDocuments(learnerId?: string): Promise<LegacyDocument[]> {
-  await sleep(300);
-  if (learnerId) {
-    return documents.filter((d) => d.learnerId === learnerId);
-  }
-  return [...documents];
+  const supabase = createClient();
+  let query = supabase.from("user_documents").select(DOCUMENT_SELECT).order("uploaded_at", { ascending: false });
+  if (learnerId) query = query.eq("learner_id", learnerId);
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data as unknown as DocumentRow[]).map(mapDocument);
 }
 
 /**
  * Cree un nouveau document (contrat, facture, attestation, etc.).
+ * Upload reel hors scope : seules les metadonnees sont inserees.
  *
  * @param data - Donnees du document (sans id ni uploadedAt)
  * @returns Le document cree
  */
 export async function createDocument(data: Omit<LegacyDocument, "id" | "uploadedAt">): Promise<LegacyDocument> {
-  await sleep(400);
-  const doc: LegacyDocument = {
-    ...data,
-    id: `doc-${generateId()}`,
-    uploadedAt: new Date().toISOString(),
+  const supabase = createClient();
+  const insert: Database["public"]["Tables"]["user_documents"]["Insert"] = {
+    learner_id: data.learnerId,
+    type: data.type,
+    title: data.title,
+    file_name: data.fileName,
+    // TODO // Supabase: remplacer par l'URL Storage reelle apres upload du fichier
+    file_url: "",
+    file_size: data.fileSize,
+    uploaded_by: data.uploadedBy,
   };
-  documents.push(doc);
-  return doc;
+  const { data: row, error } = await supabase
+    .from("user_documents")
+    .insert(insert)
+    .select(DOCUMENT_SELECT)
+    .single();
+  if (error) throw error;
+  return mapDocument(row as unknown as DocumentRow);
 }
 
 /**
  * Supprime un document par son identifiant.
  *
  * @param id - Identifiant du document
- * @throws Si le document n'existe pas
  */
 export async function deleteDocument(id: string): Promise<void> {
-  await sleep(300);
-  const idx = documents.findIndex((d) => d.id === id);
-  if (idx === -1) throw new Error("Document non trouvé");
-  documents.splice(idx, 1);
+  const supabase = createClient();
+  const { error } = await supabase.from("user_documents").delete().eq("id", id);
+  if (error) throw error;
 }
 
 /**
@@ -56,18 +132,19 @@ export async function deleteDocument(id: string): Promise<void> {
  * @returns Tableau des messages de support
  */
 export async function getSupportMessages(learnerId?: string): Promise<SupportMessage[]> {
-  await sleep(300);
-  if (learnerId) {
-    return messages.filter((m) => m.learnerId === learnerId);
-  }
-  return [...messages];
+  const supabase = createClient();
+  let query = supabase.from("support_messages").select(MESSAGE_SELECT).order("created_at", { ascending: false });
+  if (learnerId) query = query.eq("learner_id", learnerId);
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data as unknown as MessageRow[]).map(mapMessage);
 }
 
 /**
  * Cree un nouveau message de support envoye par un apprenant.
  *
  * @param learnerId - Identifiant de l'apprenant
- * @param learnerName - Nom affiche de l'apprenant
+ * @param learnerName - Nom affiche de l'apprenant (non persiste : derive du profil)
  * @param subject - Sujet du message
  * @param message - Contenu du message
  * @returns Le message cree
@@ -78,19 +155,21 @@ export async function createSupportMessage(
   subject: string,
   message: string
 ): Promise<SupportMessage> {
-  await sleep(400);
-  const msg: SupportMessage = {
-    id: `msg-${generateId()}`,
-    learnerId,
-    learnerName,
+  const supabase = createClient();
+  const insert: Database["public"]["Tables"]["support_messages"]["Insert"] = {
+    learner_id: learnerId,
     subject,
     message,
-    reply: null,
-    createdAt: new Date().toISOString(),
-    repliedAt: null,
   };
-  messages.push(msg);
-  return msg;
+  const { data: row, error } = await supabase
+    .from("support_messages")
+    .insert(insert)
+    .select(MESSAGE_SELECT)
+    .single();
+  if (error) throw error;
+  const mapped = mapMessage(row as unknown as MessageRow);
+  // Repli sur le nom fourni si le profil n'est pas joignable par l'embed (RLS).
+  return mapped.learnerName ? mapped : { ...mapped, learnerName };
 }
 
 /**
@@ -99,16 +178,19 @@ export async function createSupportMessage(
  * @param id - Identifiant du message
  * @param reply - Contenu de la reponse
  * @returns Le message avec la reponse ajoutee
- * @throws Si le message n'existe pas
  */
 export async function replySupportMessage(id: string, reply: string): Promise<SupportMessage> {
-  await sleep(300);
-  const idx = messages.findIndex((m) => m.id === id);
-  if (idx === -1) throw new Error("Message non trouvé");
-  messages[idx] = {
-    ...messages[idx],
+  const supabase = createClient();
+  const patch: Database["public"]["Tables"]["support_messages"]["Update"] = {
     reply,
-    repliedAt: new Date().toISOString(),
+    replied_at: new Date().toISOString(),
   };
-  return messages[idx];
+  const { data: row, error } = await supabase
+    .from("support_messages")
+    .update(patch)
+    .eq("id", id)
+    .select(MESSAGE_SELECT)
+    .single();
+  if (error) throw error;
+  return mapMessage(row as unknown as MessageRow);
 }

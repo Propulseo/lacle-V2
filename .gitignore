@@ -28,3 +28,6 @@ Thumbs.db
 
 # Gros fichiers non pertinents au code
 SignatureRebecca-main.zip
+
+# Notes de session locales
+.planning/

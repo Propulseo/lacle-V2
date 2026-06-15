@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Users,
   Activity,
+  BarChart3,
   MessageSquare,
   BookOpen,
   Calendar,
@@ -31,6 +32,7 @@ const navGroups = [
     items: [
       { label: "Apprenants", href: ROUTES.admin.apprenants, icon: Users },
       { label: "Engagement", href: ROUTES.admin.engagement, icon: Activity },
+      { label: "Analytics", href: ROUTES.admin.analytics, icon: BarChart3 },
       { label: "Satisfaction", href: ROUTES.admin.satisfaction, icon: MessageSquare },
       { label: "Contenus", href: ROUTES.admin.contenus, icon: BookOpen },
       { label: "Sessions", href: ROUTES.admin.sessions, icon: Calendar },

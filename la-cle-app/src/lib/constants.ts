@@ -19,6 +19,7 @@ export const ROUTES = {
     video: (moduleId: string, videoId: string) =>
       `/admin/contenus/modules/${moduleId}/videos/${videoId}`,
     engagement: "/admin/engagement",
+    analytics: "/admin/analytics",
     satisfaction: "/admin/satisfaction",
     examenFinal: "/admin/contenus/examen-final",
     coffre: "/admin/contenus/coffre",

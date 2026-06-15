@@ -1,129 +1,163 @@
-import { mockModules } from "@/data/mock/modules";
-import { mockExamAttempts } from "@/data/mock/exams";
-import { mockVideos } from "@/data/mock/videos";
+// Service modules — cable Supabase (schema nested) avec adaptateur vers le DTO
+// plat LegacyModule/ModuleWithProgress (pages inchangees).
+// Un "module" plat == un "bloc" nested. videosCount/totalDuration agreges depuis
+// cours > course_items > videos. examId = exams_bloc du bloc.
+// NB PostgREST : les embeds 1-a-1 (FK UNIQUE) reviennent en OBJET, pas en tableau
+//   -> videos (item_id UNIQUE) et exams_bloc (bloc_id UNIQUE) sont des objets.
+import { createClient } from "@/lib/supabase/client";
+import { getActiveFormationId } from "@/lib/supabase/formation";
 import type { LegacyModule, ModuleWithProgress } from "@/types";
-import { sleep, generateId } from "@/lib/utils";
+import type { Database } from "@/types/database.types";
 
-const modules = [...mockModules];
+type VideoEmbed = { id: string; duration_seconds: number } | null;
+type BlocRow = {
+  id: string;
+  titre: string;
+  description: string | null;
+  numero: number;
+  access_level: LegacyModule["accessLevel"];
+  is_published: boolean;
+  created_at: string;
+  cours: { course_items: { kind: string; videos: VideoEmbed }[] }[];
+  exams_bloc: { id: string } | null;
+};
 
-/**
- * Recupere tous les modules tries par ordre croissant.
- *
- * @returns Tableau des modules
- */
-export async function getModules(): Promise<LegacyModule[]> {
-  await sleep(300);
-  return [...modules].sort((a, b) => a.order - b.order);
+const BLOC_SELECT =
+  "id, titre, description, numero, access_level, is_published, created_at, cours(course_items(kind, videos(id, duration_seconds))), exams_bloc(id)";
+
+function videoItems(b: BlocRow) {
+  return (b.cours ?? []).flatMap((c) => c.course_items ?? []).filter((i) => i.kind === "video");
 }
 
-/**
- * Recupere un module par son identifiant.
- *
- * @param id - Identifiant du module
- * @returns Le module ou null si non trouve
- */
-export async function getModule(id: string): Promise<LegacyModule | null> {
-  await sleep(200);
-  return modules.find((m) => m.id === id) || null;
-}
-
-/**
- * Cree un nouveau module de formation.
- *
- * @param data - Donnees du module (sans id ni createdAt)
- * @returns Le module cree avec son ID genere
- */
-export async function createModule(data: Omit<LegacyModule, "id" | "createdAt">): Promise<LegacyModule> {
-  await sleep(400);
-  const newModule: LegacyModule = {
-    ...data,
-    id: `module-${generateId()}`,
-    createdAt: new Date().toISOString(),
+function mapBloc(b: BlocRow): LegacyModule {
+  const vids = videoItems(b);
+  return {
+    id: b.id,
+    title: b.titre,
+    description: b.description ?? "",
+    order: b.numero,
+    accessLevel: b.access_level,
+    videosCount: vids.length,
+    totalDuration: vids.reduce((s, i) => s + (i.videos?.duration_seconds ?? 0), 0),
+    isPublished: b.is_published,
+    examId: b.exams_bloc?.id ?? null,
+    createdAt: b.created_at,
   };
-  modules.push(newModule);
-  return newModule;
 }
 
-/**
- * Met a jour un module existant.
- *
- * @param id - Identifiant du module
- * @param data - Champs a modifier
- * @returns Le module mis a jour
- * @throws Si le module n'existe pas
- */
+/** Tous les modules (blocs) de la formation active, tries par numero. */
+export async function getModules(): Promise<LegacyModule[]> {
+  const supabase = createClient();
+  const formationId = await getActiveFormationId(supabase);
+  if (!formationId) return [];
+  const { data, error } = await supabase
+    .from("blocs")
+    .select(BLOC_SELECT)
+    .eq("formation_id", formationId)
+    .order("numero", { ascending: true });
+  if (error) throw error;
+  return (data as unknown as BlocRow[]).map(mapBloc);
+}
+
+/** Un module (bloc) par id. */
+export async function getModule(id: string): Promise<LegacyModule | null> {
+  const supabase = createClient();
+  const { data, error } = await supabase.from("blocs").select(BLOC_SELECT).eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data ? mapBloc(data as unknown as BlocRow) : null;
+}
+
+/** Cree un module (bloc) dans la formation active. */
+export async function createModule(
+  data: Omit<LegacyModule, "id" | "createdAt">,
+): Promise<LegacyModule> {
+  const supabase = createClient();
+  const formationId = await getActiveFormationId(supabase);
+  if (!formationId) throw new Error("Aucune formation active");
+  const { data: row, error } = await supabase
+    .from("blocs")
+    .insert({
+      formation_id: formationId,
+      numero: data.order,
+      titre: data.title,
+      description: data.description,
+      position: data.order,
+      access_level: data.accessLevel,
+      is_published: data.isPublished,
+    })
+    .select(BLOC_SELECT)
+    .single();
+  if (error) throw error;
+  return mapBloc(row as unknown as BlocRow);
+}
+
+/** Met a jour un module (bloc). */
 export async function updateModule(id: string, data: Partial<LegacyModule>): Promise<LegacyModule> {
-  await sleep(300);
-  const idx = modules.findIndex((m) => m.id === id);
-  if (idx === -1) throw new Error("Module non trouvé");
-  modules[idx] = { ...modules[idx], ...data };
-  return modules[idx];
+  const supabase = createClient();
+  const patch: Database["public"]["Tables"]["blocs"]["Update"] = {};
+  if (data.title !== undefined) patch.titre = data.title;
+  if (data.description !== undefined) patch.description = data.description;
+  if (data.order !== undefined) { patch.numero = data.order; patch.position = data.order; }
+  if (data.accessLevel !== undefined) patch.access_level = data.accessLevel;
+  if (data.isPublished !== undefined) patch.is_published = data.isPublished;
+  const { data: row, error } = await supabase.from("blocs").update(patch).eq("id", id).select(BLOC_SELECT).single();
+  if (error) throw error;
+  return mapBloc(row as unknown as BlocRow);
 }
 
-/**
- * Supprime un module par son identifiant.
- *
- * @param id - Identifiant du module
- * @throws Si le module n'existe pas
- */
+/** Supprime un module (bloc) — cascade cours/items/videos/exam. */
 export async function deleteModule(id: string): Promise<void> {
-  await sleep(300);
-  const idx = modules.findIndex((m) => m.id === id);
-  if (idx === -1) throw new Error("Module non trouvé");
-  modules.splice(idx, 1);
+  const supabase = createClient();
+  const { error } = await supabase.from("blocs").delete().eq("id", id);
+  if (error) throw error;
 }
 
-/**
- * Reordonne les modules selon un nouveau classement.
- *
- * @param orderedIds - Tableau d'IDs dans le nouvel ordre
- */
+/** Reordonne les modules (deux passes pour eviter les conflits UNIQUE(formation_id,numero)). */
 export async function reorderModules(orderedIds: string[]): Promise<void> {
-  await sleep(200);
-  orderedIds.forEach((id, index) => {
-    const m = modules.find((m) => m.id === id);
-    if (m) m.order = index + 1;
-  });
+  const supabase = createClient();
+  for (let i = 0; i < orderedIds.length; i++) {
+    const { error } = await supabase.from("blocs").update({ numero: 1000 + i, position: 1000 + i }).eq("id", orderedIds[i]);
+    if (error) throw error;
+  }
+  for (let i = 0; i < orderedIds.length; i++) {
+    const { error } = await supabase.from("blocs").update({ numero: i + 1, position: i + 1 }).eq("id", orderedIds[i]);
+    if (error) throw error;
+  }
 }
 
-/**
- * Recupere les modules enrichis de la progression d'un apprenant.
- * Calcule le statut (locked/in_progress/completed) et le nombre de videos vues.
- *
- * @param learnerId - Identifiant de l'apprenant
- * @returns Modules avec statut de progression
- */
+/** Modules enrichis de la progression de l'eleve (statut + videos vues + examen). */
 export async function getModulesForLearner(learnerId: string): Promise<ModuleWithProgress[]> {
-  await sleep(400);
-  const sorted = [...modules].sort((a, b) => a.order - b.order);
+  const supabase = createClient();
+  const formationId = await getActiveFormationId(supabase);
+  if (!formationId) return [];
 
-  return sorted.map((m, index) => {
-    const moduleVideos = mockVideos.filter((v) => v.moduleId === m.id);
-    const attempts = mockExamAttempts.filter(
-      (a) => a.learnerId === learnerId && mockModules.some((mod) => mod.examId === a.examId && mod.id === m.id)
-    );
-    const examPassed = attempts.some((a) => a.passed);
+  const { data, error } = await supabase
+    .from("blocs")
+    .select(BLOC_SELECT)
+    .eq("formation_id", formationId)
+    .order("numero", { ascending: true });
+  if (error) throw error;
+  const blocs = (data as unknown as BlocRow[]) ?? [];
 
-    // Simple mock logic: first module always accessible, others need previous exam passed
+  const [{ data: bp }, { data: vp }] = await Promise.all([
+    supabase.from("bloc_progress").select("bloc_id, status, exam_passed").eq("learner_id", learnerId),
+    supabase.from("video_progress").select("video_id, completed").eq("learner_id", learnerId).eq("completed", true),
+  ]);
+  const progressByBloc = new Map((bp ?? []).map((p) => [p.bloc_id, p]));
+  const completedVideoIds = new Set((vp ?? []).map((v) => v.video_id));
+
+  return blocs.map((b, index) => {
+    const base = mapBloc(b);
+    const prog = progressByBloc.get(b.id);
+    const examPassed = prog?.exam_passed ?? false;
+    const blocVideoIds = videoItems(b).map((i) => i.videos?.id).filter((x): x is string => Boolean(x));
+    const videosWatched = blocVideoIds.filter((id) => completedVideoIds.has(id)).length;
+
     let status: ModuleWithProgress["status"] = "locked";
-    if (index === 0) {
-      status = examPassed ? "completed" : "in_progress";
-    } else {
-      const prevModule = sorted[index - 1];
-      const prevAttempts = mockExamAttempts.filter(
-        (a) => a.learnerId === learnerId && mockModules.some((mod) => mod.examId === a.examId && mod.id === prevModule.id)
-      );
-      const prevPassed = prevAttempts.some((a) => a.passed);
-      if (prevPassed) {
-        status = examPassed ? "completed" : "in_progress";
-      }
-    }
+    const prevPassed = index === 0 || progressByBloc.get(blocs[index - 1].id)?.exam_passed === true;
+    if (examPassed) status = "completed";
+    else if (index === 0 || prevPassed || prog?.status === "in_progress") status = "in_progress";
 
-    return {
-      ...m,
-      status,
-      videosWatched: status === "completed" ? moduleVideos.length : Math.floor(moduleVideos.length * 0.5),
-      examPassed,
-    };
+    return { ...base, status, videosWatched, examPassed };
   });
 }
