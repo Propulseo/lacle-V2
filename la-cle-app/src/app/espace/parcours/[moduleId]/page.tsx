@@ -12,16 +12,16 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrialGate } from "@/components/learner/TrialGate";
 import { getModule } from "@/services/modules";
-import { getVideosByModule } from "@/services/videos";
+import { getVideosByModule, getCompletedVideoIds } from "@/services/videos";
 import { getExamByModule, getAttempts } from "@/services/exams";
 import { getLearner } from "@/services/learners";
+import { getJourneyStatus } from "@/services/learner-journey";
 import { useAuth } from "@/hooks/useAuth";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { getModuleAccess } from "@/hooks/useModuleAccess";
 import { formatDuration, cn } from "@/lib/utils";
 import { getCapsuleDisplayName } from "@/lib/capsule-utils";
 import { canTakeModuleExam } from "@/lib/module-access";
-import { hasCompletedPositioning } from "@/lib/positioning";
 import { ROUTES } from "@/lib/constants";
 import { NotFoundError } from "@/lib/errors";
 
@@ -32,14 +32,17 @@ export default function ModuleDetailLearnerPage() {
   const [enrollmentOk, setEnrollmentOk] = useState(false);
 
   const pageState = useAsyncData(async () => {
-    const [module_, videos, exam, learner] = await Promise.all([
+    const [module_, videos, exam, learner, completedIds, journey] = await Promise.all([
       getModule(moduleId),
       getVideosByModule(moduleId),
       getExamByModule(moduleId),
       user?.id ? getLearner(user.id) : Promise.resolve(null),
+      user?.id ? getCompletedVideoIds() : Promise.resolve(new Set<string>()),
+      user?.id ? getJourneyStatus(user.id) : Promise.resolve(null),
     ]);
 
-    if (module_ && module_.order === 1 && !hasCompletedPositioning()) {
+    // Garde-fou Ind.8 lu en base (non falsifiable localStorage).
+    if (module_ && module_.order === 1 && journey && !journey.positioningDone) {
       router.replace(`/espace/parcours/${moduleId}/positionnement`);
     }
 
@@ -56,17 +59,19 @@ export default function ModuleDetailLearnerPage() {
       exam,
       attempts,
       learnerStatus: learner?.status ?? null,
+      completedIds,
     };
   }, [moduleId, user?.id]);
 
   return (
     <LearnerShell>
       <AsyncBoundary state={pageState}>
-        {({ module_, videos, exam, attempts, learnerStatus }) => {
+        {({ module_, videos, exam, attempts, learnerStatus, completedIds }) => {
           const access = getModuleAccess(module_.order, learnerStatus, () => setEnrollmentOk(true));
           if (!access.canAccess && !enrollmentOk) return <>{access.gate}</>;
 
           const examPassed = attempts.some((a) => a.passed);
+          const watchedCount = videos.filter((v) => completedIds.has(v.id)).length;
 
           return (
             <div className="space-y-6">
@@ -76,8 +81,7 @@ export default function ModuleDetailLearnerPage() {
                   <h1 className="mt-1 font-serif text-2xl text-ivoire">{module_.title}</h1>
                   <p className="mt-2 text-sm text-cendre">{module_.description}</p>
                   <div className="mt-3">
-                    {/* TODO // Supabase: deriver la progression reelle depuis video_progress (videos vues / total) pour cet apprenant. En l'absence de donnees de completion, on affiche 0% plutot qu'une valeur inventee. */}
-                    <ProgressBar value={0} max={videos.length} showLabel size="sm" />
+                    <ProgressBar value={watchedCount} max={videos.length} showLabel size="sm" />
                   </div>
                 </div>
               </ScrollReveal>

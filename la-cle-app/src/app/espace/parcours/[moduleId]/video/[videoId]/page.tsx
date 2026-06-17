@@ -15,7 +15,7 @@ import { useVideoProgress } from "@/hooks/useVideoProgress";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { useAuth } from "@/hooks/useAuth";
 import { getModuleAccess } from "@/hooks/useModuleAccess";
-import { getVideo, getVideosByModule } from "@/services/videos";
+import { getVideo, getVideosByModule, getCompletedVideoIds, markVideoCompleted } from "@/services/videos";
 import { getModule } from "@/services/modules";
 import { getLearner } from "@/services/learners";
 import { formatDuration } from "@/lib/utils";
@@ -30,21 +30,22 @@ export default function VideoPlayerPage() {
   const [enrollmentOk, setEnrollmentOk] = useState(false);
 
   const pageState = useAsyncData(async () => {
-    const [video, module_, allVideos, learner] = await Promise.all([
+    const [video, module_, allVideos, learner, completedIds] = await Promise.all([
       getVideo(videoId),
       getModule(moduleId),
       getVideosByModule(moduleId),
       user?.id ? getLearner(user.id) : Promise.resolve(null),
+      user?.id ? getCompletedVideoIds() : Promise.resolve(new Set<string>()),
     ]);
     if (!module_) throw new NotFoundError("Module", moduleId);
     if (!video) throw new NotFoundError("Vidéo", videoId);
-    return { video, module_, allVideos, learnerStatus: learner?.status ?? null };
+    return { video, module_, allVideos, learnerStatus: learner?.status ?? null, completedIds };
   }, [videoId, moduleId, user?.id]);
 
   return (
     <LearnerShell>
       <AsyncBoundary state={pageState}>
-        {({ video, module_, allVideos, learnerStatus }) => {
+        {({ video, module_, allVideos, learnerStatus, completedIds }) => {
           // Gating identique a la page module : un deep-link vers une video
           // d'un module bloque doit afficher le meme gate.
           const access = getModuleAccess(module_.order, learnerStatus, () => setEnrollmentOk(true));
@@ -57,6 +58,7 @@ export default function VideoPlayerPage() {
               allVideos={allVideos}
               moduleId={moduleId}
               router={router}
+              initialCompleted={completedIds.has(video.id)}
             />
           );
         }}
@@ -71,23 +73,35 @@ function VideoContent({
   allVideos,
   moduleId,
   router,
+  initialCompleted,
 }: {
   video: NonNullable<Awaited<ReturnType<typeof getVideo>>>;
   module_: NonNullable<Awaited<ReturnType<typeof getModule>>>;
   allVideos: Awaited<ReturnType<typeof getVideosByModule>>;
   moduleId: string;
   router: ReturnType<typeof useRouter>;
+  initialCompleted: boolean;
 }) {
   const { activeQuestion, answeredQuestions, handleTimeUpdate, handleAnswer } =
     useVideoProgress(video.questions || []);
+  const [isCompleted, setIsCompleted] = useState(initialCompleted);
 
   const currentIndex = allVideos.findIndex((v) => v.id === video.id);
   const prevVideo = currentIndex > 0 ? allVideos[currentIndex - 1] : null;
   const nextVideo = currentIndex < allVideos.length - 1 ? allVideos[currentIndex + 1] : null;
 
-  // TODO // Supabase: deriver l'etat de completion depuis video_progress pour cet apprenant (meme source que la page module). Sans donnee reelle, la capsule reste non completee donc le titre reste masque (code).
-  const isCompleted = false;
   const QUESTION_LABEL_MAX = 60;
+
+  async function handleVideoEnded() {
+    // Enregistre la completion serveur (record_video_progress) -> progression +
+    // deverrouillage du coffre. Best-effort : on n'interrompt pas la lecture.
+    try {
+      await markVideoCompleted(video.id, "");
+      setIsCompleted(true);
+    } catch {
+      /* silencieux : la progression sera reprise au prochain chargement */
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -103,7 +117,7 @@ function VideoContent({
 
       <ScrollReveal>
         <div className="relative">
-          <VideoPlayer src={video.src || undefined} onTimeUpdate={handleTimeUpdate} onEnded={() => {}} />
+          <VideoPlayer src={video.src || undefined} onTimeUpdate={handleTimeUpdate} onEnded={handleVideoEnded} />
           <AnimatePresence>
             {activeQuestion && <OverlayQuestion question={activeQuestion} onAnswer={handleAnswer} />}
           </AnimatePresence>
