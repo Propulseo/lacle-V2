@@ -11,6 +11,13 @@ import { PNLCtaFinal } from "@/components/formations/PNLCtaFinal";
 import { FormationDocuments } from "@/components/formations/FormationDocuments";
 import { FormationResultats } from "@/components/formations/FormationResultats";
 import { ROUTES } from "@/lib/constants";
+import {
+  getPnlModules,
+  getPnlFaq,
+  getResultatsPnl,
+  getPageLastUpdated,
+  getFormationPrice,
+} from "@/lib/cms/content";
 
 export const metadata = {
   title: "PNL Praticien | La Clé",
@@ -18,7 +25,18 @@ export const metadata = {
     "Formation complète de Praticien PNL. Parcours distanciel structuré en sept modules, menant à la certification.",
 };
 
-export default function PNLPraticienPage() {
+// ISR : les éditions admin (Supabase) se propagent en <= 60 s.
+export const revalidate = 60;
+
+export default async function PNLPraticienPage() {
+  const [modules, faq, resultats, lastUpdated, price] = await Promise.all([
+    getPnlModules(),
+    getPnlFaq(),
+    getResultatsPnl(),
+    getPageLastUpdated(),
+    getFormationPrice(),
+  ]);
+
   return (
     <>
       <Header showBack backHref={ROUTES.formations} backLabel="Formations" />
@@ -121,7 +139,7 @@ export default function PNLPraticienPage() {
 
         {/* ---- 7 Modules ---- */}
         <SectionBlock background="graphite">
-          <PNLModules />
+          <PNLModules modules={modules} />
         </SectionBlock>
 
         {/* ---- Certification (présentiel retiré : non disponible, retour A13) ---- */}
@@ -170,17 +188,17 @@ export default function PNLPraticienPage() {
 
         {/* ---- Indicateurs de résultats (Qualiopi indicateur 2) ---- */}
         <SectionBlock background="graphite">
-          <FormationResultats />
+          <FormationResultats resultats={resultats} lastUpdated={lastUpdated} />
         </SectionBlock>
 
         {/* ---- Documents pédagogiques (Qualiopi indicateur 1) ---- */}
         <SectionBlock>
-          <FormationDocuments />
+          <FormationDocuments price={price} lastUpdated={lastUpdated} />
         </SectionBlock>
 
         {/* ---- FAQ ---- */}
         <SectionBlock background="graphite">
-          <PNLFAQ />
+          <PNLFAQ items={faq} />
         </SectionBlock>
 
         {/* ---- CTA FINAL ---- */}

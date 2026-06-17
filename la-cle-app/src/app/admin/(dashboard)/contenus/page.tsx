@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { BookOpen, Award, Archive } from "lucide-react";
+import { BookOpen, Award, Archive, Globe } from "lucide-react";
 import { AdminShell } from "@/components/layout/AdminShell";
 import { Card } from "@/components/ui/Card";
 import { ROUTES } from "@/lib/constants";
@@ -28,6 +28,13 @@ const cards = [
     icon: Archive,
     href: ROUTES.admin.coffre,
     count: "6 ressources",
+  },
+  {
+    title: "Site vitrine",
+    description: "Éditez le contenu de la page de vente du site vitrine",
+    icon: Globe,
+    href: ROUTES.admin.site,
+    count: "Page PNL",
   },
 ];
 

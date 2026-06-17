@@ -14,6 +14,7 @@ export const ROUTES = {
     nouveauApprenant: "/admin/apprenants/nouveau",
     apprenant: (id: string) => `/admin/apprenants/${id}`,
     contenus: "/admin/contenus",
+    site: "/admin/contenus/site",
     modules: "/admin/contenus/modules",
     module: (id: string) => `/admin/contenus/modules/${id}`,
     video: (moduleId: string, videoId: string) =>
