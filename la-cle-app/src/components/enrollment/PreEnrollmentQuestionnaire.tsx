@@ -27,6 +27,8 @@ import type { OnboardingAnswer } from "@/types";
 
 export interface PreEnrollmentSubmission {
   answers: OnboardingAnswer[];
+  /** Email de contact (rapprochement compte + export Qualiopi Ind.4). */
+  email: string;
   submittedAt: number;
 }
 
@@ -39,6 +41,7 @@ interface PreEnrollmentQuestionnaireProps {
 interface FormState {
   firstName: string;
   lastName: string;
+  email: string;
   profession: string;
   motivation: string;
   pnlLevel: string;
@@ -50,6 +53,7 @@ interface FormState {
 const INITIAL_STATE: FormState = {
   firstName: "",
   lastName: "",
+  email: "",
   profession: "",
   motivation: "",
   pnlLevel: "",
@@ -81,6 +85,7 @@ export function PreEnrollmentQuestionnaire({
     const required: (keyof FormState)[] = [
       "firstName",
       "lastName",
+      "email",
       "profession",
       "motivation",
       "pnlLevel",
@@ -109,7 +114,7 @@ export function PreEnrollmentQuestionnaire({
         answeredAt: now,
       }));
 
-    await onSubmit({ answers, submittedAt: Date.now() });
+    await onSubmit({ answers, submittedAt: Date.now(), email: form.email.trim() });
   }
 
   return (
@@ -147,6 +152,15 @@ export function PreEnrollmentQuestionnaire({
             required
           />
         </div>
+
+        <Input
+          label="Email"
+          type="email"
+          value={form.email}
+          onChange={(e) => update("email", e.target.value)}
+          autoComplete="email"
+          required
+        />
 
         <Input
           label="Profession actuelle"

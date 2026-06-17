@@ -1,14 +1,14 @@
 "use client";
 
-// TODO // Supabase: sauvegarder dans pre_enrollment_answers
-// avec userId + answers + createdAt (horodatage Qualiopi Ind.4)
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
 import { Button } from "@/components/ui/Button";
+import { Alert } from "@/components/ui/Alert";
+import { savePreEnrollment } from "@/services/learner-journey";
+import type { Json } from "@/types/database.types";
 import {
   PreEnrollmentQuestionnaire,
   type PreEnrollmentSubmission,
@@ -19,6 +19,7 @@ export default function InscriptionPage() {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!isLoading && user) {
@@ -27,10 +28,20 @@ export default function InscriptionPage() {
   }, [user, isLoading, router]);
 
   async function handleSubmit(data: PreEnrollmentSubmission) {
+    setError("");
     setIsSubmitting(true);
     try {
+      // Persistance horodatee (Qualiopi Ind.4) : INSERT pre_enrollment_answers
+      // (anon autorise, learner_id NULL si pas encore de compte).
+      await savePreEnrollment({
+        answers: data.answers as unknown as Json,
+        contactEmail: data.email,
+        learnerId: user?.id ?? null,
+      });
       localStorage.setItem("pre_enrollment_data", JSON.stringify(data));
       setSubmitted(true);
+    } catch {
+      setError("L'enregistrement de vos réponses a échoué. Veuillez réessayer.");
     } finally {
       setIsSubmitting(false);
     }
@@ -65,10 +76,13 @@ export default function InscriptionPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4 py-12">
       <BackgroundAtmosphere />
-      <PreEnrollmentQuestionnaire
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-      />
+      <div className="w-full max-w-2xl space-y-4">
+        {error && <Alert variant="error">{error}</Alert>}
+        <PreEnrollmentQuestionnaire
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </div>
     </div>
   );
 }

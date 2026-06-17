@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { Toast } from "@/components/ui/Toast";
 import { useAuth } from "@/hooks/useAuth";
-import { createSupportMessage } from "@/services/documents";
+import { createVideoReport } from "@/services/reports";
 
 const MIN_DESCRIPTION_LENGTH = 10;
 
@@ -30,15 +30,14 @@ export function BugReportButton() {
     setError("");
     setIsLoading(true);
     try {
-      // TODO // Supabase: INSERT dans bug_reports (userId, url, description, createdAt)
-      // TODO // Resend: notifier contact@institutlacle.fr avec les details
-      // TODO // Qualiopi Ind.31: le signalement alimente le registre des dysfonctionnements
-      await createSupportMessage(
-        user.id,
-        `${user.firstName} ${user.lastName}`,
-        "Signalement de bug",
-        `Page concernée : ${pathname}\n\n${description.trim()}`
-      );
+      // Persistance Qualiopi Ind.31 — registre des dysfonctionnements (video_reports).
+      // TODO // Brevo: notifier contact@institutlacle.fr (cable en Phase 6 integrations).
+      await createVideoReport({
+        learnerId: user.id,
+        pageUrl: pathname,
+        description: description.trim(),
+        reportType: "bug",
+      });
       setDescription("");
       setIsOpen(false);
       setShowToast(true);
