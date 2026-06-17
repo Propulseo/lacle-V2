@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { FormModal } from "@/components/ui/FormModal";
 import { Input } from "@/components/ui/Input";
-import { updateFinalExam } from "@/services/final-exams";
+import { scheduleFinalExam } from "@/services/final-exams";
 import { collectErrors, isBlank, isTodayOrFuture, type FieldErrors } from "@/lib/validation";
 import { FormValidationError } from "@/lib/errors";
 import type { FinalExam } from "@/types";
@@ -39,11 +39,8 @@ export function ScheduleFinalExamModal({ isOpen, onClose, onSuccess, exam, learn
       throw new FormValidationError();
     }
 
-    // TODO // Resend: notifier l'apprenant de la date retenue pour son examen final
-    await updateFinalExam(exam.id, {
-      status: "scheduled",
-      scheduledAt: new Date(`${date}T${time}:00`).toISOString(),
-    });
+    // TODO // Brevo: notifier l'apprenant de la date retenue (cable en Phase 6).
+    await scheduleFinalExam(exam.id, new Date(`${date}T${time}:00`).toISOString());
     onSuccess();
   }
 

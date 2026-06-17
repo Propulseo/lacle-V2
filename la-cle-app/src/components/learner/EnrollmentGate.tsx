@@ -1,8 +1,5 @@
 "use client";
 
-// TODO // Supabase: sauvegarder contract_signed, cgv_accepted dans students
-// TODO // Stripe: webhook confirme paymentStatus = 'active'
-
 import { useState, useEffect } from "react";
 import { CheckCircle, Clock } from "lucide-react";
 import { Card } from "@/components/ui/Card";
@@ -16,6 +13,7 @@ import {
   markCgvAccepted,
   type EnrollmentConditions,
 } from "@/lib/enrollment-gate";
+import { acceptEnrollmentTerms } from "@/services/enrollment";
 
 interface EnrollmentGateProps {
   onUnlocked: () => void;
@@ -49,12 +47,23 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
     }
   }, [allMet, unlocked, onUnlocked]);
 
-  function handleSignContract() {
+  async function handleSignContract() {
+    // Persistance serveur du consentement horodate (best-effort) + cache UX.
+    try {
+      await acceptEnrollmentTerms("contract");
+    } catch {
+      /* l'enrollment peut ne pas exister encore : le gate UX reste fonctionnel */
+    }
     markContractSigned();
     setConditions((prev) => ({ ...prev, contractSigned: true }));
   }
 
-  function handleAcceptCgv() {
+  async function handleAcceptCgv() {
+    try {
+      await acceptEnrollmentTerms("cgv");
+    } catch {
+      /* idem */
+    }
     markCgvAccepted();
     setConditions((prev) => ({ ...prev, cgvAccepted: true }));
   }

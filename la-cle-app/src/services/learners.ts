@@ -343,14 +343,12 @@ export async function toggleActive(id: string): Promise<Learner> {
  */
 export async function updateLearnerStatus(id: string, status: StudentStatus): Promise<Learner> {
   const supabase = createClient();
-  const formationId = await getActiveFormationId(supabase);
-  if (!formationId) throw new Error("Aucune formation active");
-
-  const { error } = await supabase
-    .from("enrollments")
-    .update({ status })
-    .eq("formation_id", formationId)
-    .eq("learner_id", id);
+  // Ecriture via RPC SECURITY DEFINER (is_staff) : enrollments n'a pas de policy
+  // UPDATE pour authenticated, un .update() direct serait silencieusement sans effet.
+  const { error } = await supabase.rpc("set_enrollment_status", {
+    p_learner: id,
+    p_status: status,
+  });
   if (error) throw error;
 
   const learner = await getLearner(id);
