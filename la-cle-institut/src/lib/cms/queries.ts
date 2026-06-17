@@ -42,7 +42,10 @@ export async function getCollectionItems<T>(
       .select("data")
       .eq("type", type)
       .order("position", { ascending: true });
-    if (error || !data || data.length === 0) return fallback;
+    // Le fallback en dur ne couvre que la panne (client absent / erreur).
+    // Une requete reussie qui renvoie 0 item publie reflete l'intention de
+    // l'admin (tout depublie) -> on retourne le vide, pas le seed.
+    if (error || !data) return fallback;
     return data.map((row) => row.data as T);
   } catch {
     return fallback;
