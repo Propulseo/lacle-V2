@@ -1,11 +1,12 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { cn } from "@/lib/utils";
+import { submitQuestionResponse } from "@/services/questions";
 import type { VideoQuestion } from "@/types";
 
 interface OverlayQuestionProps {
@@ -17,17 +18,34 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [textAnswer, setTextAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  // Verdict serveur (source de verite ; le client n'a jamais la bonne reponse).
+  const [verdict, setVerdict] = useState<{ correct: boolean; explanation: string | null } | null>(null);
   const containerRef = useFocusTrap(true);
   const questionTitleId = useId();
+  const startedAtRef = useRef(performance.now());
 
-  const isCorrect =
-    question.type === "texte"
-      ? textAnswer.toLowerCase().includes(question.correctAnswer.toLowerCase())
-      : selected?.toLowerCase() === question.correctAnswer.toLowerCase();
+  const isCorrect = verdict?.correct ?? false;
+  const serverExplanation = verdict?.explanation ?? question.explanation ?? null;
 
-  function handleSubmit() {
-    setSubmitted(true);
-    setTimeout(() => onAnswer(question.id), 2500);
+  async function handleSubmit() {
+    const answer = question.type === "texte" ? textAnswer : (selected ?? "");
+    setLoading(true);
+    setSubmitError(false);
+    try {
+      const responseTimeMs = Math.round(performance.now() - startedAtRef.current);
+      const res = await submitQuestionResponse(question.id, answer, responseTimeMs);
+      // Succes uniquement : on fige le verdict serveur, on marque repondu, on avance.
+      setVerdict(res);
+      setSubmitted(true);
+      setTimeout(() => onAnswer(question.id), 2500);
+    } catch {
+      // Echec reseau : pas de verdict trompeur, on laisse l'eleve reessayer.
+      setSubmitError(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -58,10 +76,11 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
                 disabled={submitted}
                 className={cn(
                   "w-full rounded-lg border px-4 py-3 text-left text-sm transition-colors",
-                  submitted && opt === question.correctAnswer && "border-succes bg-succes/10 text-succes",
-                  submitted && selected === opt && opt !== question.correctAnswer && "border-erreur bg-erreur/10 text-erreur",
+                  submitted && selected === opt && isCorrect && "border-succes bg-succes/10 text-succes",
+                  submitted && selected === opt && !isCorrect && "border-erreur bg-erreur/10 text-erreur",
                   !submitted && selected === opt && "border-or bg-or/10 text-or",
-                  !submitted && selected !== opt && "border-filet text-cendre hover:border-filet-accent"
+                  (!submitted && selected !== opt) && "border-filet text-cendre hover:border-filet-accent",
+                  submitted && selected !== opt && "border-filet text-pierre"
                 )}
               >
                 {opt}
@@ -80,10 +99,11 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
                 disabled={submitted}
                 className={cn(
                   "flex-1 rounded-lg border px-4 py-3 text-center text-sm capitalize transition-colors",
-                  submitted && opt === question.correctAnswer && "border-succes bg-succes/10 text-succes",
-                  submitted && selected === opt && opt !== question.correctAnswer && "border-erreur bg-erreur/10 text-erreur",
+                  submitted && selected === opt && isCorrect && "border-succes bg-succes/10 text-succes",
+                  submitted && selected === opt && !isCorrect && "border-erreur bg-erreur/10 text-erreur",
                   !submitted && selected === opt && "border-or bg-or/10 text-or",
-                  !submitted && selected !== opt && "border-filet text-cendre hover:border-filet-accent"
+                  (!submitted && selected !== opt) && "border-filet text-cendre hover:border-filet-accent",
+                  submitted && selected !== opt && "border-filet text-pierre"
                 )}
               >
                 {opt}
@@ -119,22 +139,30 @@ export function OverlayQuestion({ question, onAnswer }: OverlayQuestionProps) {
               <p className={isCorrect ? "text-succes" : "text-erreur"}>
                 {isCorrect ? "Bonne réponse !" : "Incorrect"}
               </p>
-              {question.explanation && (
-                <p className="mt-1 text-cendre">{question.explanation}</p>
+              {serverExplanation && (
+                <p className="mt-1 text-cendre">{serverExplanation}</p>
               )}
             </div>
           </div>
         )}
 
         {!submitted && (
-          <Button
-            variant="primary"
-            className="mt-4 w-full"
-            onClick={handleSubmit}
-            disabled={question.type === "texte" ? !textAnswer : !selected}
-          >
-            Valider
-          </Button>
+          <>
+            {submitError && (
+              <p role="alert" aria-live="assertive" className="mt-3 text-sm text-erreur">
+                L&apos;enregistrement a échoué. Vérifiez votre connexion et réessayez.
+              </p>
+            )}
+            <Button
+              variant="primary"
+              className="mt-4 w-full"
+              onClick={handleSubmit}
+              isLoading={loading}
+              disabled={question.type === "texte" ? !textAnswer : !selected}
+            >
+              {submitError ? "Réessayer" : "Valider"}
+            </Button>
+          </>
         )}
       </div>
     </motion.div>
