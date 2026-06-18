@@ -87,7 +87,7 @@ export function AdminSidebar() {
         {/* Logo */}
         <div className="flex h-16 items-center justify-between border-b border-filet px-4">
           {!collapsed && (
-            <Link href="/admin" className="font-serif text-xl text-or">
+            <Link href={ROUTES.admin.dashboard} className="font-serif text-xl text-or">
               {SITE.name}
             </Link>
           )}

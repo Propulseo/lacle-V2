@@ -38,7 +38,7 @@ export function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div className="flex flex-col items-center py-16 text-center">
+      <div role="status" aria-live="polite" className="flex flex-col items-center py-16 text-center">
         <div className="mb-6 text-bronze">
           <svg
             viewBox="0 0 24 24"
@@ -146,11 +146,9 @@ export function ContactForm() {
           )}
         </button>
 
-        {status === "error" && (
-          <p className="text-xs text-erreur/80">
-            Une erreur est survenue. Veuillez réessayer.
-          </p>
-        )}
+        <p className="text-xs text-erreur/80" role="alert" aria-live="assertive">
+          {status === "error" ? "Une erreur est survenue. Veuillez réessayer." : ""}
+        </p>
       </div>
     </form>
   );

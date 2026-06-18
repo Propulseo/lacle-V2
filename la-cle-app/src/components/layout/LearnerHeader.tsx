@@ -18,7 +18,7 @@ export function LearnerHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-filet bg-nuit-profond/80 px-4 backdrop-blur-sm sm:px-6">
-      <Link href="/espace" className="font-serif text-xl text-or">
+      <Link href={ROUTES.espace.dashboard} className="font-serif text-xl text-or">
         {SITE.name}
       </Link>
 

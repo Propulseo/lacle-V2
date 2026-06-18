@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
 import { Button } from "@/components/ui/Button";
-import { SITE } from "@/lib/constants";
+import { SITE, ROUTES } from "@/lib/constants";
 
 export default function HomePage() {
   const { user, isLoading } = useAuth();
@@ -33,7 +33,7 @@ export default function HomePage() {
           <Button
             variant="primary"
             className="w-full"
-            onClick={() => router.push("/login")}
+            onClick={() => router.push(ROUTES.login)}
           >
             Se connecter
           </Button>
@@ -41,7 +41,7 @@ export default function HomePage() {
           <p className="text-xs text-cendre">
             Pas encore inscrit ?{" "}
             <Link
-              href="/inscription"
+              href={ROUTES.inscription}
               className="text-or underline underline-offset-2 hover:text-or/80"
             >
               Commencer ici

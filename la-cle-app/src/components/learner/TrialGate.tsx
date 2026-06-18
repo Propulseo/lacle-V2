@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { ROUTES } from "@/lib/constants";
 
 /**
  * Gate affiche en mode Decouverte a la place du bouton "Passer l'examen".
@@ -32,7 +33,7 @@ export function TrialGate() {
         <div className="flex flex-col items-center gap-2">
           <Button
             variant="primary"
-            onClick={() => router.push("/inscription")}
+            onClick={() => router.push(ROUTES.inscription)}
           >
             M&apos;inscrire
           </Button>

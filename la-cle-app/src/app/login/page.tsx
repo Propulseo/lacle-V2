@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
 import { DEMO_ACCOUNTS } from "@/services/auth";
-import { SITE } from "@/lib/constants";
+import { SITE, ROUTES } from "@/lib/constants";
 import { isValidEmail } from "@/lib/validation";
 
 export default function LearnerLoginPage() {
@@ -113,7 +113,7 @@ export default function LearnerLoginPage() {
 
         <p className="mt-3 text-center text-xs text-cendre">
           Pas encore inscrit ?{" "}
-          <Link href="/inscription" className="text-or underline underline-offset-2 hover:text-or/80">
+          <Link href={ROUTES.inscription} className="text-or underline underline-offset-2 hover:text-or/80">
             Commencer ici
           </Link>
         </p>

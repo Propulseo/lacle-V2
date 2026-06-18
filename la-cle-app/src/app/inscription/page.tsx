@@ -8,6 +8,7 @@ import { BackgroundAtmosphere } from "@/components/layout/BackgroundAtmosphere";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { savePreEnrollment } from "@/services/learner-journey";
+import { ROUTES } from "@/lib/constants";
 import type { Json } from "@/types/database.types";
 import {
   PreEnrollmentQuestionnaire,
@@ -64,7 +65,7 @@ export default function InscriptionPage() {
           <Button
             variant="primary"
             className="mt-6 w-full"
-            onClick={() => router.push("/login")}
+            onClick={() => router.push(ROUTES.login)}
           >
             Créer mon compte
           </Button>
