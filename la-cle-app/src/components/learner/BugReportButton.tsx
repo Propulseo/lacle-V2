@@ -11,6 +11,7 @@ import { Alert } from "@/components/ui/Alert";
 import { Toast } from "@/components/ui/Toast";
 import { useAuth } from "@/hooks/useAuth";
 import { createVideoReport } from "@/services/reports";
+import { notifyBugReportAction } from "@/app/_actions/notifications";
 
 const MIN_DESCRIPTION_LENGTH = 10;
 
@@ -31,13 +32,19 @@ export function BugReportButton() {
     setIsLoading(true);
     try {
       // Persistance Qualiopi Ind.31 — registre des dysfonctionnements (video_reports).
-      // TODO // Brevo: notifier contact@institutlacle.fr (cable en Phase 6 integrations).
+      const desc = description.trim();
       await createVideoReport({
         learnerId: user.id,
         pageUrl: pathname,
-        description: description.trim(),
+        description: desc,
         reportType: "bug",
       });
+      // Notification staff (no-op gracieux si email non configure ; n'echoue pas le flux).
+      try {
+        await notifyBugReportAction(pathname, desc);
+      } catch {
+        // Le signalement est persiste : une notif email manquee ne doit pas bloquer.
+      }
       setDescription("");
       setIsOpen(false);
       setShowToast(true);

@@ -15,8 +15,10 @@ import { ProgressRing } from "@/components/ui/ProgressRing";
 import { Toggle } from "@/components/ui/Toggle";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { LearnerEditModal } from "@/components/admin/LearnerEditModal";
+import { Toast } from "@/components/ui/Toast";
 import { getLearner, toggleActive } from "@/services/learners";
 import { getDocuments } from "@/services/documents";
+import { certifyLearnerAction } from "@/app/admin/(dashboard)/apprenants/actions";
 import { STATUS_CONFIG } from "@/lib/status";
 import { formatDate } from "@/lib/utils";
 import { NotFoundError } from "@/lib/errors";
@@ -25,6 +27,8 @@ export default function ApprenantDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState("progression");
   const [editOpen, setEditOpen] = useState(false);
+  const [certifying, setCertifying] = useState(false);
+  const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null);
 
   const pageState = useAsyncData(async () => {
     const [learner, documents] = await Promise.all([
@@ -39,6 +43,20 @@ export default function ApprenantDetailPage() {
     if (!pageState.data?.learner) return;
     await toggleActive(pageState.data.learner.id);
     pageState.refetch();
+  }
+
+  async function handleCertify() {
+    if (!pageState.data?.learner) return;
+    setCertifying(true);
+    try {
+      await certifyLearnerAction(pageState.data.learner.id);
+      setToast({ message: "Apprenant certifié — attestation déposée au coffre.", variant: "success" });
+      pageState.refetch();
+    } catch {
+      setToast({ message: "La certification a échoué. Vérifiez que l'examen final est réussi.", variant: "error" });
+    } finally {
+      setCertifying(false);
+    }
   }
 
   return (
@@ -135,13 +153,21 @@ export default function ApprenantDetailPage() {
               {activeTab === "examens" && (
                 <Card>
                   <h3 className="mb-4 font-serif text-lg text-ivoire">Examen final</h3>
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
                     <Badge variant={prog.finalExamStatus === "passed" ? "success" : prog.finalExamStatus === "requested" ? "warning" : "default"}>
                       {prog.finalExamStatus === "not_started" ? "Non démarré" :
                        prog.finalExamStatus === "requested" ? "Demandé" :
                        prog.finalExamStatus === "scheduled" ? "Planifié" :
                        prog.finalExamStatus === "passed" ? "Réussi" : "Échoué"}
                     </Badge>
+                    {prog.finalExamStatus === "passed" && learner.status !== "certifie" && (
+                      <Button variant="primary" size="sm" isLoading={certifying} onClick={handleCertify}>
+                        Certifier l'apprenant
+                      </Button>
+                    )}
+                    {learner.status === "certifie" && (
+                      <span className="text-sm text-cendre">Attestation délivrée.</span>
+                    )}
                   </div>
                 </Card>
               )}
@@ -172,6 +198,13 @@ export default function ApprenantDetailPage() {
               onClose={() => setEditOpen(false)}
               onSuccess={() => { setEditOpen(false); pageState.refetch(); }}
               learner={learner}
+            />
+
+            <Toast
+              message={toast?.message ?? ""}
+              isVisible={toast !== null}
+              variant={toast?.variant ?? "success"}
+              onClose={() => setToast(null)}
             />
           </AdminShell>
         );

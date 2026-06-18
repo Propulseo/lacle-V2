@@ -7,6 +7,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getActiveFormationId } from "@/lib/supabase/formation";
+import { sendEmail, emailTemplates } from "@/lib/email";
+import { ROUTES } from "@/lib/constants";
 import { randomBytes } from "node:crypto";
 
 export interface CreateLearnerInput {
@@ -92,6 +94,37 @@ export async function createLearnerAction(
     );
   }
 
-  // TODO // Brevo: envoyer l'email de bienvenue avec le mot de passe temporaire.
+  // 5. Email de bienvenue + mot de passe temporaire (no-op gracieux si Brevo non configure).
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+  const loginUrl = `${siteUrl}${ROUTES.login}`;
+  const tpl = emailTemplates.welcomeLearner(firstName, email, tempPassword, loginUrl);
+  await sendEmail({ to: email, subject: tpl.subject, html: tpl.html });
+
   return { learnerId, tempPassword };
+}
+
+/**
+ * Certifie un apprenant via la RPC `certify_learner` (qui verifie is_staff cote DB et
+ * que l'examen final est reussi, pose status='certifie' + emet l'attestation), puis
+ * envoie l'email de felicitations (no-op gracieux). La RPC est la source de verite.
+ *
+ * @param learnerId - apprenant a certifier
+ */
+export async function certifyLearnerAction(learnerId: string): Promise<void> {
+  if (!learnerId) throw new Error("Apprenant requis.");
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("certify_learner", { p_learner: learnerId });
+  if (error) throw new Error(error.message);
+
+  // Email de certification (n'echoue pas l'action si l'envoi rate).
+  const admin = createAdminClient();
+  const { data: learner } = await admin
+    .from("profiles")
+    .select("first_name, email")
+    .eq("id", learnerId)
+    .single();
+  if (learner?.email) {
+    const t = emailTemplates.certificationGranted(learner.first_name ?? "");
+    await sendEmail({ to: learner.email, subject: t.subject, html: t.html });
+  }
 }
