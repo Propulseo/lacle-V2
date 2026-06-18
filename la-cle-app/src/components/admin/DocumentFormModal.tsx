@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { FormModal } from "@/components/ui/FormModal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { createDocument } from "@/services/documents";
+import { FileUploadZone } from "@/components/ui/FileUploadZone";
 import { getLearners } from "@/services/learners";
+import { uploadLearnerDocumentAction } from "@/app/admin/(dashboard)/documents/actions";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { collectErrors, isBlank, type FieldErrors } from "@/lib/validation";
 import { FormValidationError } from "@/lib/errors";
@@ -21,16 +22,17 @@ const emptyForm = {
   learnerId: "",
   type: "facture" as DocumentType,
   title: "",
-  fileName: "",
 };
 
 export function DocumentFormModal({ isOpen, onClose, onSuccess }: DocumentFormModalProps) {
   const [form, setForm] = useState(emptyForm);
+  const [file, setFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
   const learnersState = useAsyncData(() => getLearners(), []);
 
   useEffect(() => {
     setForm(emptyForm);
+    setFile(null);
     setErrors({});
   }, [isOpen]);
 
@@ -48,25 +50,20 @@ export function DocumentFormModal({ isOpen, onClose, onSuccess }: DocumentFormMo
     const errs = collectErrors([
       ["learnerId", isBlank(form.learnerId), "Veuillez choisir un apprenant."],
       ["title", isBlank(form.title), "Veuillez renseigner un titre."],
-      ["fileName", isBlank(form.fileName), "Veuillez renseigner le nom du fichier."],
+      ["file", file === null, "Veuillez joindre un fichier."],
     ]);
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       throw new FormValidationError();
     }
 
-    const learner = learnersState.data?.find((l) => l.id === form.learnerId);
-
-    // TODO // Supabase: upload du fichier dans Storage + INSERT dans documents (fileSize reel)
-    await createDocument({
-      learnerId: form.learnerId,
-      learnerName: learner ? `${learner.firstName} ${learner.lastName}` : "",
-      type: form.type,
-      title: form.title.trim(),
-      fileName: form.fileName.trim(),
-      fileSize: 0,
-      uploadedBy: "admin",
-    });
+    // Upload reel dans Storage (bucket prive user-uploads) + INSERT, via Server Action staff.
+    const fd = new FormData();
+    fd.set("learnerId", form.learnerId);
+    fd.set("type", form.type);
+    fd.set("title", form.title.trim());
+    fd.set("file", file as File);
+    await uploadLearnerDocumentAction(fd);
     onSuccess();
   }
 
@@ -110,14 +107,22 @@ export function DocumentFormModal({ isOpen, onClose, onSuccess }: DocumentFormMo
         onChange={(e) => set("title", e.target.value)}
         placeholder="Ex: Facture — Formation PNL Praticien"
       />
-      <Input
-        label="Nom du fichier"
-        required
-        error={errors.fileName}
-        value={form.fileName}
-        onChange={(e) => set("fileName", e.target.value)}
-        placeholder="Ex: facture-2026-001.pdf"
-      />
+      <div>
+        <FileUploadZone
+          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+          label="Glissez le document ici ou cliquez pour parcourir"
+          onFiles={(files) => {
+            setFile(files[0] ?? null);
+            setErrors((prev) => {
+              if (!("file" in prev)) return prev;
+              const next = { ...prev };
+              delete next.file;
+              return next;
+            });
+          }}
+        />
+        {errors.file && <p className="mt-1 text-xs text-erreur">{errors.file}</p>}
+      </div>
     </FormModal>
   );
 }
