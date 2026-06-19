@@ -1,46 +1,9 @@
 "use client";
 
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import type { PnlModule } from "@/lib/pnl-content";
 
-const MODULES = [
-  {
-    title: "Les fondations de la PNL",
-    description:
-      "Origines, principes fondateurs et cadre épistémologique de la programmation neuro-linguistique.",
-  },
-  {
-    title: "Systèmes de représentation",
-    description:
-      "Comprendre les modalités sensorielles et leur influence sur la perception et la communication.",
-  },
-  {
-    title: "Le méta-modèle",
-    description:
-      "Structure du langage et outils de précision linguistique pour une compréhension approfondie.",
-  },
-  {
-    title: "Les ancrages",
-    description:
-      "Mécanismes d'association stimulus-réponse et leur rôle dans les processus cognitifs.",
-  },
-  {
-    title: "Les sous-modalités",
-    description:
-      "Exploration des distinctions fines au sein des systèmes de représentation sensorielle.",
-  },
-  {
-    title: "Les stratégies mentales",
-    description:
-      "Modélisation des séquences cognitives et compréhension des processus décisionnels.",
-  },
-  {
-    title: "Intégration et synthèse",
-    description:
-      "Articulation de l'ensemble des concepts dans un cadre cohérent de compréhension.",
-  },
-];
-
-export function PNLModules() {
+export function PNLModules({ modules }: { modules: PnlModule[] }) {
   return (
     <div>
       <div className="mb-16 flex items-end justify-between">
@@ -64,7 +27,7 @@ export function PNLModules() {
         />
 
         <div className="space-y-0">
-          {MODULES.map((mod, i) => (
+          {modules.map((mod, i) => (
             <ScrollReveal key={i} delay={i * 0.06}>
               <div className="group relative flex gap-6 py-6 md:gap-10 md:py-8">
                 {/* Node */}

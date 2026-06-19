@@ -7,6 +7,7 @@ import { useAsyncData } from "@/hooks/useAsyncData";
 import { useExamLogic } from "@/hooks/useExamLogic";
 import { LearnerShell } from "@/components/layout/LearnerShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
+import { Alert } from "@/components/ui/Alert";
 import { ExamStartView } from "@/components/exam/ExamStartView";
 import { ExamQuizView } from "@/components/exam/ExamQuizView";
 import { ExamResultView } from "@/components/exam/ExamResultView";
@@ -32,6 +33,8 @@ export default function ExamenModulairePage() {
   const [pastAttempts, setPastAttempts] = useState<LegacyExamAttempt[]>([]);
   const [attemptsLoaded, setAttemptsLoaded] = useState(false);
   const [enrollmentOk, setEnrollmentOk] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const pageState = useAsyncData(async () => {
     const [module_, exam, learner] = await Promise.all([
@@ -54,8 +57,8 @@ export default function ExamenModulairePage() {
 
   const examStatus = useExamLogic(pastAttempts, "module");
 
-  function handleNext() {
-    if (!selected) return;
+  async function handleNext() {
+    if (!selected || submitting) return;
     const { exam: exam_ } = pageState.data!;
     const question = exam_.questions[currentQ];
     const newAnswers = { ...answers, [question.id]: selected };
@@ -64,11 +67,22 @@ export default function ExamenModulairePage() {
 
     if (currentQ < exam_.questions.length - 1) {
       setCurrentQ(currentQ + 1);
-    } else {
-      submitAttempt(exam_.id, user!.id, newAnswers, "module").then((attempt) => {
-        setResult(attempt);
-        setPastAttempts((prev) => [...prev, attempt]);
-      });
+      return;
+    }
+
+    // Derniere question : soumission serveur (RPC submit_exam_attempt). Le serveur
+    // applique les lois de tentatives et peut refuser -> on affiche son message.
+    setSubmitError("");
+    setSubmitting(true);
+    try {
+      const attempt = await submitAttempt(exam_.id, user!.id, newAnswers, "module");
+      setResult(attempt);
+      setPastAttempts((prev) => [...prev, attempt]);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : (e as { message?: string })?.message;
+      setSubmitError(msg || "La soumission de l'examen a échoué. Veuillez réessayer.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -112,16 +126,19 @@ export default function ExamenModulairePage() {
           }
 
           return (
-            <ExamQuizView
-              moduleTitle={module_.title}
-              question={exam.questions[currentQ]}
-              currentIndex={currentQ}
-              totalQuestions={exam.questions.length}
-              selected={selected}
-              onSelect={setSelected}
-              onNext={handleNext}
-              isLast={currentQ === exam.questions.length - 1}
-            />
+            <div className="space-y-4">
+              {submitError && <Alert variant="error">{submitError}</Alert>}
+              <ExamQuizView
+                moduleTitle={module_.title}
+                question={exam.questions[currentQ]}
+                currentIndex={currentQ}
+                totalQuestions={exam.questions.length}
+                selected={selected}
+                onSelect={setSelected}
+                onNext={handleNext}
+                isLast={currentQ === exam.questions.length - 1}
+              />
+            </div>
           );
         }}
       </AsyncBoundary>

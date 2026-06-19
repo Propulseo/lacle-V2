@@ -324,3 +324,30 @@ export async function markVideoCompleted(videoId: string, _learnerId: string): P
   });
   if (error) throw error;
 }
+
+/**
+ * Enregistre la position de lecture (sans completer) — appel periodique facultatif.
+ */
+export async function recordVideoPosition(videoId: string, positionSeconds: number): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase.rpc("record_video_progress", {
+    p_video_id: videoId,
+    p_position: Math.max(0, Math.floor(positionSeconds)),
+    p_completed: false,
+  });
+  if (error) throw error;
+}
+
+/**
+ * Ids des videos completees par l'apprenant courant (RLS self sur video_progress).
+ * Source de verite pour la progression, les titres masques et le coffre.
+ */
+export async function getCompletedVideoIds(): Promise<Set<string>> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("video_progress")
+    .select("video_id")
+    .eq("completed", true);
+  if (error) throw error;
+  return new Set((data ?? []).map((r) => r.video_id));
+}

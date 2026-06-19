@@ -22,7 +22,11 @@ import {
 } from "@/lib/positioning";
 
 interface PositioningTestProps {
-  onComplete: (result: PositioningResult) => void | Promise<void>;
+  /** Recoit le resultat calcule + les reponses brutes (pour la persistance Ind.8). */
+  onComplete: (
+    result: PositioningResult,
+    answers: Record<string, string>
+  ) => void | Promise<void>;
   className?: string;
 }
 
@@ -65,7 +69,7 @@ export function PositioningTest({ onComplete, className }: PositioningTestProps)
     setIsSubmitting(true);
     try {
       markPositioningCompleted(result);
-      await onComplete(result);
+      await onComplete(result, answers);
     } finally {
       setIsSubmitting(false);
     }

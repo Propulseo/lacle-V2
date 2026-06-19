@@ -1,6 +1,3 @@
-// Types generes depuis Supabase (projet La cle: pxohzbjijyklgoznhibf).
-// NE PAS editer a la main : regenerer via le MCP supabase / supabase gen types.
-
 export type Json =
   | string
   | number
@@ -2553,6 +2550,8 @@ export type Database = {
       }
     }
     Functions: {
+      accept_enrollment_terms: { Args: { p_kind: string }; Returns: Json }
+      certify_learner: { Args: { p_learner: string }; Returns: Json }
       complete_review: {
         Args: {
           p_answer: string
@@ -2576,6 +2575,22 @@ export type Database = {
       }
       reorder_course_item: {
         Args: { p_item_id: string; p_new_position: number }
+        Returns: Json
+      }
+      request_final_exam: { Args: never; Returns: Json }
+      schedule_final_exam: {
+        Args: { p_progress_id: string; p_scheduled_at: string }
+        Returns: Json
+      }
+      set_enrollment_status: {
+        Args: {
+          p_learner: string
+          p_status: Database["public"]["Enums"]["student_status"]
+        }
+        Returns: Json
+      }
+      sign_vault_document: {
+        Args: { p_meta?: Json; p_vault_document_id: string }
         Returns: Json
       }
       submit_exam_attempt: {

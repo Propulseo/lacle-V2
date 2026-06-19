@@ -42,6 +42,9 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
 
+      // Zero `any` (regle absolue du projet) — aligne sur la convention du monorepo.
+      "@typescript-eslint/no-explicit-any": "error",
+
       // Turn off base rule in favor of TS version
       "no-unused-vars": "off",
     },

@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { FormModal } from "@/components/ui/FormModal";
 import { Input } from "@/components/ui/Input";
-import { updateFinalExam } from "@/services/final-exams";
+import { scheduleFinalExam } from "@/services/final-exams";
+import { notifyFinalExamScheduledAction } from "@/app/_actions/notifications";
 import { collectErrors, isBlank, isTodayOrFuture, type FieldErrors } from "@/lib/validation";
 import { FormValidationError } from "@/lib/errors";
 import type { FinalExam } from "@/types";
@@ -39,11 +40,14 @@ export function ScheduleFinalExamModal({ isOpen, onClose, onSuccess, exam, learn
       throw new FormValidationError();
     }
 
-    // TODO // Resend: notifier l'apprenant de la date retenue pour son examen final
-    await updateFinalExam(exam.id, {
-      status: "scheduled",
-      scheduledAt: new Date(`${date}T${time}:00`).toISOString(),
-    });
+    const whenIso = new Date(`${date}T${time}:00`).toISOString();
+    await scheduleFinalExam(exam.id, whenIso);
+    // Notifier l'apprenant (no-op gracieux si email non configure ; n'echoue pas le flux).
+    try {
+      await notifyFinalExamScheduledAction(exam.learnerId, whenIso);
+    } catch {
+      // La planification est enregistree : un email manque ne doit pas la bloquer.
+    }
     onSuccess();
   }
 

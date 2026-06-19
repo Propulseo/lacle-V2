@@ -12,23 +12,25 @@ import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getModulesForLearner } from "@/services/modules";
-import { hasCompletedOnboarding } from "@/lib/onboarding";
+import { getJourneyStatus } from "@/services/learner-journey";
 import { formatDuration, cn } from "@/lib/utils";
 import { ROUTES } from "@/lib/constants";
-
-// TODO // Supabase: remplacer le flag localStorage par
-// une query sur onboarding_results (userId) pour eviter
-// la triche cote client
 
 export default function ParcoursPage() {
   const { user } = useAuth();
   const router = useRouter();
 
+  // Garde-fou onboarding lu en base (source de verite, non falsifiable localStorage).
+  const journeyState = useAsyncData(
+    () => (user ? getJourneyStatus(user.id) : Promise.resolve(null)),
+    [user?.id]
+  );
+
   useEffect(() => {
-    if (!hasCompletedOnboarding()) {
+    if (journeyState.data && !journeyState.data.onboardingDone) {
       router.replace("/espace/onboarding");
     }
-  }, [router]);
+  }, [journeyState.data, router]);
 
   const modulesState = useAsyncData(
     () => getModulesForLearner(user!.id),

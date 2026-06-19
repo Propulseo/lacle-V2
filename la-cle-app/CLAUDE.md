@@ -20,17 +20,26 @@
 - **Next.js 16 / React 19 / TypeScript strict**
 - **Tailwind CSS v4** — tokens CSS dans `globals.css` via `@theme inline` (pas de tailwind.config)
 - **framer-motion** pour les animations
-- **Supabase** — pas encore connecte. Toutes les donnees sont en mock data pour l'instant.
-- **Resend** — prevu pour les emails transactionnels (pas encore branche)
-- **Stripe** — prevu pour les paiements (pas encore branche)
-- **Vercel** — hebergement
+- **Supabase** — CONNECTE (projet `pxohzbjijyklgoznhibf`). Auth reelle, ~23 migrations
+  appliquees, RLS + RPC + vues + Storage. Les services (`src/services/`) parlent a Supabase
+  via 3 clients : `lib/supabase/client.ts` (navigateur, anon+RLS), `server.ts` (Server
+  Actions/Route Handlers, cookies+RLS), `admin.ts` (`service_role`, SERVEUR UNIQUEMENT —
+  bypasse la RLS, pour webhooks/uploads/provisioning).
+- **Brevo** — emails transactionnels via API REST (`src/lib/email/`). No-op gracieux si
+  `BREVO_API_KEY` absente. (PAS Resend.)
+- **Stripe** — paiements (`src/lib/stripe/` + route `app/api/stripe/webhook/route.ts`).
+  Checkout + webhook code-complets ; activables via `STRIPE_*`. No-op gracieux sans cle.
+- **Chatbot pedagogique** — ECARTE du perimetre (decision client). Ne pas implementer.
+- **Vercel / Coolify** — hebergement. `basePath: "/acces-espace"`.
 
 ### Regles absolues du projet
 - Max **250 lignes par fichier** — decoupe en sous-composants si depasse
 - Zero `any` TypeScript — utiliser les interfaces de `src/types/lms.ts`
 - Zero `console.log` en production
-- Tous les TODO Supabase/Stripe/Resend sont a commenter clairement dans le code (voir section 7)
-- Les mock data sont dans `src/data/mock/` — ne jamais importer directement dans les composants, passer par les services (`src/services/`)
+- Tous les TODO Supabase/Stripe/Brevo sont a commenter clairement dans le code (voir section 7)
+- Les services (`src/services/`) sont la SEULE porte vers les donnees ; les composants ne
+  touchent jamais Supabase en direct. Reste un seul mock : `src/data/mock/demo-accounts.ts`
+  (hints du formulaire de login, a retirer en prod). Les anciens mocks ont ete supprimes.
 
 ---
 
@@ -249,6 +258,13 @@ Afficher une invitation discrete a s'inscrire.
 
 ## 6. ETAT D'AVANCEMENT PAR CHANTIER
 
+> ⚠️ **Tableau historique — largement obsolete.** Depuis la migration Supabase et le
+> chantier "100% operationnel", la majorite de ces chantiers sont LIVRES (routes
+> `/inscription`, `/espace/onboarding`, positionnement, gating cours 7/8, coffre 5
+> categories + signature + download URL signee, examens + certification, satisfaction
+> Ind.30, signalements Ind.31, engagement Ind.12, moyens techniques Ind.17, email Brevo,
+> paiement Stripe). **Se fier au code, pas a ce tableau.**
+
 | Chantier | Statut | Notes |
 |----------|--------|-------|
 | Types TypeScript unifies | Partiel | Deux systemes — `lms.ts` vs `types/*.ts`. Les pages importent l'ancien. |
@@ -279,7 +295,7 @@ Chaque fois qu'une feature touche a une de ces integrations, ajouter le commenta
 ```typescript
 // TODO // Supabase: [description de la query/table concernee]
 // TODO // Stripe: [description du webhook ou action concernee]
-// TODO // Resend: [description de l'email a envoyer]
+// TODO // Brevo: [description de l'email a envoyer]
 // TODO // Qualiopi Ind.X: [ce que cet export prouve pour l'audit]
 ```
 

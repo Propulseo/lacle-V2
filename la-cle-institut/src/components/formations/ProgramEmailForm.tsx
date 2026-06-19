@@ -36,7 +36,7 @@ export function ProgramEmailForm() {
 
   if (status === "sent") {
     return (
-      <p className="text-sm leading-relaxed text-cendre">
+      <p role="status" aria-live="polite" className="text-sm leading-relaxed text-cendre">
         Merci. Votre demande est bien enregistrée à l&apos;adresse{" "}
         <span className="text-ivoire">{email}</span>. Vous recevrez le
         programme de formation par e-mail très prochainement.
@@ -72,11 +72,9 @@ export function ProgramEmailForm() {
         {status === "sending" ? "Envoi…" : "Recevoir le programme"}
       </button>
 
-      {status === "error" && (
-        <p className="text-xs text-erreur/80 sm:self-center">
-          Une erreur est survenue. Veuillez r&eacute;essayer.
-        </p>
-      )}
+      <p className="text-xs text-erreur/80 sm:self-center" role="alert" aria-live="assertive">
+        {status === "error" ? "Une erreur est survenue. Veuillez réessayer." : ""}
+      </p>
     </form>
   );
 }

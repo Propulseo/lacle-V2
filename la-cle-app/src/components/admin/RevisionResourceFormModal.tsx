@@ -5,7 +5,9 @@ import { FormModal } from "@/components/ui/FormModal";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Select } from "@/components/ui/Select";
+import { FileUploadZone } from "@/components/ui/FileUploadZone";
 import { createRevisionResource } from "@/services/revision";
+import { uploadRevisionFileAction } from "@/app/admin/(dashboard)/contenus/coffre/actions";
 import { collectErrors, isBlank, type FieldErrors } from "@/lib/validation";
 import { FormValidationError } from "@/lib/errors";
 import type { RevisionResourceType } from "@/types";
@@ -26,12 +28,18 @@ const emptyForm = {
 
 export function RevisionResourceFormModal({ isOpen, onClose, onSuccess }: RevisionResourceFormModalProps) {
   const [form, setForm] = useState(emptyForm);
+  const [file, setFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
 
   useEffect(() => {
     setForm(emptyForm);
+    setFile(null);
     setErrors({});
   }, [isOpen]);
+
+  // Pour une fiche PDF, le contenu peut venir d'un fichier uploade OU d'une URL/texte.
+  const isPdf = form.type === "pdf";
+  const contentProvided = !isBlank(form.content) || (isPdf && file !== null);
 
   function set(field: keyof typeof form, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -47,19 +55,27 @@ export function RevisionResourceFormModal({ isOpen, onClose, onSuccess }: Revisi
     const errs = collectErrors([
       ["title", isBlank(form.title), "Veuillez renseigner un titre."],
       ["description", isBlank(form.description), "Veuillez renseigner une description."],
-      ["content", isBlank(form.content), "Veuillez renseigner le contenu de la ressource."],
+      ["content", !contentProvided, isPdf ? "Joignez un fichier ou renseignez une URL." : "Veuillez renseigner le contenu de la ressource."],
     ]);
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       throw new FormValidationError();
     }
 
-    // TODO // Supabase: INSERT dans revision_resources + upload Storage pour les PDF
+    // Fiche PDF avec fichier joint : upload Storage (bucket partage) -> chemin dans content.
+    let content = form.content.trim();
+    if (isPdf && file) {
+      const fd = new FormData();
+      fd.set("file", file);
+      const { path } = await uploadRevisionFileAction(fd);
+      content = path;
+    }
+
     await createRevisionResource({
       type: form.type,
       title: form.title.trim(),
       description: form.description.trim(),
-      content: form.content.trim(),
+      content,
       answer: form.type === "question" && !isBlank(form.answer) ? form.answer.trim() : undefined,
       moduleId: null,
     });
@@ -101,9 +117,26 @@ export function RevisionResourceFormModal({ isOpen, onClose, onSuccess }: Revisi
         placeholder="Ce que l'apprenant trouvera dans cette ressource..."
         rows={2}
       />
+      {isPdf && (
+        <div>
+          <FileUploadZone
+            accept=".pdf"
+            label="Glissez la fiche PDF ici (ou renseignez une URL ci-dessous)"
+            onFiles={(files) => {
+              setFile(files[0] ?? null);
+              setErrors((prev) => {
+                if (!("content" in prev)) return prev;
+                const next = { ...prev };
+                delete next.content;
+                return next;
+              });
+            }}
+          />
+        </div>
+      )}
       <Textarea
-        label={form.type === "question" ? "Question" : "Contenu (texte ou URL)"}
-        required
+        label={form.type === "question" ? "Question" : isPdf ? "URL (si pas de fichier joint)" : "Contenu (texte ou URL)"}
+        required={!isPdf}
         error={errors.content}
         value={form.content}
         onChange={(e) => set("content", e.target.value)}

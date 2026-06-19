@@ -1,8 +1,5 @@
 "use client";
 
-// TODO // Supabase: sauvegarder contract_signed, cgv_accepted dans students
-// TODO // Stripe: webhook confirme paymentStatus = 'active'
-
 import { useState, useEffect } from "react";
 import { CheckCircle, Clock } from "lucide-react";
 import { Card } from "@/components/ui/Card";
@@ -16,6 +13,8 @@ import {
   markCgvAccepted,
   type EnrollmentConditions,
 } from "@/lib/enrollment-gate";
+import { acceptEnrollmentTerms } from "@/services/enrollment";
+import { createCheckoutSession } from "@/lib/stripe/checkout";
 
 interface EnrollmentGateProps {
   onUnlocked: () => void;
@@ -30,6 +29,8 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
   const [unlocked, setUnlocked] = useState(false);
   const [contractNotice, setContractNotice] = useState(false);
   const [cgvNotice, setCgvNotice] = useState(false);
+  const [payLoading, setPayLoading] = useState(false);
+  const [payNotice, setPayNotice] = useState<string | null>(null);
 
   const DOC_NOTICE =
     "Ce document sera disponible au téléchargement une fois votre espace configuré. Pour toute question, contactez contact@institutlacle.fr.";
@@ -49,14 +50,45 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
     }
   }, [allMet, unlocked, onUnlocked]);
 
-  function handleSignContract() {
+  async function handleSignContract() {
+    // Persistance serveur du consentement horodate (best-effort) + cache UX.
+    try {
+      await acceptEnrollmentTerms("contract");
+    } catch {
+      /* l'enrollment peut ne pas exister encore : le gate UX reste fonctionnel */
+    }
     markContractSigned();
     setConditions((prev) => ({ ...prev, contractSigned: true }));
   }
 
-  function handleAcceptCgv() {
+  async function handleAcceptCgv() {
+    try {
+      await acceptEnrollmentTerms("cgv");
+    } catch {
+      /* idem */
+    }
     markCgvAccepted();
     setConditions((prev) => ({ ...prev, cgvAccepted: true }));
+  }
+
+  async function handlePay() {
+    setPayLoading(true);
+    setPayNotice(null);
+    try {
+      const res = await createCheckoutSession();
+      if (res.configured && res.url) {
+        window.location.href = res.url;
+        return;
+      }
+      // Paiement non configure : fallback prise de contact.
+      setPayNotice(
+        "Le paiement en ligne sera bientôt disponible. Contactez contact@institutlacle.fr pour finaliser votre inscription.",
+      );
+    } catch {
+      setPayNotice("Le paiement n'a pas pu être initialisé. Réessayez ou contactez-nous.");
+    } finally {
+      setPayLoading(false);
+    }
   }
 
   if (unlocked) {
@@ -165,11 +197,22 @@ export function EnrollmentGate({ onUnlocked }: EnrollmentGateProps) {
             label="Paiement confirmé"
           >
             {!conditions.paymentActive && (
-              <p className="mt-2 text-sm text-pierre">
-                En attente de confirmation de paiement
-              </p>
+              <div className="mt-3 space-y-3">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  isLoading={payLoading}
+                  onClick={handlePay}
+                >
+                  Procéder au paiement
+                </Button>
+                {payNotice && <Alert variant="info">{payNotice}</Alert>}
+                <p className="text-xs text-pierre">
+                  Le paiement est confirmé automatiquement ; l&apos;accès se débloque dès
+                  réception.
+                </p>
+              </div>
             )}
-            {/* TODO // Stripe: webhook de confirmation de paiement */}
           </ConditionRow>
         </ScrollReveal>
       </div>

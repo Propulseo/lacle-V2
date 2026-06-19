@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { FileText, Download } from "lucide-react";
+import { useMemo, useState } from "react";
+import { FileText } from "lucide-react";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { LearnerShell } from "@/components/layout/LearnerShell";
 import { AsyncBoundary } from "@/components/ui/AsyncBoundary";
 import { Tabs } from "@/components/ui/Tabs";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { Toast } from "@/components/ui/Toast";
 import { getVaultDocuments } from "@/services/vault";
+import { VaultDocRow } from "./VaultDocRow";
 import type { VaultDocument } from "@/types";
 
 const VAULT_TABS = [
@@ -21,30 +21,27 @@ const VAULT_TABS = [
   { id: "pratiques", label: "Pratiques" },
 ];
 
-type DocStatus = "disponible" | "en_attente" | "a_signer";
-
-function getDocStatus(doc: VaultDocument): DocStatus {
-  if (doc.signatureRequired && !doc.isSigned) return "a_signer";
-  if (doc.fileUrl) return "disponible";
-  return "en_attente";
-}
-
-const STATUS_LABEL: Record<DocStatus, string> = {
-  disponible: "Disponible",
-  en_attente: "En attente",
-  a_signer: "À signer",
-};
-
-const STATUS_VARIANT: Record<DocStatus, "success" | "default" | "error"> = {
-  disponible: "success",
-  en_attente: "default",
-  a_signer: "error",
-};
-
 export default function DocumentsPage() {
   const [activeTab, setActiveTab] = useState("contractuels");
-  // TODO // Supabase: filtrer par student_id et availableFrom selon le statut
+  const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null);
+  // Etat local des signatures effectuees pendant la session (re-render immediat sans refetch).
+  const [signedNow, setSignedNow] = useState<Map<string, Date>>(new Map());
+
   const docsState = useAsyncData(() => getVaultDocuments(), []);
+
+  function handleSigned(vaultDocumentId: string, signedAt: Date) {
+    setSignedNow((prev) => new Map(prev).set(vaultDocumentId, signedAt));
+  }
+
+  // Fusionne les signatures faites pendant la session avec l'etat charge.
+  const documents = useMemo<VaultDocument[]>(() => {
+    const base = docsState.data ?? [];
+    if (signedNow.size === 0) return base;
+    return base.map((d) => {
+      const at = signedNow.get(d.id);
+      return at ? { ...d, isSigned: true, signedAt: at } : d;
+    });
+  }, [docsState.data, signedNow]);
 
   return (
     <LearnerShell>
@@ -59,7 +56,7 @@ export default function DocumentsPage() {
         </ScrollReveal>
 
         <AsyncBoundary state={docsState} loadingLabel="Chargement de vos documents…">
-          {(documents) => {
+          {() => {
             const filtered = documents.filter((d) => d.category === activeTab);
             const tabsWithCount = VAULT_TABS.map((t) => ({
               ...t,
@@ -80,7 +77,11 @@ export default function DocumentsPage() {
                   <div className="space-y-2">
                     {filtered.map((doc, i) => (
                       <ScrollReveal key={doc.id} delay={i * 0.05}>
-                        <VaultDocRow doc={doc} />
+                        <VaultDocRow
+                          doc={doc}
+                          onNotify={(message, variant) => setToast({ message, variant })}
+                          onSigned={handleSigned}
+                        />
                       </ScrollReveal>
                     ))}
                   </div>
@@ -90,37 +91,13 @@ export default function DocumentsPage() {
           }}
         </AsyncBoundary>
       </div>
+
+      <Toast
+        message={toast?.message ?? ""}
+        isVisible={toast !== null}
+        variant={toast?.variant ?? "success"}
+        onClose={() => setToast(null)}
+      />
     </LearnerShell>
-  );
-}
-
-function VaultDocRow({ doc }: { doc: VaultDocument }) {
-  const status = getDocStatus(doc);
-
-  return (
-    <Card>
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3 min-w-0">
-          <FileText className="h-5 w-5 shrink-0 text-or" />
-          <p className="truncate text-sm font-medium text-ivoire">{doc.title}</p>
-        </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <Badge variant={STATUS_VARIANT[status]}>{STATUS_LABEL[status]}</Badge>
-          {status === "disponible" && (
-            <button
-              type="button"
-              aria-label="Télécharger"
-              className="rounded-lg p-2 text-cendre transition-colors hover:text-or"
-              onClick={() => {
-                // TODO // Supabase Storage: URL reelle du fichier
-                if (doc.fileUrl) window.open(doc.fileUrl, "_blank");
-              }}
-            >
-              <Download className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-      </div>
-    </Card>
   );
 }

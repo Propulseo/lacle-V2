@@ -79,29 +79,46 @@ export function DataTable<T>({
         <table className="w-full text-sm">
           <thead className="sticky top-0 border-b border-filet bg-surface">
             <tr>
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  className={cn(
-                    "px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-cendre",
-                    col.sortable && "cursor-pointer select-none hover:text-ivoire",
-                    col.hideOnMobile && "hidden md:table-cell",
-                    col.className
-                  )}
-                  onClick={col.sortable ? () => handleSort(col.key) : undefined}
-                >
-                  <span className="flex items-center gap-1">
-                    {col.header}
-                    {col.sortable && sortKey === col.key && (
-                      sortDir === "asc" ? (
-                        <ChevronUp className="h-3 w-3" />
-                      ) : (
-                        <ChevronDown className="h-3 w-3" />
-                      )
+              {columns.map((col) => {
+                const isSorted = col.sortable && sortKey === col.key;
+                const ariaSort = isSorted
+                  ? sortDir === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : col.sortable
+                    ? "none"
+                    : undefined;
+                return (
+                  <th
+                    key={col.key}
+                    scope="col"
+                    aria-sort={ariaSort}
+                    className={cn(
+                      "px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-cendre",
+                      col.hideOnMobile && "hidden md:table-cell",
+                      col.className
                     )}
-                  </span>
-                </th>
-              ))}
+                  >
+                    {col.sortable ? (
+                      <button
+                        type="button"
+                        onClick={() => handleSort(col.key)}
+                        className="flex select-none items-center gap-1 uppercase tracking-wider transition-colors hover:text-ivoire focus-visible:outline-none focus-visible:text-ivoire focus-visible:underline"
+                      >
+                        {col.header}
+                        {isSorted &&
+                          (sortDir === "asc" ? (
+                            <ChevronUp className="h-3 w-3" aria-hidden="true" />
+                          ) : (
+                            <ChevronDown className="h-3 w-3" aria-hidden="true" />
+                          ))}
+                      </button>
+                    ) : (
+                      <span className="flex items-center gap-1">{col.header}</span>
+                    )}
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody className="divide-y divide-filet/50">

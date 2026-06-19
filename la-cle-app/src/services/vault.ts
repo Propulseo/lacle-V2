@@ -83,6 +83,26 @@ export async function getVaultDocuments(): Promise<VaultDocument[]> {
 }
 
 /**
+ * Signe un document du coffre marque `signature_required` pour l'apprenant courant.
+ * S'appuie sur la RPC SECURITY DEFINER `sign_vault_document` qui re-verifie le
+ * deverrouillage (learner_vault_view.is_unlocked) et l'absence de signature prealable,
+ * puis insere une trace immuable dans `vault_signatures` (preuve Qualiopi).
+ *
+ * @param vaultDocumentId - UUID du document a signer (vault_documents.id)
+ * @returns Date de signature horodatee cote serveur
+ */
+export async function signVaultDocument(vaultDocumentId: string): Promise<Date> {
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc("sign_vault_document", {
+    p_vault_document_id: vaultDocumentId,
+    p_meta: { user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null },
+  });
+  if (error) throw error;
+  const signedAt = (data as { signed_at?: string } | null)?.signed_at;
+  return signedAt ? new Date(signedAt) : new Date();
+}
+
+/**
  * Recupere les documents visibles du coffre filtres par categorie.
  *
  * @param category - Categorie de documents (contractuels, financiers, pedagogiques, qualite, pratiques)

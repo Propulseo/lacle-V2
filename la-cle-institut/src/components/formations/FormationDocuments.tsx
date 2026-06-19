@@ -1,6 +1,5 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ProgramEmailForm } from "./ProgramEmailForm";
-import { PAGE_LAST_UPDATED, FORMATION_PRICE } from "@/lib/qualiopi";
 
 /*
  * TODO: remplacer par les PDF réels une fois déposés dans public/documents/.
@@ -41,7 +40,13 @@ const DOCUMENTS: DocumentItem[] = [
  *  - un formulaire e-mail alternatif (via /api/send-program)
  *  - la date de dernière actualisation de la page
  */
-export function FormationDocuments() {
+export function FormationDocuments({
+  price,
+  lastUpdated,
+}: {
+  price: string;
+  lastUpdated: string;
+}) {
   return (
     <div>
       <ScrollReveal>
@@ -83,8 +88,8 @@ export function FormationDocuments() {
       {/* Date de mise à jour — Qualiopi indicateur 1 (obligatoire). */}
       <ScrollReveal delay={0.3}>
         <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-2 text-[0.65rem] uppercase tracking-[0.3em] text-pierre/60">
-          <span>Tarif&nbsp;: {FORMATION_PRICE}</span>
-          <span>Actualis&eacute; en {PAGE_LAST_UPDATED}</span>
+          <span>Tarif&nbsp;: {price}</span>
+          <span>Actualis&eacute; en {lastUpdated}</span>
         </div>
       </ScrollReveal>
     </div>

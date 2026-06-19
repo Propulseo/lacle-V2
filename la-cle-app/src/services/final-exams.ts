@@ -105,58 +105,31 @@ export async function getFinalExam(learnerId: string): Promise<FinalExam | null>
  */
 export async function requestFinalExam(learnerId: string): Promise<FinalExam> {
   const supabase = createClient();
-  const formationId = await getActiveFormationId(supabase);
-  if (!formationId) throw new Error("Aucune formation active");
-
-  const { data: examFinal, error: examError } = await supabase
-    .from("exams_final")
-    .select("id")
-    .eq("formation_id", formationId)
-    .maybeSingle();
-  if (examError) throw examError;
-  if (!examFinal) throw new Error("Aucun examen final configuré");
-
-  const existing = await getFinalExam(learnerId);
-  if (existing) throw new Error("Demande déjà existante");
-
-  const insert: Database["public"]["Tables"]["final_exam_progress"]["Insert"] = {
-    exam_final_id: examFinal.id,
-    learner_id: learnerId,
-    status: "requested",
-    requested_at: new Date().toISOString(),
-  };
-  const { data, error } = await supabase
-    .from("final_exam_progress")
-    .insert(insert)
-    .select(PROGRESS_SELECT)
-    .single();
+  // Ecriture via RPC SECURITY DEFINER : final_exam_progress n'a pas de policy
+  // d'ecriture pour authenticated. Le learner + l'examen sont derives serveur.
+  const { error } = await supabase.rpc("request_final_exam");
   if (error) throw error;
-  return mapProgress(data as ProgressRow);
+  const exam = await getFinalExam(learnerId);
+  if (!exam) throw new Error("Demande d'examen final introuvable");
+  return exam;
 }
 
 /**
- * Met a jour un examen final (planification, notation, etc.).
+ * Planifie la date d'un examen final (staff). Passe par la RPC SECURITY DEFINER
+ * schedule_final_exam (pas de policy UPDATE authenticated sur final_exam_progress).
  *
- * @param id - Identifiant de l'examen final (final_exam_progress.id)
- * @param data - Champs a modifier
- * @returns L'examen final mis a jour
- * @throws Si l'examen final n'existe pas
+ * @param progressId - Identifiant de la progression (final_exam_progress.id)
+ * @param scheduledAt - Date/heure ISO retenue
  */
-export async function updateFinalExam(id: string, data: Partial<FinalExam>): Promise<FinalExam> {
+export async function scheduleFinalExam(
+  progressId: string,
+  scheduledAt: string
+): Promise<void> {
   const supabase = createClient();
-  const patch: Database["public"]["Tables"]["final_exam_progress"]["Update"] = {};
-  if (data.status !== undefined) patch.status = data.status;
-  if (data.requestedAt !== undefined) patch.requested_at = data.requestedAt;
-  if (data.scheduledAt !== undefined) patch.scheduled_at = data.scheduledAt;
-  if (data.completedAt !== undefined) patch.completed_at = data.completedAt;
-  if (data.score !== undefined) patch.best_score = data.score;
-  if (data.notes !== undefined) patch.notes = data.notes;
-  const { data: row, error } = await supabase
-    .from("final_exam_progress")
-    .update(patch)
-    .eq("id", id)
-    .select(PROGRESS_SELECT)
-    .single();
+  const { error } = await supabase.rpc("schedule_final_exam", {
+    p_progress_id: progressId,
+    p_scheduled_at: scheduledAt,
+  });
   if (error) throw error;
-  return mapProgress(row as ProgressRow);
 }
+

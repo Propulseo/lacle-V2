@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
+import { ROUTES } from "@/lib/constants";
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -33,7 +34,7 @@ export default function AdminError({ error, reset }: ErrorProps) {
             Réessayer
           </button>
           <Link
-            href="/admin"
+            href={ROUTES.admin.dashboard}
             className="inline-flex items-center gap-2 rounded-lg border border-filet px-5 py-2.5 text-sm text-cendre transition-colors hover:border-filet-accent hover:text-ivoire"
           >
             <ArrowLeft className="h-4 w-4" />
