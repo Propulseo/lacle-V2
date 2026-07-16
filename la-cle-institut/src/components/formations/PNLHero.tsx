@@ -1,9 +1,12 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
+/* Chiffres sourcés : « Architecture des cours » (7 phases, cours 1 à 60) et
+   ATTESTATION DE FIN DE FORMATION.docx (« 7 modules pédagogiques, 60 leçons
+   vidéo »). L'ancien « 10 compétences clés » ne venait d'aucun document. */
 const METRICS = [
   { value: "7", label: "Modules distanciels" },
-  { value: "10", label: "Compétences clés" },
-  { value: "1", label: "Certification délivrée" },
+  { value: "60", label: "Cours vidéo" },
+  { value: "1", label: "Attestation délivrée" },
 ];
 
 /** Hero cinématique de la page de vente PNL Praticien (titre + métriques). */
@@ -22,13 +25,13 @@ export function PNLHero() {
       <div className="relative mx-auto w-full max-w-[1200px] px-6 md:px-10 lg:px-16">
         <ScrollReveal>
           <p className="text-label tracking-[0.3em] text-bronze">
-            Formation certifiante
+            Formation à distance
           </p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
           <h1 className="mt-6 max-w-4xl font-display text-5xl font-semibold leading-[1.02] text-ivoire md:text-7xl lg:text-8xl xl:text-[6.5rem]">
-            Praticien PNL
+            Pré-praticien PNL
           </h1>
         </ScrollReveal>
 

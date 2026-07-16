@@ -23,7 +23,7 @@ export function DSCards() {
         <div className="grid gap-6 md:grid-cols-2">
           <FormationCard
             title="Praticien PNL"
-            description="Formation complète de praticien PNL. Parcours distanciel structuré menant à la certification."
+            description="Formation complète de praticien PNL. Parcours distanciel structuré menant à une attestation de fin de formation."
             href="#"
             available
             label="Disponible"

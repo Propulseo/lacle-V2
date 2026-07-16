@@ -1,10 +1,11 @@
 import { PARCOURS } from "@/lib/formations";
-import { ParcoursRoue } from "./ParcoursRoue";
+import { ParcoursTable } from "./ParcoursTable";
 
 /**
  * Catalogue des formations, organisé par parcours (retour A14).
- * Une roue par parcours (PNL, Analyse Transactionnelle, Systémique...),
- * chaque étape portant son badge de statut et sa modalité.
+ * Un tableau séquentiel par parcours (PNL, Analyse Transactionnelle,
+ * Systémique...) : les étapes se lisent dans l'ordre du cursus, chacune
+ * portant sa modalité, son délivrable et son statut (retour 10).
  * Source de vérité : src/lib/formations.ts (PARCOURS).
  */
 export function FormationCarousel() {
@@ -14,7 +15,7 @@ export function FormationCarousel() {
         {PARCOURS.length} parcours
       </p>
       {PARCOURS.map((parcours) => (
-        <ParcoursRoue key={parcours.id} parcours={parcours} />
+        <ParcoursTable key={parcours.id} parcours={parcours} />
       ))}
     </div>
   );

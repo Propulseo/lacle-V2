@@ -6,11 +6,16 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { FormationCarousel } from "@/components/formations/FormationCarousel";
 import { Button } from "@/components/ui/Button";
 import { ROUTES } from "@/lib/constants";
+import { FORMATIONS } from "@/lib/formations";
 
 export const metadata = {
   title: "Catalogue des formations | La Clé",
   description: "Les formations proposées par l\u2019institut La Clé. Une progression structurée au service de la compréhension.",
 };
+
+/** Chiffres du hero dérivés du catalogue : jamais désynchronisés des statuts. */
+const countByStatus = (status: string) =>
+  String(FORMATIONS.filter((f) => f.status === status).length).padStart(2, "0");
 
 export default function FormationsPage() {
   return (
@@ -35,12 +40,16 @@ export default function FormationsPage() {
             <ScrollReveal delay={0.2}>
               <div className="mt-16 grid max-w-2xl gap-px border border-filet md:grid-cols-3">
                 <div className="card-elevated bg-graphite/60 p-6 md:p-8">
-                  <span className="mb-2 block font-display text-3xl text-ivoire md:text-4xl">01</span>
-                  <p className="text-xs uppercase tracking-widest text-cendre">Formation active</p>
+                  <span className="mb-2 block font-display text-3xl text-ivoire md:text-4xl">
+                    {countByStatus("cohorte_pilote")}
+                  </span>
+                  <p className="text-xs uppercase tracking-widest text-cendre">En cohorte pilote</p>
                 </div>
                 <div className="card-elevated bg-graphite/60 p-6 md:p-8">
-                  <span className="mb-2 block font-display text-3xl text-pierre/40 md:text-4xl">02</span>
-                  <p className="text-xs uppercase tracking-widest text-pierre/60">À venir</p>
+                  <span className="mb-2 block font-display text-3xl text-pierre/40 md:text-4xl">
+                    {countByStatus("en_developpement")}
+                  </span>
+                  <p className="text-xs uppercase tracking-widest text-pierre/60">En développement</p>
                 </div>
                 <div className="card-elevated bg-graphite/60 p-6 md:p-8">
                   <span className="mb-2 block font-display text-3xl text-bronze/30 md:text-4xl">&infin;</span>
@@ -51,39 +60,24 @@ export default function FormationsPage() {
           </div>
         </section>
 
-        {/* ---- Progression pédagogique ---- */}
+        {/*
+          ---- Progression pédagogique ----
+          Le triptyque « Fondations / Approfondissement / Maîtrise » a été
+          retiré (retour 9 : Marien en questionnait la pertinence). Il n'était
+          branché sur aucune donnée et faisait doublon avec la progression
+          réelle, désormais portée par les étapes 1/2 et 2/2 des cartes.
+        */}
         <SectionBlock background="graphite">
           <ScrollReveal>
-            <div className="grid items-center gap-12 lg:grid-cols-2">
-              <div>
-                <p className="mb-2 text-label text-bronze">
-                  Philosophie
-                </p>
-                <h2 className="mb-6">Progression pédagogique</h2>
-                <p className="max-w-lg">
-                  Les formations de l&apos;institut La Clé s&apos;inscrivent dans une
-                  logique de progression. Chaque niveau approfondit le précédent.
-                  Il n&apos;y a pas de raccourci : la compréhension se construit
-                  étape par étape, dans un ordre pensé pour la solidité des acquis.
-                </p>
-              </div>
-              <div className="flex flex-col gap-4">
-                {["Fondations", "Approfondissement", "Maîtrise"].map((level, i) => (
-                  <div key={level} className="flex items-center gap-6 border-b border-filet pb-4 last:border-0">
-                    <span className={`font-display text-2xl ${i === 0 ? "text-bronze" : "text-pierre/30"}`}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className={`text-sm uppercase tracking-widest ${i === 0 ? "text-ivoire" : "text-pierre/40"}`}>
-                      {level}
-                    </span>
-                    {i === 0 && (
-                      <span className="ml-auto text-[10px] uppercase tracking-widest text-bronze">
-                        Actif
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="mb-2 text-label text-bronze">Philosophie</p>
+              <h2 className="mb-6">Progression pédagogique</h2>
+              <p>
+                Les formations de l&apos;institut La Clé s&apos;inscrivent dans une
+                logique de progression. Chaque niveau approfondit le précédent.
+                Il n&apos;y a pas de raccourci : la compréhension se construit
+                étape par étape, dans un ordre pensé pour la solidité des acquis.
+              </p>
             </div>
           </ScrollReveal>
         </SectionBlock>
@@ -98,9 +92,10 @@ export default function FormationsPage() {
           </ScrollReveal>
 
           {/*
-            Une roue par parcours (src/lib/formations.ts, PARCOURS). Chaque
-            étape porte un badge de statut et une interaction adaptée
-            (disponible cliquable, sinon « Bientôt disponible »).
+            Un tableau séquentiel par parcours (src/lib/formations.ts, PARCOURS).
+            Les étapes se lisent dans l'ordre du cursus, chacune portant sa
+            modalité, son délivrable et son statut. Seules les étapes dotées
+            d'une page sont cliquables.
           */}
           <ScrollReveal delay={0.1}>
             <FormationCarousel />
@@ -113,11 +108,11 @@ export default function FormationsPage() {
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="mb-6">Commencer le parcours</h2>
               <p className="mb-12">
-                Découvrez en détail la formation Praticien PNL : son contenu,
-                sa structure et ses exigences.
+                Découvrez en détail le Pré-praticien PNL, première étape du
+                cursus : son contenu, sa structure et ses exigences.
               </p>
               <Button href={ROUTES.pnlPractitioner} size="large">
-                Découvrir Praticien PNL
+                Découvrir le Pré-praticien PNL
               </Button>
             </div>
           </ScrollReveal>

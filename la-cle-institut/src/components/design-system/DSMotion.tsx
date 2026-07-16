@@ -5,7 +5,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 const FAQ_ITEMS = [
   { question: "Qu'est-ce que la PNL telle qu'enseignée par La Clé ?", answer: "La PNL est un cadre de compréhension des mécanismes cognitifs et comportementaux. Chez La Clé, elle est enseignée comme un outil d'observation et de compréhension, jamais comme une technique de manipulation ou de transformation rapide." },
-  { question: "Le parcours est-il entièrement à distance ?", answer: "Oui. Le parcours se déroule entièrement à distance, en modules structurés et progressifs, jusqu'à la certification." },
+  { question: "Le parcours est-il entièrement à distance ?", answer: "Oui. Le parcours se déroule entièrement à distance, en modules structurés et progressifs, jusqu'à l'attestation de fin de formation." },
   { question: "Faut-il des prérequis pour s'inscrire ?", answer: "Aucun prérequis académique n'est nécessaire. La formation s'adresse à toute personne souhaitant comprendre les mécanismes humains avec exigence et profondeur." },
 ];
 

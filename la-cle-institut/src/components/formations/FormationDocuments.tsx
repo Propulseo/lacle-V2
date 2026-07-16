@@ -2,11 +2,14 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ProgramEmailForm } from "./ProgramEmailForm";
 
 /*
- * TODO: remplacer par les PDF réels une fois déposés dans public/documents/.
- * Voir public/documents/README.md pour les noms de fichiers attendus.
+ * TODO: remplacer par le PDF réel une fois déposé dans public/documents/.
+ * Voir public/documents/README.md pour le nom de fichier attendu.
+ *
+ * Le référentiel de compétences a été RETIRÉ du site (décision Marien,
+ * 16/07/2026) : il relève du dossier d'audit Qualiopi, pas de l'information
+ * au public. Ind.1 n'exige que le programme.
  */
 const PROGRAM_PDF = "/documents/pnl-praticien-programme.pdf";
-const REFERENTIEL_PDF = "/documents/pnl-praticien-referentiel.pdf";
 
 interface DocumentItem {
   href: string;
@@ -23,20 +26,13 @@ const DOCUMENTS: DocumentItem[] = [
       "Contenu complet du parcours, objectifs p\u00E9dagogiques, modalit\u00E9s d'\u00E9valuation et dur\u00E9es.",
     cta: "T\u00E9l\u00E9charger le programme",
   },
-  {
-    href: REFERENTIEL_PDF,
-    label: "R\u00E9f\u00E9rentiel de comp\u00E9tences",
-    description:
-      "Comp\u00E9tences vis\u00E9es, pr\u00E9requis et crit\u00E8res de certification.",
-    cta: "Consulter le r\u00E9f\u00E9rentiel",
-  },
 ];
 
 /**
  * Section "Documents pédagogiques" — conformité Qualiopi indicateur 1.
  *
  * Expose :
- *  - deux téléchargements directs (programme + référentiel)
+ *  - le téléchargement direct du programme
  *  - un formulaire e-mail alternatif (via /api/send-program)
  *  - la date de dernière actualisation de la page
  */
@@ -55,18 +51,18 @@ export function FormationDocuments({
             Documents p&eacute;dagogiques
           </p>
           <h2 className="font-display text-3xl text-ivoire md:text-4xl">
-            Programme &amp; r&eacute;f&eacute;rentiel
+            Programme de formation
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-cendre">
-            Le programme d&eacute;taill&eacute; et le r&eacute;f&eacute;rentiel
-            de comp&eacute;tences sont librement consultables. Vous pouvez les
-            t&eacute;l&eacute;charger directement ou les recevoir par e-mail.
+            Le programme d&eacute;taill&eacute; de la formation est librement
+            consultable. Vous pouvez le t&eacute;l&eacute;charger directement ou
+            le recevoir par e-mail.
           </p>
         </div>
       </ScrollReveal>
 
       <ScrollReveal delay={0.1}>
-        <div className="grid gap-px md:grid-cols-2">
+        <div className="grid max-w-md gap-px">
           {DOCUMENTS.map((doc) => (
             <DocumentCard key={doc.href} {...doc} />
           ))}

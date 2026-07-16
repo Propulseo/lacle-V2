@@ -11,9 +11,9 @@ const STEPS = [
   },
   {
     number: "02",
-    title: "Certification",
-    subtitle: "Praticien PNL",
-    description: "Validation des acquis. Certification délivrée par l\u2019institut La Clé.",
+    title: "Attestation",
+    subtitle: "Pré-praticien PNL",
+    description: "Validation des acquis. Attestation de fin de formation délivrée par l\u2019institut La Clé.",
   },
 ];
 

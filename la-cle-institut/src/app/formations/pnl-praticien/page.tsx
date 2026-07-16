@@ -9,30 +9,27 @@ import { ParcoursSteps } from "@/components/formations/ParcoursSteps";
 import { PNLFAQ } from "@/components/formations/PNLFAQ";
 import { PNLCtaFinal } from "@/components/formations/PNLCtaFinal";
 import { FormationDocuments } from "@/components/formations/FormationDocuments";
-import { FormationResultats } from "@/components/formations/FormationResultats";
 import { ROUTES } from "@/lib/constants";
 import {
   getPnlModules,
   getPnlFaq,
-  getResultatsPnl,
   getPageLastUpdated,
   getFormationPrice,
 } from "@/lib/cms/content";
 
 export const metadata = {
-  title: "PNL Praticien | La Clé",
+  title: "Pré-praticien PNL — formation PNL à distance | La Clé",
   description:
-    "Formation complète de Praticien PNL. Parcours distanciel structuré en sept modules, menant à la certification.",
+    "Étape 1 du cursus Praticien PNL de l’institut La Clé : un parcours entièrement à distance, structuré et progressif, menant à une attestation de fin de formation.",
 };
 
 // ISR : les éditions admin (Supabase) se propagent en <= 60 s.
 export const revalidate = 60;
 
 export default async function PNLPraticienPage() {
-  const [modules, faq, resultats, lastUpdated, price] = await Promise.all([
+  const [modules, faq, lastUpdated, price] = await Promise.all([
     getPnlModules(),
     getPnlFaq(),
-    getResultatsPnl(),
     getPageLastUpdated(),
     getFormationPrice(),
   ]);
@@ -142,7 +139,7 @@ export default async function PNLPraticienPage() {
           <PNLModules modules={modules} />
         </SectionBlock>
 
-        {/* ---- Certification (présentiel retiré : non disponible, retour A13) ---- */}
+        {/* ---- Aboutissement : attestation distanciel / certification en présentiel (retour 14) ---- */}
         <SectionBlock>
           <ScrollReveal>
             <div className="card-elevated mx-auto max-w-2xl border border-filet bg-graphite/30 p-8 md:p-12">
@@ -150,13 +147,15 @@ export default async function PNLPraticienPage() {
                 Aboutissement
               </p>
               <h3 className="mb-5 font-display text-2xl text-ivoire md:text-3xl">
-                Certification
+                Attestation de fin de formation
               </h3>
               <p className="leading-relaxed text-cendre">
-                À l&apos;issue du parcours distanciel, une certification de
-                Praticien PNL est délivrée par l&apos;institut La Clé. Elle
-                atteste d&apos;une maîtrise des fondamentaux acquise avec
-                exigence et profondeur.
+                À l&apos;issue du parcours distanciel, l&apos;institut La Clé
+                délivre une attestation de fin de formation. Elle atteste du
+                suivi complet du parcours et de la validation des acquis, avec
+                exigence et profondeur. La certification, elle, s&apos;obtient
+                lors de la mise en pratique en présentiel, seconde étape du
+                cursus.
               </p>
             </div>
           </ScrollReveal>
@@ -186,10 +185,14 @@ export default async function PNLPraticienPage() {
           </ScrollReveal>
         </SectionBlock>
 
-        {/* ---- Indicateurs de résultats (Qualiopi indicateur 2) ---- */}
-        <SectionBlock background="graphite">
-          <FormationResultats resultats={resultats} lastUpdated={lastUpdated} />
-        </SectionBlock>
+        {/*
+          ---- Indicateurs de résultats (Qualiopi indicateur 2) ----
+          RETIRÉ sur décision Marien (16/07/2026) : aucune promotion n'a encore
+          eu lieu, donc aucun résultat réel à publier. Les valeurs précédentes
+          étaient provisoires et ne pouvaient pas rester en ligne (Ind.2 exige
+          des indicateurs réels). À rétablir avec les chiffres de la première
+          cohorte : <FormationResultats /> et getResultatsPnl() sont conservés.
+        */}
 
         {/* ---- Documents pédagogiques (Qualiopi indicateur 1) ---- */}
         <SectionBlock>

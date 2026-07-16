@@ -40,8 +40,8 @@ const SECTIONS: {
     bg: "noir",
     num: "02",
     title: "Apprendre en étant actif",
-    text: "Tout commence par la vidéo : des capsules structurées, à suivre dans l’ordre et à votre rythme. Un support écrit minimal accompagne le parcours, mais il ne fait pas le travail à votre place. L’objectif de la méthode est d’être actif dans l’apprentissage, pas dans la prise de notes ni dans la réassurance d’un document. Selon les parcours, la formation se vit entièrement à distance ou prépare une mise en pratique en présentiel.",
-    quote: "On apprend en étant actif, pas en recopiant un support.",
+    text: "Tout commence par la vidéo : des capsules structurées, à suivre dans l’ordre et à votre rythme. Un support écrit minimal accompagne le parcours. Tout est fait pour que les connaissances demeurent en vous. Selon les parcours, la formation se vit entièrement à distance ou prépare une mise en pratique en présentiel.",
+    quote: "L’apprentissage est actif, l’illusion est sur le support.",
   },
   {
     bg: "graphite",
@@ -54,7 +54,7 @@ const SECTIONS: {
     bg: "noir",
     num: "04",
     title: "La maîtrise avant la pratique",
-    text: "Pour les parcours qui mènent au présentiel, on n’y entre qu’une fois le distanciel pleinement maîtrisé. Le présentiel n’est pas un rattrapage : c’est une mise en pratique. L’idée est d’arriver avec un niveau solide et homogène, sans zone de flou. Le but n’est pas de filtrer, mais de s’assurer que chacun avance sur des bases sûres.",
+    text: "Pour les parcours qui mènent au présentiel, on n’y entre qu’une fois le distanciel pleinement maîtrisé. Le présentiel n’est pas un rattrapage : c’est une mise en pratique. L’idée est d’arriver sans zone de flou. Le but est de s’assurer que chacun arrive en présentiel avec des bases solides.",
     quote: "100% de réussite avant le présentiel.",
   },
   {
